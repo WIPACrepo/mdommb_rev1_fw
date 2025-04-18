@@ -33,15 +33,6 @@ wire[P_DATA_WIDTH-1:0] buff_din = {wvb_data_in[P_DATA_WIDTH-1:1], eoe_in};
 wire[8:0] hdr_data_cnt;
 generate
   if (P_ADR_WIDTH == 12) begin
-    // BUFFER_2048_22 WAVEFORM_DISCR_BUFF (
-    //   .clka(clk),
-    //   .wea(wvb_wrreq),
-    //   .addra(wvb_wr_addr),
-    //   .dina(buff_din),
-    //   .clkb(clk),
-    //   .addrb(wvb_rd_addr),
-    //   .doutb(wvb_data_out)
-    // );
     BUFFER_4096_22 WAVEFORM_DISCR_BUFF (
       .clka(clk),
       .wea(wvb_wrreq),
@@ -53,24 +44,8 @@ generate
     );
 
     wire[107:0] fifo_out;
-    // FIFO_512_108 HDR_FIFO_FMT_0 (
-    //   .clk(clk),
-    //   .srst(rst),
-    //   .din({{108-P_HDR_WIDTH{1'b0}}, hdr_data_in}),
-    //   .wr_en(hdr_wrreq),
-    //   .rd_en(hdr_rdreq),
-    //   .dout(fifo_out),
-    //   .full(hdr_full),
-    //   .empty(hdr_empty),
-    //   .data_count(hdr_data_cnt)
-    // );
-
-    // todo: need to handle latency when using the distributed FIFO.
-    // also need to rename because it's not 512x108, it's 128x108.
-    // let's test if this is going to work first, though.
-
     wire[6:0] built_in_hdr_data_cnt;
-    BUILT_IN_FIFO_512_108 HDR_FIFO_FMT_0 (
+    distributed_hdr_fifo DIST_HDR_FIFO (
       .clk(clk),
       .srst(rst),
       .din({{108-P_HDR_WIDTH{1'b0}}, hdr_data_in}),
@@ -81,12 +56,8 @@ generate
       .empty(hdr_empty),
       .data_count(built_in_hdr_data_cnt)
     );
-    reg[107:0] fifo_out_1;
-    always @(posedge clk) begin
-      fifo_out_1 <= fifo_out;
-    end
     assign hdr_data_cnt = {2'b0, built_in_hdr_data_cnt};
-    assign hdr_data_out = fifo_out_1[P_HDR_WIDTH-1:0];
+    assign hdr_data_out = fifo_out[P_HDR_WIDTH-1:0];
 
   end
 
