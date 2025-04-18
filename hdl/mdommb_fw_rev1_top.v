@@ -366,6 +366,7 @@ module top (
 `include "mDOM_trig_bundle_inc.v"
 `include "mDOM_wvb_conf_bundle_inc.v"
 `include "mDOM_wvb_hdr_bundle_3_inc.v" // T. Anderson Sat 05/21/2022_14:16:33.17
+`include "mDOM_wvb_hdr_bundle_4_inc.v" // A. Fienberg 2025: Increase waveform buffer sizes
 `include "mDOM_wvb_hdr_bundle_2_inc.v"
 `include "mDOM_bsum_bundle_inc.v"
 
@@ -380,15 +381,15 @@ localparam N_ADC_BITS = 12;
 localparam N_DISCR_BITS = 8;
 
 // determines waveform buffer depths
-// start with depth of 1024 samples; can increase later
-localparam P_WVB_ADR_WIDTH = 11;
+localparam P_WVB_ADR_WIDTH = 12;
 
 // hdr_bundle 1, 48 bit LTC
 // localparam P_HDR_WIDTH = P_WVB_ADR_WIDTH == 10 ? 71 : 80;
 // hdr_bundle 2, 49 bit LTC
 localparam P_LTC_WIDTH = 49;
 // localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_2;
-localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_3; // T. Anderson Sat 05/21/2022_14:19:23.51
+// localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_3; // T. Anderson Sat 05/21/2022_14:19:23.51
+localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_4; // A. Fienberg 2025: Increase waveform buffer sizes
 // localparam P_FMT = 1;
 localparam P_FMT = 2; // T. Anderson Sat 05/21/2022_14:19:23.51
 

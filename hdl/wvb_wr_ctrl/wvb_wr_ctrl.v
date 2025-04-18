@@ -50,6 +50,8 @@ module wvb_wr_ctrl #(parameter P_DATA_WIDTH = 22,
 `include "trigger_src_inc.v"
 `include "mDOM_wvb_hdr_bundle_2_inc.v"
 `include "mDOM_wvb_hdr_bundle_3_inc.v" // T. Anderson Sat 05/21/2022_14:35:13.75
+`include "mDOM_wvb_hdr_bundle_4_inc.v"
+
 
 // register synchronous rst
 (* DONT_TOUCH = "true" *) reg i_rst = 0;
@@ -292,6 +294,22 @@ else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_3) // T. Anderson Sat 05/21/
     .bsum_len_sel(i_bsum_len_sel),
     .bsum_valid(i_bsum_valid),
     .local_coinc(i_local_coinc) // T. Anderson Sat 05/21/2022_14:38:52.72
+  );
+else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
+  mDOM_wvb_hdr_bundle_4_fan_in HDR_FAN_IN
+  (
+    .bundle(hdr_data),
+    .evt_ltc(i_evt_ltc),
+    .start_addr(i_start_addr),
+    .stop_addr(i_stop_addr),
+    .trig_src(i_trig_src),
+    .cnst_run(i_cnst_run),
+    .pre_conf(i_pre_conf),
+    .sync_rdy(i_icm_sync_rdy),
+    .bsum(i_bsum),
+    .bsum_len_sel(i_bsum_len_sel),
+    .bsum_valid(i_bsum_valid),
+    .local_coinc(i_local_coinc)
   );
 endgenerate
 

@@ -88,21 +88,32 @@ wire[18:0] bsum;
 wire[2:0] bsum_len_sel;
 wire bsum_valid;
 wire local_coinc; // T. Anderson Sat 05/21/2022_14:32:00.75
-   
-mDOM_wvb_hdr_bundle_3_fan_out HDR_FAN_OUT (
-  .bundle(hdr_data),
-  .evt_ltc({evt_ltc, odd_ltc_bit}),
-  .start_addr(start_addr),
-  .stop_addr(stop_addr),
-  .trig_src(trig_src),
-  .cnst_run(cnst_run),
-  .pre_conf(pre_conf),
-  .sync_rdy(icm_sync_rdy),
-  .bsum(bsum),
-  .bsum_len_sel(bsum_len_sel),
-  .bsum_valid(bsum_valid),
-  .local_coinc(local_coinc) // T. Anderson Sat 05/21/2022_14:32:00.75
-);
+
+generate
+  if (P_WVB_ADR_WIDTH == 11) begin
+    wrong_p_adr_width invalid_module_conf();
+  end
+  else if (P_WVB_ADR_WIDTH == 12) begin
+    mDOM_wvb_hdr_bundle_4_fan_out HDR_FAN_OUT (
+      .bundle(hdr_data),
+      .evt_ltc({evt_ltc, odd_ltc_bit}),
+      .start_addr(start_addr),
+      .stop_addr(stop_addr),
+      .trig_src(trig_src),
+      .cnst_run(cnst_run),
+      .pre_conf(pre_conf),
+      .sync_rdy(icm_sync_rdy),
+      .bsum(bsum),
+      .bsum_len_sel(bsum_len_sel),
+      .bsum_valid(bsum_valid),
+      .local_coinc(local_coinc) // T. Anderson Sat 05/21/2022_14:32:00.75
+    );
+  end
+  else begin
+    invalid_p_adr_width invalid_module_conf();
+  end
+endgenerate
+
 
 // calculate evt_len
 wire[P_WVB_ADR_WIDTH-1:0] addr_diff = stop_addr - start_addr;
