@@ -264,6 +264,7 @@ always @(posedge clk) begin
             // in dpram mode 0, stop writing data if we
             // reach end of DPRAM or if we see the EOE
             wvb_rddone <= 1;
+            wvb_rdreq <= 0;
             fsm <= S_FTR;
           end
         end
@@ -272,6 +273,7 @@ always @(posedge clk) begin
           if (wvb_eoe) begin
             fsm <= S_FTR;
             wvb_rddone <= 1;
+            wvb_rdreq <= 0;
           end
 
           else if (dpram_a == L_DPRAM_A_LAST_DATA_CONTINUE) begin

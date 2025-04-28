@@ -103,9 +103,17 @@ assign overflow = hdr_full || (wvb_wr_addr == last_rd_addr);
 wire[P_ADR_WIDTH-1:0] next_rd_addr = last_rd_addr + 1;
 
 wire[15:0] MAX_WUSED = (1 << P_ADR_WIDTH);
-assign wvb_wused = wvb_wr_addr >= next_rd_addr ?
+reg[15:0] i_wvb_wused = 0;
+always @(posedge clk) begin
+  if (rst) begin
+    i_wvb_wused <= 0;
+  end else begin
+    i_wvb_wused <= wvb_wr_addr >= next_rd_addr ?
                       wvb_wr_addr - next_rd_addr :
                       MAX_WUSED - next_rd_addr + wvb_wr_addr;
+  end
+end
 
+assign wvb_wused = i_wvb_wused;
 
 endmodule

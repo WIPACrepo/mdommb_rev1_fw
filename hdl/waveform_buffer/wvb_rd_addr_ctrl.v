@@ -122,11 +122,11 @@ always @(posedge clk) begin
 		end
 
 		else if ((hdr_rd_cnt == 0) && wvb_rdreq) begin
-			wvb_rd_addr <= wvb_rd_addr + 1;
+			wvb_rd_addr <= wvb_rd_addr == stop_addr ? stop_addr : wvb_rd_addr + 1;
 		end
 
 		else if (wvb_rddone) begin
-			wvb_rd_addr <= stop_addr + 1;
+			wvb_rd_addr <= stop_addr;
 		end
 
 	end

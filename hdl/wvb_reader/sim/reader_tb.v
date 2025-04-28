@@ -210,8 +210,14 @@ always @(posedge clk) begin
   if (ltc == 6392) begin
     trig <= 1;
     trig_src <= 3;
+    test_conf <= 50;
   end
 
+  // one more short waveform
+  if (ltc == 14500) begin
+    trig <= 1;
+    trig_src <= 3;
+  end
 end
 
 // handle rbd signals
