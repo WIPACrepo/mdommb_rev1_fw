@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1068416666fs"></ZoomStartTime>
-      <ZoomEndTime time="1106316667fs"></ZoomEndTime>
-      <Cursor1Time time="1085000000fs"></Cursor1Time>
+      <ZoomStartTime time="144917966667fs"></ZoomStartTime>
+      <ZoomEndTime time="144990166668fs"></ZoomEndTime>
+      <Cursor1Time time="144918217000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="340"></NameColumnWidth>
-      <ValueColumnWidth column_width="102"></ValueColumnWidth>
+      <ValueColumnWidth column_width="97"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="30" />
+   <WVObjectSize size="28" />
    <wvobject fp_name="/reader_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -42,8 +42,8 @@
       <obj_property name="ObjectShortName">trig</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/ltc" type="array">
-      <obj_property name="ElementShortName">ltc[47:0]</obj_property>
-      <obj_property name="ObjectShortName">ltc[47:0]</obj_property>
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/trig_src" type="array">
@@ -70,6 +70,16 @@
       <obj_property name="ElementShortName">reader_enable</obj_property>
       <obj_property name="ObjectShortName">reader_enable</obj_property>
    </wvobject>
+   <wvobject fp_name="/reader_tb/wvb_wused" type="array">
+      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/OVERFLOW_CTRL/last_rd_addr" type="array">
+      <obj_property name="ElementShortName">last_rd_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">last_rd_addr[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="/reader_tb/wvb_rddone" type="logic">
       <obj_property name="ElementShortName">wvb_rddone</obj_property>
       <obj_property name="ObjectShortName">wvb_rddone</obj_property>
@@ -82,16 +92,6 @@
    <wvobject fp_name="/reader_tb/WVB/hdr_rdreq" type="logic">
       <obj_property name="ElementShortName">hdr_rdreq</obj_property>
       <obj_property name="ObjectShortName">hdr_rdreq</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB_READER/RD_CTRL/evt_len" type="array">
-      <obj_property name="ElementShortName">evt_len[15:0]</obj_property>
-      <obj_property name="ObjectShortName">evt_len[15:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB_READER/RD_CTRL/evt_len_reg" type="array">
-      <obj_property name="ElementShortName">evt_len_reg[15:0]</obj_property>
-      <obj_property name="ObjectShortName">evt_len_reg[15:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/WVB/wvb_rdreq" type="logic">
       <obj_property name="ElementShortName">wvb_rdreq</obj_property>
@@ -125,9 +125,9 @@
       <obj_property name="ElementShortName">dpram_wren</obj_property>
       <obj_property name="ObjectShortName">dpram_wren</obj_property>
    </wvobject>
-   <wvobject fp_name="/reader_tb/WVB_READER/RD_CTRL/fsm" type="array">
-      <obj_property name="ElementShortName">fsm[3:0]</obj_property>
-      <obj_property name="ObjectShortName">fsm[3:0]</obj_property>
+   <wvobject fp_name="/reader_tb/WVB_READER/rd_ctrl_more" type="logic">
+      <obj_property name="ElementShortName">rd_ctrl_more</obj_property>
+      <obj_property name="ObjectShortName">rd_ctrl_more</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/WVB_READER/rd_ctrl_req" type="logic">
       <obj_property name="ElementShortName">rd_ctrl_req</obj_property>
@@ -141,13 +141,5 @@
       <obj_property name="ElementShortName">dpram_len[15:0]</obj_property>
       <obj_property name="ObjectShortName">dpram_len[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB_READER/RD_CTRL/idx" type="array">
-      <obj_property name="ElementShortName">idx[7:0]</obj_property>
-      <obj_property name="ObjectShortName">idx[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB_READER/RD_CTRL/hdr_0" type="array">
-      <obj_property name="ElementShortName">hdr_0[15:0]</obj_property>
-      <obj_property name="ObjectShortName">hdr_0[15:0]</obj_property>
    </wvobject>
 </wave_config>

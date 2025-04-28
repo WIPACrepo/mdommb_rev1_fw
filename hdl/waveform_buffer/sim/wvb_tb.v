@@ -5,10 +5,14 @@
 
 `timescale 1ns/1ns
 
-// `define TEST_CASE_1 // various triggering patterns
-`define TEST_CASE_2 // targeted overflow edge cases
+`define TEST_CASE_1 // various triggering patterns
+// `define TEST_CASE_2 // targeted overflow edge cases
 
 module wvb_tb();
+
+`include "mDOM_wvb_hdr_bundle_4_inc.v"
+localparam P_WVB_ADR_WIDTH = 12;
+localparam P_LTC_WIDTH = 49;
 
 parameter CLK_PERIOD = 10;
 reg clk;
@@ -26,14 +30,14 @@ reg rst = 1;
 reg[11:0] adc_in = 0;
 reg[7:0] discr_in = 5;
 reg trig = 0;
-reg[47:0] ltc = 0;
+reg[P_LTC_WIDTH-1:0] ltc = 0;
 reg[1:0] trig_src = 0;
 reg wvb_rdreq = 0;
 reg hdr_rdreq = 0;
 reg rddone = 0;
 
-wire[11:0] wvb_wused;
-wire[9:0] wvb_n_wvf_in_buf;
+wire[15:0] wvb_wused;
+wire[15:0] wvb_n_wvf_in_buf;
 wire overflow_out;
 wire[21:0] wvb_out;
 wire[7:0] discr_out = wvb_out[21:14];
@@ -41,14 +45,23 @@ wire[11:0] adc_out = wvb_out[13:2];
 wire tot_out = wvb_out[1];
 wire eoe_out = wvb_out[0];
 
-wire[79:0] hdr_out;
+wire[L_WIDTH_MDOM_WVB_HDR_BUNDLE_4-1:0] hdr_out;
 wire hdr_full;
 wire hdr_empty;
 
 reg[11:0] test_conf = 10;
 
 // instantiate the waveform buffer
-waveform_buffer WVB 
+waveform_buffer
+#(.P_DATA_WIDTH(22),
+  .P_ADR_WIDTH(P_WVB_ADR_WIDTH),
+  .P_HDR_WIDTH(L_WIDTH_MDOM_WVB_HDR_BUNDLE_4),
+  .P_LTC_WIDTH(P_LTC_WIDTH),
+  .P_N_WVF_IN_BUF_WIDTH(16),
+  .P_BSUM_WIDTH(19),
+  .P_BSUM_LEN_SEL_WIDTH(3)
+  )
+WVB
   (
    // Outputs
    .wvb_wused(wvb_wused),
@@ -76,31 +89,48 @@ waveform_buffer WVB
    .wvb_rddone(rddone),
 
    // Config inputs
-   .pre_conf(4),
+   .pre_conf(10),
    .post_conf(4),
    .test_conf(test_conf),
    .cnst_run(0),
    .cnst_conf(10),
-   .trig_mode(0)
+   .trig_mode(0),
+
+   .icm_sync_rdy(1'b1),
+   .bsum(19'b1),
+   .bsum_len_sel(3'b1),
+   .bsum_valid(1'b1),
+   .local_coinc(1'b0)
   );
 
 // hdr fan out
-wire[11:0] hdr_start_addr;
-wire[11:0] hdr_stop_addr;
-wire[47:0] hdr_evt_ltc;
-wire[1:0] hdr_trig_src;
-wire hdr_cnst_run;
-wire[4:0] hdr_pre_conf;
-mDOM_wvb_hdr_bundle_0_fan_out HDR_FAN_OUT 
-(
-  .bundle(hdr_out),
-  .evt_ltc(hdr_evt_ltc),
-  .start_addr(hdr_start_addr),
-  .stop_addr(hdr_stop_addr),
-  .trig_src(hdr_trig_src),
-  .cnst_run(hdr_cnst_run),
-  .pre_conf(hdr_pre_conf)
-);
+// header fan out
+wire[P_WVB_ADR_WIDTH-1:0] hdr_start_addr;
+wire[P_WVB_ADR_WIDTH-1:0] hdr_stop_addr;
+wire[47:0] evt_ltc;
+wire odd_ltc_bit;
+wire[1:0] trig_src_hdr;
+wire cnst_run;
+wire[4:0] pre_conf;
+wire icm_sync_rdy;
+wire[18:0] bsum;
+wire[2:0] bsum_len_sel;
+wire bsum_valid;
+wire local_coinc; // T. Anderson Sat 05/21/2022_14:32:00.75
+mDOM_wvb_hdr_bundle_4_fan_out HDR_FAN_OUT (
+      .bundle(hdr_out),
+      .evt_ltc({evt_ltc, odd_ltc_bit}),
+      .start_addr(hdr_start_addr),
+      .stop_addr(hdr_stop_addr),
+      .trig_src(trig_src_hdr),
+      .cnst_run(cnst_run),
+      .pre_conf(pre_conf),
+      .sync_rdy(icm_sync_rdy),
+      .bsum(bsum),
+      .bsum_len_sel(bsum_len_sel),
+      .bsum_valid(bsum_valid),
+      .local_coinc(local_coinc) // T. Anderson Sat 05/21/2022_14:32:00.75
+  );
 
 wire[11:0] addr_diff = hdr_stop_addr - hdr_start_addr;
 wire[15:0] wfm_len = addr_diff + 1;
@@ -151,7 +181,7 @@ always @(posedge clk) begin
     rst <= 1;
   end
 
-  if (ltc == 8355) begin
+  if (ltc == 8360) begin
     rst <= 0;
   end
   
