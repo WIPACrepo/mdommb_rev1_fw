@@ -101,6 +101,11 @@ assign overflow = hdr_full || (wvb_wr_addr == last_rd_addr);
 
 // calculate number of words used
 wire[P_ADR_WIDTH-1:0] next_rd_addr = last_rd_addr + 1;
-assign wvb_wused = wvb_wr_addr - next_rd_addr;
+
+wire[15:0] MAX_WUSED = (1 << P_ADR_WIDTH);
+assign wvb_wused = wvb_wr_addr >= next_rd_addr ?
+                      wvb_wr_addr - next_rd_addr :
+                      MAX_WUSED - next_rd_addr + wvb_wr_addr;
+
 
 endmodule
