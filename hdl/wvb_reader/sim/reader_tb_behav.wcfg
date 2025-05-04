@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="63500750000fs"></ZoomStartTime>
-      <ZoomEndTime time="63574850001fs"></ZoomEndTime>
-      <Cursor1Time time="63505000000fs"></Cursor1Time>
+      <ZoomStartTime time="936750056fs"></ZoomStartTime>
+      <ZoomEndTime time="1012649989fs"></ZoomEndTime>
+      <Cursor1Time time="1000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="340"></NameColumnWidth>
-      <ValueColumnWidth column_width="92"></ValueColumnWidth>
+      <ValueColumnWidth column_width="77"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="30" />
+   <WVObjectSize size="38" />
    <wvobject fp_name="/reader_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -27,6 +27,10 @@
    <wvobject fp_name="/reader_tb/rst" type="logic">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/wvb_rst" type="logic">
+      <obj_property name="ElementShortName">wvb_rst</obj_property>
+      <obj_property name="ObjectShortName">wvb_rst</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/adc_in" type="array">
       <obj_property name="ElementShortName">adc_in[11:0]</obj_property>
@@ -54,6 +58,50 @@
       <obj_property name="ElementShortName">hdr_empty</obj_property>
       <obj_property name="ObjectShortName">hdr_empty</obj_property>
    </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/WR_CTRL/wvb_wren" type="logic">
+      <obj_property name="ElementShortName">wvb_wren</obj_property>
+      <obj_property name="ObjectShortName">wvb_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/overflow_in" type="logic">
+      <obj_property name="ElementShortName">overflow_in</obj_property>
+      <obj_property name="ObjectShortName">overflow_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/wvb_overflow" type="logic">
+      <obj_property name="ElementShortName">wvb_overflow</obj_property>
+      <obj_property name="ObjectShortName">wvb_overflow</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/WR_CTRL/hdr_wren" type="logic">
+      <obj_property name="ElementShortName">hdr_wren</obj_property>
+      <obj_property name="ObjectShortName">hdr_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/WR_CTRL/wvb_wr_addr" type="array">
+      <obj_property name="ElementShortName">wvb_wr_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_wr_addr[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB/OVERFLOW_CTRL/last_rd_addr" type="array">
+      <obj_property name="ElementShortName">last_rd_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">last_rd_addr[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/wvb_wused" type="array">
+      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/hdr_full" type="logic">
+      <obj_property name="ElementShortName">hdr_full</obj_property>
+      <obj_property name="ObjectShortName">hdr_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/wvb_n_wvf_in_buf" type="array">
+      <obj_property name="ElementShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/overflow_out" type="logic">
+      <obj_property name="ElementShortName">overflow_out</obj_property>
+      <obj_property name="ObjectShortName">overflow_out</obj_property>
+   </wvobject>
    <wvobject fp_name="/reader_tb/dpram_run" type="logic">
       <obj_property name="ElementShortName">dpram_run</obj_property>
       <obj_property name="ObjectShortName">dpram_run</obj_property>
@@ -70,16 +118,6 @@
       <obj_property name="ElementShortName">reader_enable</obj_property>
       <obj_property name="ObjectShortName">reader_enable</obj_property>
    </wvobject>
-   <wvobject fp_name="/reader_tb/wvb_wused" type="array">
-      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB/OVERFLOW_CTRL/last_rd_addr" type="array">
-      <obj_property name="ElementShortName">last_rd_addr[11:0]</obj_property>
-      <obj_property name="ObjectShortName">last_rd_addr[11:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
    <wvobject fp_name="/reader_tb/wvb_rddone" type="logic">
       <obj_property name="ElementShortName">wvb_rddone</obj_property>
       <obj_property name="ObjectShortName">wvb_rddone</obj_property>
@@ -88,6 +126,10 @@
       <obj_property name="ElementShortName">dpram_a[9:0]</obj_property>
       <obj_property name="ObjectShortName">dpram_a[9:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reader_tb/WVB_READER/chan_index" type="array">
+      <obj_property name="ElementShortName">chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">chan_index[4:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/WVB/hdr_rdreq" type="logic">
       <obj_property name="ElementShortName">hdr_rdreq</obj_property>
@@ -113,8 +155,8 @@
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/WVB_READER/wvb_data" type="array">
-      <obj_property name="ElementShortName">wvb_data[21:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_data[21:0]</obj_property>
+      <obj_property name="ElementShortName">wvb_data[527:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_data[527:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/reader_tb/reader_adc_word" type="array">
       <obj_property name="ElementShortName">reader_adc_word[11:0]</obj_property>
@@ -141,13 +183,5 @@
       <obj_property name="ElementShortName">dpram_len[15:0]</obj_property>
       <obj_property name="ObjectShortName">dpram_len[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB/WBS/wvb_rd_addr" type="array">
-      <obj_property name="ElementShortName">wvb_rd_addr[11:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_rd_addr[11:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/reader_tb/WVB/WBS/wvb_wr_addr" type="array">
-      <obj_property name="ElementShortName">wvb_wr_addr[11:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_wr_addr[11:0]</obj_property>
    </wvobject>
 </wave_config>

@@ -319,22 +319,22 @@ endgenerate
 reg[P_ADR_WIDTH-1:0] sot_cnt = 0;
 
 always @(posedge clk) begin
-  if (i_rst || overflow_out) begin
+  if (i_rst) begin
     cnt <= 0;
     fsm <= S_IDLE;
     wvb_wr_addr <= 0;
     sot_cnt <= 0;
-  end
-
-  else begin
+  end else if (overflow_out) begin
+    cnt <= 0;
+    fsm <= S_IDLE;
+    sot_cnt <= 0;
+  end else begin
     // always advance write address following a write
-    // except for when we're about to overflow
-    if (wvb_wren && !overflow_in) begin
+    if (wvb_wren) begin
       wvb_wr_addr <= wvb_wr_addr + 1;
     end
 
     case (fsm)
-
       S_IDLE: begin
         cnt <= 0;
 

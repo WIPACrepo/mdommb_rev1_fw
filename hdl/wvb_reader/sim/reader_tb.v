@@ -4,6 +4,8 @@
 //
 
 `timescale 1ns/1ns
+// `define TEST_CASE_1 // original reader tests
+`define TEST_CASE_2 // overflow behavior
 
 module reader_tb();
 
@@ -47,6 +49,7 @@ wire hdr_full;
 wire hdr_empty;
 
 reg[11:0] test_conf = 10;
+reg wvb_rst = 0;
 
 // instantiate the waveform buffer
 waveform_buffer
@@ -72,7 +75,7 @@ WVB
 
    // Inputs
    .clk(clk),
-   .rst(rst),
+   .rst(rst || wvb_rst),
    .ltc_in(ltc),
    .adc_in(adc_in),
    .discr_in(discr_in), 
@@ -115,7 +118,7 @@ reg dpram_done = 0;
 
 reg reader_enable = 0;
 wvb_reader
-#(.N_CHANNELS(1),
+#(.N_CHANNELS(24),
   .P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
   .P_HDR_WIDTH(L_WIDTH_MDOM_WVB_HDR_BUNDLE_4),
   .P_FMT(2))
@@ -139,6 +142,7 @@ WVB_READER
   .hdr_empty(hdr_empty)
 );
 
+`ifdef TEST_CASE_1
 always @(posedge clk) begin
   ltc <= ltc + 1;
 
@@ -220,6 +224,66 @@ always @(posedge clk) begin
   end
 end
 
+`endif
+
+`ifdef TEST_CASE_2
+always @(posedge clk) begin
+  ltc <= ltc + 1;
+
+  if (!rst) begin
+    adc_in <= adc_in + 1;
+    discr_in <= discr_in + 1;
+  end
+
+  trig <= 0;
+  trig_src <= 0;
+
+  if (ltc == 5) begin
+    rst <= 0;
+    dpram_mode <= 1;
+    reader_enable <= 1;
+  end
+
+  if (ltc == 115) begin
+    trig <= 1;
+    trig_src <= 3;
+  end
+
+  if (ltc == 120) begin
+    test_conf <= 4094;
+  end
+
+  // test length 4094 waveform
+  if (ltc == 160) begin
+    trig <= 1;
+    trig_src <= 3;
+  end
+
+  // trigger again, causing an overflow
+  if (ltc == 4305) begin
+    trig <= 1;
+    trig_src <= 3;
+  end
+
+  // reset the waveform buffer
+  // then overflow with many short waveforms
+  if (ltc == 8503) begin
+    wvb_rst <= 1;
+  end
+  if (ltc == 8513) begin
+    wvb_rst <= 0;
+    test_conf <= 10;
+  end
+
+  if (ltc > 8650) begin
+    trig <= 1;
+    trig_src <= 3;
+  end
+
+end
+`endif
+
+
 // handle rbd signals
 always @(posedge clk) begin
   if (dpram_run) begin
@@ -229,6 +293,7 @@ always @(posedge clk) begin
   else if (dpram_done && dpram_busy) begin
     dpram_busy <= 0;
   end
+
 end
 
 // fake DPRAM user

@@ -44,7 +44,7 @@ generate
     );
 
     wire[107:0] fifo_out;
-    wire[6:0] built_in_hdr_data_cnt;
+    wire[6:0] dist_hdr_data_count;
     distributed_hdr_fifo DIST_HDR_FIFO (
       .clk(clk),
       .srst(rst),
@@ -54,9 +54,9 @@ generate
       .dout(fifo_out),
       .full(hdr_full),
       .empty(hdr_empty),
-      .data_count(built_in_hdr_data_cnt)
+      .data_count(dist_hdr_data_count)
     );
-    assign hdr_data_cnt = {2'b0, built_in_hdr_data_cnt};
+    assign hdr_data_cnt = {2'b0, dist_hdr_data_count};
     assign hdr_data_out = fifo_out[P_HDR_WIDTH-1:0];
 
   end

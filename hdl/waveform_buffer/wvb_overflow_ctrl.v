@@ -83,16 +83,20 @@ else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
 endgenerate
 
 reg[P_ADR_WIDTH-1:0] last_rd_addr = -1;
+reg wvb_rddone_1 = 0;
 always @(posedge clk) begin
 	if (rst) begin
 		last_rd_addr <= -1;
-	end
+		wvb_rddone_1 <= 0;
+	end else begin
+		wvb_rddone_1 <= wvb_rddone;
 
-	// stop addr is the last written address of the
-	// event. So, after an event has been read, the next
-	// address to read is stop_addr + 1
-	else if (wvb_rddone) begin
-		last_rd_addr <= stop_addr;
+		// stop addr is the last written address of the
+		// event. So, after an event has been read, the next
+		// address to read is stop_addr + 1
+		if (wvb_rddone) begin
+		  last_rd_addr <= stop_addr;
+		end
 	end
 end
 
@@ -103,17 +107,31 @@ assign overflow = hdr_full || (wvb_wr_addr == last_rd_addr);
 wire[P_ADR_WIDTH-1:0] next_rd_addr = last_rd_addr + 1;
 
 wire[15:0] MAX_WUSED = (1 << P_ADR_WIDTH);
-reg[15:0] i_wvb_wused = 0;
+reg[P_ADR_WIDTH - 1:0] i_wvb_wused = 0;
+
+reg full = 0;
+reg[P_ADR_WIDTH-1:0] prev_wr_addr;
+
+wire wrote_last_rd_addr = (wvb_wr_addr == next_rd_addr && last_rd_addr == prev_wr_addr);
 always @(posedge clk) begin
   if (rst) begin
     i_wvb_wused <= 0;
+    full <= 0;
   end else begin
-    i_wvb_wused <= wvb_wr_addr >= next_rd_addr ?
-                      wvb_wr_addr - next_rd_addr :
-                      MAX_WUSED - next_rd_addr + wvb_wr_addr;
+    i_wvb_wused <= wvb_wr_addr - next_rd_addr;
+
+    prev_wr_addr <= wvb_wr_addr;
+    full <= 0;
+
+    if (full && wvb_rddone_1) begin
+      full <= 0;
+    end else if (full || wrote_last_rd_addr) begin
+      full <= 1;
+    end
   end
 end
 
-assign wvb_wused = i_wvb_wused;
+assign wvb_wused[15:P_ADR_WIDTH] = full ? 1 : 0;
+assign wvb_wused[P_ADR_WIDTH - 1:0] = i_wvb_wused;
 
 endmodule
