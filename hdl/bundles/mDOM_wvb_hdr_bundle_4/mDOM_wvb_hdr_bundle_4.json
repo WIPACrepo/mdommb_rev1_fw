@@ -11,66 +11,66 @@
 
 	    {
 		   "input" : "start_addr",
-		   "width" : 12,
+		   "width" : 10,
 		   "description" : "Starting address in waveform buffer RAM"
 	    },
-
 	    {
 		   "input" : "stop_addr",
-		   "width" : 12,
+		   "width" : 10,
 		   "description" : "Stopping address for the event by the wvb writer"
 	    },
-
 	    {
 		   "input" : "trig_src",
 		   "width" : 2,
 		   "description" : "source of initial trigger"
 	    },
-
 	    {
-	       "input" : "cnst_run",
-	       "width" : 1,
-	       "description" : "const run setting"
+	      "input" : "cnst_run",
+	      "width" : 1,
+	      "description" : "const run setting"
 	    },
-
 	    {
 	       "input" : "pre_conf",
 	       "width" : 5,
 	       "description" : "number of pre samples"
 	    },
-
 	    {
 	       "input" : "sync_rdy",
 	       "width" : 1,
 	       "description" : "icm - FPGA sync rdy"
 	    },
-
 	    {
 	       "input" : "bsum",
 	       "width" : 19,
 	       "description" : "baseline sum"
 	    },
-
 	    {
 	       "input" : "bsum_len_sel",
 	       "width" : 3,
 	       "description" : "baseline sum length configuration"
 	    },
-
 	    {
 	       "input" : "bsum_valid",
 	       "width" : 1,
 	       "description" : "whether the baseline sum is valid"
 	    },
-
-	    {
-	       "input" : "local_coinc",
-	       "width" : 1,
-	       "description" : "Whether the channel participated in the mDOM's local coincidence"
-	    }
-	]
-
-    }
+			{
+				"input" : "local_coinc",
+				"width" : 1,
+				"description" : "Whether the channel participated in the mDOM's local coincidence"
+			},
+			{
+				"input" : "partial_wfm",
+				"width" : 1,
+				"description" : "Whether the waveform will be continued in a later payload"
+			},
+			{
+				"input" : "continued_wfm",
+				"width" : 1,
+				"description" : "Whether the waveform is a continuation of a previous payload"
+		 }
+	 ]
+  }
 ]
 
 

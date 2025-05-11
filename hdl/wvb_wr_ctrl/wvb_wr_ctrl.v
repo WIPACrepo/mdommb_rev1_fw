@@ -4,8 +4,7 @@
 // mDOM waveform buffer write controller
 //
 
-module wvb_wr_ctrl #(parameter P_DATA_WIDTH = 22,
-                     parameter P_ADR_WIDTH = 12,
+module wvb_wr_ctrl #(parameter P_ADR_WIDTH = 12,
                      parameter P_HDR_WIDTH = 80,
                      parameter P_LTC_WIDTH = 48,
                      parameter P_CONST_CONF_WIDTH = 12,
@@ -14,7 +13,7 @@ module wvb_wr_ctrl #(parameter P_DATA_WIDTH = 22,
                      parameter P_POST_CONF_WIDTH = 8,
                      parameter P_BSUM_WIDTH = 19,
                      parameter P_BSUM_LEN_SEL_WIDTH = 3
-                     )
+                    )
 (
   input clk,
   input rst,
@@ -52,6 +51,7 @@ module wvb_wr_ctrl #(parameter P_DATA_WIDTH = 22,
 `include "mDOM_wvb_hdr_bundle_3_inc.v" // T. Anderson Sat 05/21/2022_14:35:13.75
 `include "mDOM_wvb_hdr_bundle_4_inc.v"
 
+localparam MAX_WRITES_PER_PAYLOAD = 255;
 
 // register synchronous rst
 (* DONT_TOUCH = "true" *) reg i_rst = 0;
@@ -60,7 +60,6 @@ always @(posedge clk) begin
 end
 
 // Internals
-reg[P_ADR_WIDTH-1:0] i_evt_len = 0;
 reg[P_LTC_WIDTH-1:0] i_evt_ltc = 0;
 reg[P_PRE_CONF_WIDTH-1:0] i_pre_conf = 0;
 reg[P_PRE_CONF_WIDTH-1:0] i_pre_cnt_max = 0;
@@ -79,6 +78,7 @@ reg[P_BSUM_WIDTH-1:0] i_bsum = 0;
 reg[P_BSUM_LEN_SEL_WIDTH-1:0] i_bsum_len_sel = 0;
 reg i_bsum_valid = 0;
 reg i_local_coinc = 0; // T. Anderson Sat 05/21/2022_14:37:47.72 
+reg i_continued_wfm = 0;
    
 // FSM states
 localparam
@@ -94,9 +94,9 @@ reg[31:0] cnt = 0;
 
 // minimum values for various length configs
 localparam PRE_CONF_MIN = 3,
-           POST_CONF_MIN = 2,
-           TEST_CONF_MIN = 3,
-           CONST_CONF_MIN = 3;
+           POST_CONF_MIN = 4,
+           TEST_CONF_MIN = 4,
+           CONST_CONF_MIN = 4;
 // update interal length conf values
 always @(posedge clk) begin
   if (i_rst) begin
@@ -114,8 +114,9 @@ always @(posedge clk) begin
   else if (fsm == S_IDLE) begin
     i_pre_conf <= pre_config >= PRE_CONF_MIN ? pre_config : PRE_CONF_MIN;
     i_post_conf <= post_config >= POST_CONF_MIN ? post_config : POST_CONF_MIN;
-    i_test_conf <= test_config >= TEST_CONF_MIN ? test_config : TEST_CONF_MIN;
-    i_const_conf <= cnst_config >= CONST_CONF_MIN ? cnst_config : CONST_CONF_MIN;
+    // constrain test conf / cnst conf to multiples of 4
+    i_test_conf <= test_config >= TEST_CONF_MIN ? {test_config[P_TEST_CONF_WIDTH-1:2], 2'b0} : TEST_CONF_MIN;
+    i_const_conf <= cnst_config >= CONST_CONF_MIN ? {cnst_config[P_CONST_CONF_WIDTH-1:2], 2'b0} : CONST_CONF_MIN;
 
     i_pre_cnt_max <= i_pre_conf - 1;
     i_post_cnt_max <= i_post_conf - 1;
@@ -126,33 +127,9 @@ end
 
 // We want to latch the local coincidence flag if it fires at any time while writing the event. 
 always @(posedge clk)
-  if(wvb_wren && local_coinc) i_local_coinc <= 1'b1;
+  if(writing_event && local_coinc) i_local_coinc <= 1'b1;
   else if(fsm==S_IDLE) i_local_coinc <= 1'b0; 
    
-// latch header values when fsm is in the idle state
-always @(posedge clk) begin
-  if (i_rst) begin
-    i_evt_ltc <= 0;
-    i_start_addr <= 0;
-    i_trig_src <= 0;
-    i_cnst_run <= 0;
-    i_icm_sync_rdy <= 0;
-    i_bsum <= 0;
-    i_bsum_len_sel <= 0;
-    i_bsum_valid <= 0;
-  end
-
-  else if (fsm == S_IDLE) begin
-    i_evt_ltc <= ltc;
-    i_trig_src <= trig_src;
-    i_start_addr <= wvb_wr_addr;
-    i_cnst_run <= cnst_run;
-    i_icm_sync_rdy <= icm_sync_rdy;
-    i_bsum <= bsum;
-    i_bsum_len_sel <= bsum_len_sel;
-    i_bsum_valid <= bsum_valid;
-  end
-end
 // stop addr will always update along with wvb_wr_addr
 always @(*) i_stop_addr = wvb_wr_addr;
 
@@ -168,24 +145,6 @@ always @(posedge clk) begin
     overflow_out <= 1;
   end
 end
-
-// count the number of writes
-reg[P_ADR_WIDTH-1:0] n_writes = 0;
-always @(posedge clk) begin
-  if (i_rst) begin
-    n_writes <= 0;
-  end
-
-  else begin
-    n_writes <= 0;
-    if (wvb_wren && fsm != S_IDLE) begin
-      n_writes <= n_writes + 1;
-    end
-  end
-end
-
-// evt_len written into the header should be n_writes + 2
-always @(*) i_evt_len = n_writes + 2;
 
 // handle trigger arm logic
 always @(posedge clk) begin
@@ -204,12 +163,30 @@ always @(posedge clk) begin
   end
 end
 
+// writing_event logic
+wire write_condition = (trig && !overflow_in) || (fsm != S_IDLE);
+wire mode_0_condition = (trig_mode == 0);
+wire mode_1_condition = (trig_mode == 1) && armed;
+wire writing_event = !overflow_out && write_condition && (mode_0_condition || mode_1_condition);
+
+// when writing an event, we assert wvb_wren every fourth clock cycle 
+reg[1:0] write_cnt = 0;
+always @(posedge clk) begin
+  if (fsm == S_IDLE) begin
+    write_cnt <= 1;
+  end else begin
+    write_cnt <= write_cnt + 1;
+  end
+end
+
+assign wvb_wren = writing_event && (write_cnt == 2'h3);
+
 // signal that this is the final write of a waveform
 reg final_write = 0;
 reg final_cnt_check = 0;
 
 // quick test; register cnt comparisons to help
-// with timing of header_wren
+// with timing of hdr_wren
 always @(posedge clk) begin
   if (i_rst) begin
     final_cnt_check <= 0;
@@ -222,7 +199,7 @@ always @(posedge clk) begin
       S_IDLE:  final_cnt_check <= 0;
       S_PRE:   final_cnt_check <= 0;
       S_SOT:   final_cnt_check <= 0;
-      S_POST:  final_cnt_check <= cnt == i_post_cnt_max - 1;
+      S_POST:  final_cnt_check <= (cnt >= i_post_cnt_max - 1) && (write_cnt == 2);
       S_CONST: final_cnt_check <= cnt == i_const_cnt_max - 1;
       S_TEST:  final_cnt_check <= cnt == i_test_cnt_max - 1;
       default: final_cnt_check <= 0;
@@ -243,59 +220,67 @@ always @(*) begin
   endcase
 end
 
-assign hdr_wren = wvb_wren && (final_write || overflow_in);
+// split events when they reach MAX_WRITES_PER_PAYLOAD
+reg [P_ADR_WIDTH-1:0] n_writes = 0;
+reg split_evt_prev = 0;
+reg n_writes_check = 0;
+wire split_evt;
+always @(posedge clk) begin
+  if (i_rst) begin
+    n_writes <= 0;
+    split_evt_prev <= 0;
+    n_writes_check <= 0;
+  end else begin
+    split_evt_prev <= split_evt;
+    n_writes_check <= n_writes == MAX_WRITES_PER_PAYLOAD - 1;
+
+    if ((fsm == S_IDLE) || hdr_wren) begin
+      n_writes <= 0;
+    end else if (writing_event) begin  
+      n_writes <= n_writes + wvb_wren;
+    end
+  end
+end
+assign split_evt = (n_writes_check) && (wvb_wren) && (!final_write) && (!overflow_in);
+
+assign hdr_wren = wvb_wren && (final_write || overflow_in || split_evt);
 always @(*) eoe = hdr_wren;
 
-// wvb_wren logic
-wire write_condition = (trig && !overflow_in) || (fsm != S_IDLE);
-wire mode_0_condition = (trig_mode == 0);
-wire mode_1_condition = (trig_mode == 1) && armed;
-assign wvb_wren = !overflow_out && write_condition && (mode_0_condition || mode_1_condition);
+
+// latch header values when fsm is in the idle state 
+// or after writing into the header fifo (e.g. after splitting a long event)
+reg hdr_wren_prev = 0;
+always @(posedge clk) begin
+  if (i_rst) begin
+    i_evt_ltc <= 0;
+    i_start_addr <= 0;
+    i_trig_src <= 0;
+    i_cnst_run <= 0;
+    i_icm_sync_rdy <= 0;
+    i_bsum <= 0;
+    i_bsum_len_sel <= 0;
+    i_bsum_valid <= 0;
+    hdr_wren_prev <= 0;
+  end else begin
+    hdr_wren_prev <= hdr_wren;
+
+    if ((fsm == S_IDLE) || hdr_wren_prev) begin
+      i_evt_ltc <= ltc;
+      i_trig_src <= trig_src;
+      i_start_addr <= wvb_wr_addr;
+      i_cnst_run <= cnst_run;
+      i_icm_sync_rdy <= icm_sync_rdy;
+      i_bsum <= bsum;
+      i_bsum_len_sel <= bsum_len_sel;
+      i_bsum_valid <= bsum_valid;
+      i_continued_wfm <= split_evt_prev;
+    end
+  end
+end
 
 // header bundle fan_in
 generate
-if (P_HDR_WIDTH == 71)
-  mDOM_wvb_hdr_bundle_1_fan_in HDR_FAN_IN
-  (
-    .bundle(hdr_data),
-    .evt_ltc(i_evt_ltc),
-    .start_addr(i_start_addr),
-    .stop_addr(i_stop_addr),
-    .trig_src(i_trig_src),
-    .cnst_run(i_cnst_run)
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_2)
-  mDOM_wvb_hdr_bundle_2_fan_in HDR_FAN_IN
-  (
-    .bundle(hdr_data),
-    .evt_ltc(i_evt_ltc),
-    .start_addr(i_start_addr),
-    .stop_addr(i_stop_addr),
-    .trig_src(i_trig_src),
-    .cnst_run(i_cnst_run),
-    .pre_conf(i_pre_conf),
-    .sync_rdy(i_icm_sync_rdy),
-    .bsum(i_bsum),
-    .bsum_len_sel(i_bsum_len_sel),
-    .bsum_valid(i_bsum_valid)
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_3) // T. Anderson Sat 05/21/2022_14:36:11.70
-  mDOM_wvb_hdr_bundle_3_fan_in HDR_FAN_IN
-  (
-    .bundle(hdr_data),
-    .evt_ltc(i_evt_ltc),
-    .start_addr(i_start_addr),
-    .stop_addr(i_stop_addr),
-    .trig_src(i_trig_src),
-    .cnst_run(i_cnst_run),
-    .pre_conf(i_pre_conf),
-    .sync_rdy(i_icm_sync_rdy),
-    .bsum(i_bsum),
-    .bsum_len_sel(i_bsum_len_sel),
-    .bsum_valid(i_bsum_valid),
-    .local_coinc(i_local_coinc) // T. Anderson Sat 05/21/2022_14:38:52.72
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
+if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
   mDOM_wvb_hdr_bundle_4_fan_in HDR_FAN_IN
   (
     .bundle(hdr_data),
@@ -309,8 +294,13 @@ else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
     .bsum(i_bsum),
     .bsum_len_sel(i_bsum_len_sel),
     .bsum_valid(i_bsum_valid),
-    .local_coinc(i_local_coinc)
+    .local_coinc(i_local_coinc),
+    .partial_wfm(split_evt),
+    .continued_wfm(i_continued_wfm)
   );
+else begin
+  invalid_p_adr_width invalid_module_conf();
+end
 endgenerate
 
 // FSM logic
@@ -339,7 +329,7 @@ always @(posedge clk) begin
         cnt <= 0;
 
         // trigger
-        if (wvb_wren) begin
+        if (writing_event) begin
           cnt <= 1;
 
           if ((trig_src == TRIG_SRC_SW) ||
@@ -405,7 +395,7 @@ always @(posedge clk) begin
         end
 
         else begin
-          if (cnt == i_post_cnt_max) begin
+          if (cnt >= i_post_cnt_max && (write_cnt == 3)) begin
             cnt <= 0;
             fsm <= S_IDLE;
           end

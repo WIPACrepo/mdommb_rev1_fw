@@ -69,8 +69,8 @@ module hbuf_ctrl
   input rdout_dpram_run,
   output reg dpram_busy = 0,
   input rdout_dpram_wren,
-  input[9:0] rdout_dpram_wr_addr,
-  input[31:0] rdout_dpram_data,
+  input[7:0] rdout_dpram_wr_addr,
+  input[127:0] rdout_dpram_data,
 
   // DDR3 DPRAM interface
   input ddr3_ui_clk,

@@ -25,47 +25,7 @@ module wvb_rd_addr_ctrl #(parameter P_ADR_WIDTH = 12,
 wire[P_ADR_WIDTH-1:0] start_addr;
 wire[P_ADR_WIDTH-1:0] stop_addr;
 generate
-if (P_HDR_WIDTH == 71)
-  mDOM_wvb_hdr_bundle_1_fan_out HDR_FAN_OUT (
-  	.bundle(hdr_data),
-  	.evt_ltc(),
-  	.start_addr(start_addr),
-  	.stop_addr(stop_addr),
-  	.trig_src(),
-  	.cnst_run()
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_2) begin
-  mDOM_wvb_hdr_bundle_2_fan_out HDR_FAN_OUT (
-    .bundle(hdr_data),
-    .evt_ltc(),
-    .start_addr(start_addr),
-    .stop_addr(stop_addr),
-    .trig_src(),
-    .cnst_run(),
-    .pre_conf(),
-    .sync_rdy(),
-    .bsum(),
-    .bsum_len_sel(),
-    .bsum_valid()
-  );
-end
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_3) begin
-  mDOM_wvb_hdr_bundle_3_fan_out HDR_FAN_OUT (
-    .bundle(hdr_data),
-    .evt_ltc(),
-    .start_addr(start_addr),
-    .stop_addr(stop_addr),
-    .trig_src(),
-    .cnst_run(),
-    .pre_conf(),
-    .sync_rdy(),
-    .bsum(),
-    .bsum_len_sel(),
-    .bsum_valid(),
-    .local_coinc()
-  );
-end
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4) begin
+if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4) begin
   mDOM_wvb_hdr_bundle_4_fan_out HDR_FAN_OUT (
     .bundle(hdr_data),
     .evt_ltc(),
@@ -78,8 +38,12 @@ else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4) begin
     .bsum(),
     .bsum_len_sel(),
     .bsum_valid(),
-    .local_coinc()
+    .local_coinc(),
+    .partial_wfm(),
+    .continued_wfm()
   );
+end else begin
+  invalid_p_adr_width invalid_module_conf();
 end
 endgenerate
 

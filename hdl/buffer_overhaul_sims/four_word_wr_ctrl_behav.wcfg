@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="buffer_overhaul_reader_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="buffer_overhaul_reader_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="146427253106fs"></ZoomStartTime>
+      <ZoomEndTime time="146593734472fs"></ZoomEndTime>
+      <Cursor1Time time="146455000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="335"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="45" />
+   <wvobject fp_name="/buffer_overhaul_reader_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/ltc" type="array">
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/adc_in" type="array">
+      <obj_property name="ElementShortName">adc_in[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_in[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/discr_in" type="array">
+      <obj_property name="ElementShortName">discr_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">discr_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/trig" type="logic">
+      <obj_property name="ElementShortName">trig</obj_property>
+      <obj_property name="ObjectShortName">trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/WR_CTRL/split_evt" type="logic">
+      <obj_property name="ElementShortName">split_evt</obj_property>
+      <obj_property name="ObjectShortName">split_evt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/WR_CTRL/wvb_wren" type="logic">
+      <obj_property name="ElementShortName">wvb_wren</obj_property>
+      <obj_property name="ObjectShortName">wvb_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/WR_CTRL/split_evt_prev" type="logic">
+      <obj_property name="ElementShortName">split_evt_prev</obj_property>
+      <obj_property name="ObjectShortName">split_evt_prev</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/WR_CTRL/hdr_wren" type="logic">
+      <obj_property name="ElementShortName">hdr_wren</obj_property>
+      <obj_property name="ObjectShortName">hdr_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/wvb_rddone" type="logic">
+      <obj_property name="ElementShortName">wvb_rddone</obj_property>
+      <obj_property name="ObjectShortName">wvb_rddone</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/wvb_wused" type="array">
+      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/wvb_n_wvf_in_buf" type="array">
+      <obj_property name="ElementShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/WR_CTRL/overflow_in" type="logic">
+      <obj_property name="ElementShortName">overflow_in</obj_property>
+      <obj_property name="ObjectShortName">overflow_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/WR_CTRL/n_writes_check" type="logic">
+      <obj_property name="ElementShortName">n_writes_check</obj_property>
+      <obj_property name="ObjectShortName">n_writes_check</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/WVB/OVERFLOW_CTRL/overflow_delay_cnt" type="array">
+      <obj_property name="ElementShortName">overflow_delay_cnt[1:0]</obj_property>
+      <obj_property name="ObjectShortName">overflow_delay_cnt[1:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/overflow_out" type="logic">
+      <obj_property name="ElementShortName">overflow_out</obj_property>
+      <obj_property name="ObjectShortName">overflow_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/hdr_full" type="logic">
+      <obj_property name="ElementShortName">hdr_full</obj_property>
+      <obj_property name="ObjectShortName">hdr_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/hdr_empty" type="logic">
+      <obj_property name="ElementShortName">hdr_empty</obj_property>
+      <obj_property name="ObjectShortName">hdr_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/wvb_rst" type="logic">
+      <obj_property name="ElementShortName">wvb_rst</obj_property>
+      <obj_property name="ObjectShortName">wvb_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_run" type="logic">
+      <obj_property name="ElementShortName">dpram_run</obj_property>
+      <obj_property name="ObjectShortName">dpram_run</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_wren" type="logic">
+      <obj_property name="ElementShortName">dpram_wren</obj_property>
+      <obj_property name="ObjectShortName">dpram_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_a" type="array">
+      <obj_property name="ElementShortName">dpram_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dpram_a[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/wvb_rdreq" type="logic">
+      <obj_property name="ElementShortName">wvb_rdreq</obj_property>
+      <obj_property name="ObjectShortName">wvb_rdreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/hdr_rdreq" type="logic">
+      <obj_property name="ElementShortName">hdr_rdreq</obj_property>
+      <obj_property name="ObjectShortName">hdr_rdreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/header_ltc" type="array">
+      <obj_property name="ElementShortName">header_ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">header_ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/hdr_0" type="array">
+      <obj_property name="ElementShortName">hdr_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">hdr_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/adc_word_0" type="array">
+      <obj_property name="ElementShortName">adc_word_0[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_0[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/adc_word_1" type="array">
+      <obj_property name="ElementShortName">adc_word_1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_1[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/adc_word_2" type="array">
+      <obj_property name="ElementShortName">adc_word_2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_2[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/adc_word_3" type="array">
+      <obj_property name="ElementShortName">adc_word_3[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_3[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/tot" type="array">
+      <obj_property name="ElementShortName">tot[0:3]</obj_property>
+      <obj_property name="ObjectShortName">tot[0:3]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/channel_idx" type="array">
+      <obj_property name="ElementShortName">channel_idx[7:0]</obj_property>
+      <obj_property name="ObjectShortName">channel_idx[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_len" type="array">
+      <obj_property name="ElementShortName">dpram_len[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dpram_len[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_mode" type="logic">
+      <obj_property name="ElementShortName">dpram_mode</obj_property>
+      <obj_property name="ObjectShortName">dpram_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_busy" type="logic">
+      <obj_property name="ElementShortName">dpram_busy</obj_property>
+      <obj_property name="ObjectShortName">dpram_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/dpram_done" type="logic">
+      <obj_property name="ElementShortName">dpram_done</obj_property>
+      <obj_property name="ObjectShortName">dpram_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_enable" type="logic">
+      <obj_property name="ElementShortName">reader_enable</obj_property>
+      <obj_property name="ObjectShortName">reader_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/rdout_dpram_rd_addr" type="array">
+      <obj_property name="ElementShortName">rdout_dpram_rd_addr[8:0]</obj_property>
+      <obj_property name="ObjectShortName">rdout_dpram_rd_addr[8:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_adc_word_1" type="array">
+      <obj_property name="ElementShortName">reader_adc_word_1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">reader_adc_word_1[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_adc_word_0" type="array">
+      <obj_property name="ElementShortName">reader_adc_word_0[11:0]</obj_property>
+      <obj_property name="ObjectShortName">reader_adc_word_0[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_word_0" type="array">
+      <obj_property name="ElementShortName">reader_word_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reader_word_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_word_1" type="array">
+      <obj_property name="ElementShortName">reader_word_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reader_word_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_word_2" type="array">
+      <obj_property name="ElementShortName">reader_word_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reader_word_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/buffer_overhaul_reader_tb/reader_word_3" type="array">
+      <obj_property name="ElementShortName">reader_word_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reader_word_3[15:0]</obj_property>
+   </wvobject>
+</wave_config>

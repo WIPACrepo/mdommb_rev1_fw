@@ -267,15 +267,15 @@ always @(posedge clk) begin
 
   // reset the waveform buffer
   // then overflow with many short waveforms
-  if (ltc == 8503) begin
+  if (ltc == 10503) begin
     wvb_rst <= 1;
   end
-  if (ltc == 8513) begin
+  if (ltc == 10513) begin
     wvb_rst <= 0;
     test_conf <= 10;
   end
 
-  if (ltc > 8650) begin
+  if (ltc > 10650) begin
     trig <= 1;
     trig_src <= 3;
   end

@@ -27,45 +27,7 @@ module wvb_overflow_ctrl #(parameter P_ADR_WIDTH = 12,
 wire[P_ADR_WIDTH-1:0] stop_addr;
 
 generate
-if (P_HDR_WIDTH == 71)
-  mDOM_wvb_hdr_bundle_1_fan_out HDR_FAN_OUT (
-  	.bundle(hdr_data),
-  	.evt_ltc(),
-  	.start_addr(),
-  	.stop_addr(stop_addr),
-  	.trig_src(),
-  	.cnst_run()
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_2)
-  mDOM_wvb_hdr_bundle_2_fan_out HDR_FAN_OUT (
-    .bundle(hdr_data),
-    .evt_ltc(),
-    .start_addr(),
-    .stop_addr(stop_addr),
-    .trig_src(),
-    .cnst_run(),
-    .pre_conf(),
-    .sync_rdy(),
-    .bsum(),
-    .bsum_len_sel(),
-    .bsum_valid()
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_3) // T. Anderson Sat 05/21/2022_14:23:43.83
-  mDOM_wvb_hdr_bundle_3_fan_out HDR_FAN_OUT (
-    .bundle(hdr_data),
-    .evt_ltc(),
-    .start_addr(),
-    .stop_addr(stop_addr),
-    .trig_src(),
-    .cnst_run(),
-    .pre_conf(),
-    .sync_rdy(),
-    .bsum(),
-    .bsum_len_sel(),
-    .bsum_valid(),
-    .local_coinc()
-  );
-else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
+if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4) begin
   mDOM_wvb_hdr_bundle_4_fan_out HDR_FAN_OUT (
     .bundle(hdr_data),
     .evt_ltc(),
@@ -78,8 +40,13 @@ else if (P_HDR_WIDTH == L_WIDTH_MDOM_WVB_HDR_BUNDLE_4)
     .bsum(),
     .bsum_len_sel(),
     .bsum_valid(),
-    .local_coinc()
+    .local_coinc(),
+    .partial_wfm(),
+    .continued_wfm()
   );
+end else begin
+  invalid_p_adr_width invalid_module_conf();
+end
 endgenerate
 
 reg[P_ADR_WIDTH-1:0] last_rd_addr = -1;
@@ -100,8 +67,30 @@ always @(posedge clk) begin
 	end
 end
 
+// after change to writing every fourth clock cycle,
+// we need to delay the overflow_in before it reaches the write controller
+reg[1:0] overflow_delay_cnt = 0;
+reg buffer_full_overflow = 0;
+reg in_overflow = 0;
+always @(posedge clk) begin
+  if (rst) begin
+    buffer_full_overflow <= 0;
+    overflow_delay_cnt <= 0;
+    in_overflow <= 0;
+  end else begin
+    in_overflow <= in_overflow || buffer_full_overflow;
+    overflow_delay_cnt <= 0;
+    buffer_full_overflow <= overflow_delay_cnt == 2;
+    if (overflow_delay_cnt >= 1 && (!in_overflow)) begin
+      overflow_delay_cnt <= overflow_delay_cnt + 1;
+    end else if (wvb_wr_addr == last_rd_addr && (!in_overflow)) begin
+      overflow_delay_cnt <= 1;
+    end
+  end
+end
+
 // overflow condition: hdr_full or wr_addr == last_rd_addr
-assign overflow = hdr_full || (wvb_wr_addr == last_rd_addr);
+assign overflow = hdr_full || (buffer_full_overflow);
 
 // calculate number of words used
 wire[P_ADR_WIDTH-1:0] next_rd_addr = last_rd_addr + 1;

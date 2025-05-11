@@ -12,7 +12,7 @@
 module wvb_reader #(parameter P_DATA_WIDTH = 22,
                     parameter N_CHANNELS = 2,
                     parameter P_WVB_ADR_WIDTH = 12,
-                    parameter P_DPRAM_ADR_WIDTH = 10,
+                    parameter P_DPRAM_ADR_WIDTH = 8,
                     parameter P_HDR_WIDTH = 80,
                     parameter P_FMT = 0
                    )
@@ -24,7 +24,7 @@ module wvb_reader #(parameter P_DATA_WIDTH = 22,
   // DPRAM interface
 
   // Outputs
-  output[31:0] dpram_data,
+  output[127:0] dpram_data,
   output[P_DPRAM_ADR_WIDTH-1:0] dpram_addr,
   output dpram_wren,
   output reg[15:0] dpram_len = 0,
@@ -130,8 +130,8 @@ wire[15:0] rd_ctrl_dpram_len;
 
 // read controller
 generate
-if (P_FMT == 0)
-  wvb_rd_ctrl_fmt_0 #(.P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
+if (P_FMT == 3 && (P_DATA_WIDTH == 85)) begin
+  wvb_rd_ctrl_fmt_3 #(.P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
                       .P_HDR_WIDTH(P_HDR_WIDTH))
   RD_CTRL
    (
@@ -151,48 +151,9 @@ if (P_FMT == 0)
     .dpram_wren(dpram_wren),
     .dpram_len(rd_ctrl_dpram_len)
    );
-else if (P_FMT == 1)
-  wvb_rd_ctrl_fmt_1 #(.P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
-                      .P_HDR_WIDTH(P_HDR_WIDTH))
-  RD_CTRL
-   (
-    .clk(clk),
-    .rst(rst || !en),
-    .req(rd_ctrl_req),
-    .idx({3'b0, chan_index}),
-    .dpram_mode(dpram_mode),
-    .ack(rd_ctrl_ack),
-    .rd_ctrl_more(rd_ctrl_more),
-    .wvb_data(wvb_data_mux_out_reg),
-    .hdr_data(hdr_data_mux_out_reg),
-    .wvb_rdreq(i_wvb_rdreq),
-    .wvb_rddone(i_wvb_rddone),
-    .dpram_a(dpram_addr),
-    .dpram_data(dpram_data),
-    .dpram_wren(dpram_wren),
-    .dpram_len(rd_ctrl_dpram_len)
-   );
-else if (P_FMT == 2)
-  wvb_rd_ctrl_fmt_2 #(.P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
-                      .P_HDR_WIDTH(P_HDR_WIDTH))
-  RD_CTRL
-   (
-    .clk(clk),
-    .rst(rst || !en),
-    .req(rd_ctrl_req),
-    .idx({3'b0, chan_index}),
-    .dpram_mode(dpram_mode),
-    .ack(rd_ctrl_ack),
-    .rd_ctrl_more(rd_ctrl_more),
-    .wvb_data(wvb_data_mux_out_reg),
-    .hdr_data(hdr_data_mux_out_reg),
-    .wvb_rdreq(i_wvb_rdreq),
-    .wvb_rddone(i_wvb_rddone),
-    .dpram_a(dpram_addr),
-    .dpram_data(dpram_data),
-    .dpram_wren(dpram_wren),
-    .dpram_len(rd_ctrl_dpram_len)
-   );
+end else begin
+  invalid_p_adr_width invalid_module_conf();
+end
 endgenerate
 
 // FSM logic

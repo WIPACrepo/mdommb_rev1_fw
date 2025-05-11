@@ -68,10 +68,11 @@ always @(posedge clk) begin
 end
 
 // pretrigger buffer
-wire [P_DATA_WIDTH-1:0] ptb_out;
+localparam PER_CYCLE_DATA_WIDTH = 22;
+wire [21:0] ptb_out;
 wire ptb_rdy;
 pretrigger_buffer #(.P_PRE_CONF_WIDTH(P_PRE_CONF_WIDTH),
-                    .P_DATA_WIDTH(P_DATA_WIDTH),
+                    .P_DATA_WIDTH(PER_CYCLE_DATA_WIDTH),
                     .P_USE_DISTRIBUTED_RAM(1))
  PTB
   (
@@ -95,6 +96,7 @@ wire                    eoe;
 waveform_buffer_storage
   #(
     .P_DATA_WIDTH(P_DATA_WIDTH),
+    .PER_CYCLE_DATA_WIDTH(PER_CYCLE_DATA_WIDTH),
     .P_ADR_WIDTH(P_ADR_WIDTH),
     .P_HDR_WIDTH(P_HDR_WIDTH),
     .P_N_WVF_IN_BUF_WIDTH(P_N_WVF_IN_BUF_WIDTH)
@@ -126,7 +128,6 @@ waveform_buffer_storage
 wire overflow_in;
 wvb_wr_ctrl
   #(
-    .P_DATA_WIDTH(P_DATA_WIDTH),
     .P_ADR_WIDTH(P_ADR_WIDTH),
     .P_HDR_WIDTH(P_HDR_WIDTH),
     .P_LTC_WIDTH(P_LTC_WIDTH),

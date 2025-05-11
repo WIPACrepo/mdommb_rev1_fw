@@ -11,15 +11,17 @@ module mDOM_wvb_hdr_bundle_4_fan_in
    bsum,
    bsum_len_sel,
    bsum_valid,
-   local_coinc
+   local_coinc,
+   partial_wfm,
+   continued_wfm
   );
 
 `include "mDOM_wvb_hdr_bundle_4_inc.v"
 
-   output [105:0] bundle;
+   output [103:0] bundle;
    input [48:0] evt_ltc;
-   input [11:0] start_addr;
-   input [11:0] stop_addr;
+   input [9:0] start_addr;
+   input [9:0] stop_addr;
    input [1:0] trig_src;
    input [0:0] cnst_run;
    input [4:0] pre_conf;
@@ -28,18 +30,22 @@ module mDOM_wvb_hdr_bundle_4_fan_in
    input [2:0] bsum_len_sel;
    input [0:0] bsum_valid;
    input [0:0] local_coinc;
+   input [0:0] partial_wfm;
+   input [0:0] continued_wfm;
 
 assign bundle[48:0] = evt_ltc;
-assign bundle[60:49] = start_addr;
-assign bundle[72:61] = stop_addr;
-assign bundle[74:73] = trig_src;
-assign bundle[75:75] = cnst_run;
-assign bundle[80:76] = pre_conf;
-assign bundle[81:81] = sync_rdy;
-assign bundle[100:82] = bsum;
-assign bundle[103:101] = bsum_len_sel;
-assign bundle[104:104] = bsum_valid;
-assign bundle[105:105] = local_coinc;
+assign bundle[58:49] = start_addr;
+assign bundle[68:59] = stop_addr;
+assign bundle[70:69] = trig_src;
+assign bundle[71:71] = cnst_run;
+assign bundle[76:72] = pre_conf;
+assign bundle[77:77] = sync_rdy;
+assign bundle[96:78] = bsum;
+assign bundle[99:97] = bsum_len_sel;
+assign bundle[100:100] = bsum_valid;
+assign bundle[101:101] = local_coinc;
+assign bundle[102:102] = partial_wfm;
+assign bundle[103:103] = continued_wfm;
 
 
 endmodule

@@ -381,7 +381,8 @@ localparam N_ADC_BITS = 12;
 localparam N_DISCR_BITS = 8;
 
 // determines waveform buffer depths
-localparam P_WVB_ADR_WIDTH = 12;
+localparam P_WVB_ADR_WIDTH = 10;
+localparam P_DATA_WIDTH = 85;
 
 // hdr_bundle 1, 48 bit LTC
 // localparam P_HDR_WIDTH = P_WVB_ADR_WIDTH == 10 ? 71 : 80;
@@ -389,9 +390,10 @@ localparam P_WVB_ADR_WIDTH = 12;
 localparam P_LTC_WIDTH = 49;
 // localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_2;
 // localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_3; // T. Anderson Sat 05/21/2022_14:19:23.51
-localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_4; // A. Fienberg 2025: Increase waveform buffer sizes
+localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_4; // A. Fienberg 2025
 // localparam P_FMT = 1;
-localparam P_FMT = 2; // T. Anderson Sat 05/21/2022_14:19:23.51
+// localparam P_FMT = 2; // T. Anderson Sat 05/21/2022_14:19:23.51
+localparam P_FMT = 3;
 
 //
 // clock generation
@@ -852,8 +854,8 @@ wire[15:0] rdout_dpram_len;
 wire rdout_dpram_run;
 wire xdom_rdout_dpram_busy;
 wire rdout_dpram_wren;
-wire[9:0] rdout_dpram_wr_addr;
-wire[31:0] rdout_dpram_data;
+wire[7:0] rdout_dpram_wr_addr;
+wire[127:0] rdout_dpram_data;
 wire wvb_reader_enable;
 wire wvb_reader_dpram_mode;
 
@@ -1344,13 +1346,12 @@ global_trigger #(.N_CHANNELS(N_CHANNELS), .N_DISCR_BITS(N_DISCR_BITS)) GLOBAL_TR
 //
 // Waveform acquisition modules
 //
-// configuration currently shared between all channels
-// ATF TODO: add separate configuration for each channel
+
 
 wire[N_CHANNELS-1:0] wvb_hdr_rdreq;
 wire[N_CHANNELS-1:0] wvb_wvb_rdreq;
 wire[N_CHANNELS-1:0] wvb_rddone;
-wire[N_CHANNELS*22-1:0] wvb_data_out;
+wire[N_CHANNELS*P_DATA_WIDTH-1:0] wvb_data_out;
 wire[N_CHANNELS*P_HDR_WIDTH-1:0] wvb_hdr_data;
 
 wire[N_CHANNELS-1:0] thresh_tot_out;
@@ -1383,7 +1384,8 @@ wire cal_trig_trig_run = cal_trig_trig_pol == 1 ? cal_trig_s : ~cal_trig_s;
    
 generate
   for (i = 0; i < N_CHANNELS; i = i + 1) begin : waveform_acq_gen
-    waveform_acquisition #(.P_ADR_WIDTH(P_WVB_ADR_WIDTH),
+    waveform_acquisition #(.P_DATA_WIDTH(P_DATA_WIDTH),
+                           .P_ADR_WIDTH(P_WVB_ADR_WIDTH),
                            .P_HDR_WIDTH(P_HDR_WIDTH),
                            .P_LTC_WIDTH(P_LTC_WIDTH))
     WFM_ACQ
@@ -1395,7 +1397,7 @@ generate
       .discr_data(discr_data[N_DISCR_BITS*(i+1)-1 : N_DISCR_BITS*i]),
 
       // WVB reader interface
-      .wvb_data_out(wvb_data_out[22*(i+1)-1 : 22*i]),
+      .wvb_data_out(wvb_data_out[P_DATA_WIDTH*(i+1)-1 : P_DATA_WIDTH*i]),
       .wvb_hdr_data_out(wvb_hdr_data[P_HDR_WIDTH*(i+1)-1 : P_HDR_WIDTH*i]),
       .wvb_hdr_full(wvb_hdr_full[i]),
       .wvb_hdr_empty(wvb_hdr_empty[i]),
@@ -1555,6 +1557,7 @@ end
 wire rdout_dpram_busy = hbuf_enable ? hbuf_dpram_busy : xdom_rdout_dpram_busy;
 
 wvb_reader #(.N_CHANNELS(N_CHANNELS),
+             .P_DATA_WIDTH(P_DATA_WIDTH),
              .P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
              .P_HDR_WIDTH(P_HDR_WIDTH),
              .P_FMT(P_FMT))
