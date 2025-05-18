@@ -67,9 +67,9 @@ always @(posedge clk) begin
 	end
 end
 
-// after change to writing every fourth clock cycle,
+// after change to writing every eighth clock cycle,
 // we need to delay the overflow_in before it reaches the write controller
-reg[1:0] overflow_delay_cnt = 0;
+reg[2:0] overflow_delay_cnt = 0;
 reg buffer_full_overflow = 0;
 reg in_overflow = 0;
 always @(posedge clk) begin
@@ -80,7 +80,7 @@ always @(posedge clk) begin
   end else begin
     in_overflow <= in_overflow || buffer_full_overflow;
     overflow_delay_cnt <= 0;
-    buffer_full_overflow <= overflow_delay_cnt == 2;
+    buffer_full_overflow <= overflow_delay_cnt == 6;
     if (overflow_delay_cnt >= 1 && (!in_overflow)) begin
       overflow_delay_cnt <= overflow_delay_cnt + 1;
     end else if (wvb_wr_addr == last_rd_addr && (!in_overflow)) begin
@@ -110,11 +110,9 @@ always @(posedge clk) begin
     i_wvb_wused <= wvb_wr_addr - next_rd_addr;
 
     prev_wr_addr <= wvb_wr_addr;
-    full <= 0;
+    full <= full && wvb_wr_addr == next_rd_addr;
 
-    if (full && wvb_rddone_1) begin
-      full <= 0;
-    end else if (full || wrote_last_rd_addr) begin
+    if (wrote_last_rd_addr) begin
       full <= 1;
     end
   end

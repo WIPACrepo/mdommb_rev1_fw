@@ -86,10 +86,6 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
 
   // DDR3 interface
   input 				ddr3_ui_clk,
-  // note: the memory controller uses byte addresses,
-  // but the xdom MCU interface will use 16-bit word addresses
-  // to replicate the D-Egg interface
-  // byte addresses are used everywhere else in the mDOM firmware
   output [27:0] 			pg_req_addr,
   output reg 				pg_optype = 0,
   output reg 				pg_req = 0,
@@ -174,6 +170,10 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
   output reg 				global_trig_pol = 0,
   output reg [N_CHANNELS-1:0] 		global_trig_src_mask,
   output reg [N_CHANNELS-1:0] 		global_trig_rcv_mask,
+
+  // secondary buffer status
+  input[15:0] n_wvf_in_scdb,
+  input[15:0] scdb_wds_used,
 
 `ifndef MDOMREV1
   // FGPA_CAL_TRIG trigger
@@ -930,7 +930,9 @@ always @(*)
       12'hb93: begin y_rd_data =        lc_window_width;                                       end
       12'hb92: begin y_rd_data =        n_lc_thr;                                              end
       12'hb91: begin y_rd_data =        {15'h0,lc_required};                                   end
-      12'hb90: begin y_rd_data =        {4'h0,xdom_thermal_shutdown_temp}; end
+      12'hb90: begin y_rd_data =        {4'h0,xdom_thermal_shutdown_temp};                     end
+      12'hb8f: begin y_rd_data =        n_wvf_in_scdb;                                         end
+      12'hb8e: begin y_rd_data =        scdb_wds_used;                                         end
       default:
         begin
           y_rd_data = xdom_dpram_rd_data;
@@ -1096,13 +1098,13 @@ always @(posedge clk)
         12'hb98: begin global_trig_src_mask[15:0] <= y_wr_data;                                end
         12'hb97: begin global_trig_rcv_mask[N_CHANNELS-1:16] <= y_wr_data[7:0];                end
         12'hb96: begin global_trig_rcv_mask[15:0] <= y_wr_data;                                end
-	12'hb95: begin xdom_trig_en[23:16] <= y_wr_data[7:0];                                  end
-	12'hb94: begin xdom_trig_en[15:0]  <= y_wr_data;                                       end
+	      12'hb95: begin xdom_trig_en[23:16] <= y_wr_data[7:0];                                  end
+	      12'hb94: begin xdom_trig_en[15:0]  <= y_wr_data;                                       end
         12'hb93: begin lc_window_width <= y_wr_data;                                           end
-	12'hb92: begin n_lc_thr <= y_wr_data;                                                  end
-	12'hb91: begin lc_required <= y_wr_data[0];                                            end
-	12'hb90: begin xdom_thermal_shutdown_temp <= y_wr_data[11:0];                          end
-	default: begin                                                                         end
+	      12'hb92: begin n_lc_thr <= y_wr_data;                                                  end
+	      12'hb91: begin lc_required <= y_wr_data[0];                                            end
+	      12'hb90: begin xdom_thermal_shutdown_temp <= y_wr_data[11:0];                          end
+	      default: begin                                                                         end
       endcase
 end // always @ (posedge clk)
 
@@ -1126,6 +1128,7 @@ assign fpga_cal_trig_trig = fpga_cal_trig_single || (periodic_cal_trig && fpga_c
 
 // DDR3 transfer dpram
 wire[15:0] ddr3_dpram_xdom_out;
+
 XDOM_DDR3_PG PG_DPRAM
 (
   .clka(clk),

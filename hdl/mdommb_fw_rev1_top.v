@@ -368,9 +368,10 @@ module top (
 `include "mDOM_wvb_hdr_bundle_3_inc.v" // T. Anderson Sat 05/21/2022_14:16:33.17
 `include "mDOM_wvb_hdr_bundle_4_inc.v" // A. Fienberg 2025: Increase waveform buffer sizes
 `include "mDOM_wvb_hdr_bundle_2_inc.v"
+`include "mDOM_scdb_hdr_bundle_inc.v"
 `include "mDOM_bsum_bundle_inc.v"
 
-localparam[15:0] FW_VNUM = 16'h28;
+localparam[15:0] FW_VNUM = 16'h29;
 
 // 1 for icm clock, 0 for Q_OSC
 localparam CLK_SRC = 1;
@@ -381,8 +382,8 @@ localparam N_ADC_BITS = 12;
 localparam N_DISCR_BITS = 8;
 
 // determines waveform buffer depths
-localparam P_WVB_ADR_WIDTH = 10;
-localparam P_DATA_WIDTH = 85;
+localparam P_WVB_ADR_WIDTH = 9;
+localparam P_DATA_WIDTH = 170;
 
 // hdr_bundle 1, 48 bit LTC
 // localparam P_HDR_WIDTH = P_WVB_ADR_WIDTH == 10 ? 71 : 80;
@@ -828,6 +829,11 @@ endgenerate
 //     12'hb98: [15:0] global trig src mask [15:0]
 //     12'hb97: [7:0] global trig receiver mask [23:16]
 //     12'hb96: [15:0] global trig receiver mask [15:0]
+//
+//     secondary buffer diagnostics
+//     12h'b8f: [15:0] n_wvf_in_secondary_buffer
+//     12h'b8e: [15:0] secondary_buffer_wds_used
+//
 
 // trigger/wvb conf
 wire[L_WIDTH_MDOM_TRIG_BUNDLE-1:0] xdom_trig_bundle;
@@ -847,6 +853,25 @@ wire[N_CHANNELS-1:0] wvb_hdr_empty;
 reg[N_CHANNELS-1:0] wvb_not_empty = 0;
 always @(posedge lclk) begin
   wvb_not_empty <= ~wvb_hdr_empty;
+end
+
+// secondary buffer
+wire[15:0] n_wvf_in_scdb;
+wire[15:0] scdb_wds_used;
+
+reg[15:0] n_wvf_in_scdb_1 = 0;
+reg[15:0] scdb_wds_used_1 = 0;
+reg[15:0] n_wvf_in_scdb_2 = 0;
+reg[15:0] scdb_wds_used_2 = 0;
+reg[15:0] n_wvf_in_scdb_3 = 0;
+reg[15:0] scdb_wds_used_3 = 0;
+always @(posedge lclk) begin
+  n_wvf_in_scdb_1 <= n_wvf_in_scdb;
+  scdb_wds_used_1 <= scdb_wds_used;
+  n_wvf_in_scdb_2 <= n_wvf_in_scdb_1;
+  scdb_wds_used_2 <= scdb_wds_used_1;
+  n_wvf_in_scdb_3 <= n_wvf_in_scdb_2;
+  scdb_wds_used_3 <= scdb_wds_used_2;
 end
 
 // wvb reader
@@ -1240,6 +1265,9 @@ xdom #(.N_CHANNELS(N_CHANNELS)) XDOM_0
   .global_trig_src_mask(global_trig_src_mask),
   .global_trig_rcv_mask(global_trig_rcv_mask),
 
+  .n_wvf_in_scdb(n_wvf_in_scdb_3),
+  .scdb_wds_used(scdb_wds_used_3),
+
 `ifndef MDOMREV1
   // FPGA_CAL_TRIG trigger
   .cal_trig_trig_en(cal_trig_trig_en),
@@ -1545,21 +1573,61 @@ hbuf_ctrl HBUF_CTRL_0
 );
 
 //
-// Waveform buffer reader
+// Secondary buffer & wvb reader
 //
+
 reg i_wvb_reader_en_1 = 0;
 reg i_wvb_reader_en_2 = 0;
 always @(posedge lclk) begin
   i_wvb_reader_en_1 <= wvb_reader_enable;
   i_wvb_reader_en_2 <= i_wvb_reader_en_1;
 end
+wire scdb_enable = i_wvb_reader_en_2;
+
+localparam P_READER_DATA_WIDTH = 85;
+
+wire[P_READER_DATA_WIDTH-1:0] scdb_data_out;
+wire[L_WIDTH_MDOM_SCDB_HDR_BUNDLE-1:0] scdb_hdr_data_out;
+wire scdb_hdr_empty;
+wire scdb_rdreq;
+wire scdb_hdr_rdreq;
+wire scdb_rddone;
+
+secondary_buffer
+SCDB
+(
+  .clk(lclk),
+  .rst(lclk_rst),
+  .en(scdb_enable),
+
+  // Reader interface
+  .buf_data_out(scdb_data_out),
+  .hdr_data_out(scdb_hdr_data_out),
+  .buf_hdr_empty(scdb_hdr_empty),
+
+  .buf_rdreq(scdb_rdreq),
+  .buf_hdr_rdreq(scdb_hdr_rdreq),
+  .buf_rddone(scdb_rddone),
+
+  // WVB interface
+  .wvb_hdr_rdreq(wvb_hdr_rdreq),
+  .wvb_rdreq(wvb_wvb_rdreq),
+  .wvb_rddone(wvb_rddone),
+  .wvb_data(wvb_data_out),
+  .wvb_hdr_data(wvb_hdr_data),
+  .wvb_hdr_empty(wvb_hdr_empty),
+
+  // Diagnostics
+  .n_wvf_in_buf(n_wvf_in_scdb),
+  .buf_wds_used(scdb_wds_used)
+);
 
 wire rdout_dpram_busy = hbuf_enable ? hbuf_dpram_busy : xdom_rdout_dpram_busy;
 
-wvb_reader #(.N_CHANNELS(N_CHANNELS),
-             .P_DATA_WIDTH(P_DATA_WIDTH),
-             .P_WVB_ADR_WIDTH(P_WVB_ADR_WIDTH),
-             .P_HDR_WIDTH(P_HDR_WIDTH),
+wvb_reader #(.N_CHANNELS(1),
+             .P_DATA_WIDTH(P_READER_DATA_WIDTH),
+             .P_WVB_ADR_WIDTH(L_WIDTH_MDOM_SCDB_HDR_BUNDLE_START_ADDR),
+             .P_HDR_WIDTH(L_WIDTH_MDOM_SCDB_HDR_BUNDLE),
              .P_FMT(P_FMT))
 WVB_READER
 (
@@ -1577,12 +1645,12 @@ WVB_READER
   .dpram_mode(wvb_reader_dpram_mode),
 
   // wvb interface
-  .hdr_rdreq(wvb_hdr_rdreq),
-  .wvb_rdreq(wvb_wvb_rdreq),
-  .wvb_rddone(wvb_rddone),
-  .wvb_data(wvb_data_out),
-  .hdr_data(wvb_hdr_data),
-  .hdr_empty(wvb_hdr_empty)
+  .hdr_rdreq(scdb_hdr_rdreq),
+  .wvb_rdreq(scdb_rdreq),
+  .wvb_rddone(scdb_rddone),
+  .wvb_data(scdb_data_out),
+  .hdr_data(scdb_hdr_data_out),
+  .hdr_empty(scdb_hdr_empty)
 );
 
 //

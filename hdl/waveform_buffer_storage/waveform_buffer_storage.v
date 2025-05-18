@@ -4,7 +4,7 @@
 // mDOM waveform buffer storage
 //
 
-module waveform_buffer_storage #(parameter P_DATA_WIDTH = 85,
+module waveform_buffer_storage #(parameter P_DATA_WIDTH = 170,
                                  parameter PER_CYCLE_DATA_WIDTH = 22,
 	                               parameter P_ADR_WIDTH = 10,
 	                               parameter P_HDR_WIDTH = 80,
@@ -34,23 +34,40 @@ module waveform_buffer_storage #(parameter P_DATA_WIDTH = 85,
 localparam WORD_DATA_WIDTH = PER_CYCLE_DATA_WIDTH - 1;
 wire[WORD_DATA_WIDTH - 1:0] current_word = wvb_data_in[PER_CYCLE_DATA_WIDTH-1:1];
 
-reg[WORD_DATA_WIDTH - 1:0] wd_0 = 0;
-reg[WORD_DATA_WIDTH - 1:0] wd_1 = 0;
-reg[WORD_DATA_WIDTH - 1:0] wd_2 = 0;
-always @(posedge clk) begin
-  wd_0 <= current_word;
-  wd_1 <= wd_0;
-  wd_2 <= wd_1;
+localparam N_WDS_PER_WRITE = 8;
+reg[WORD_DATA_WIDTH - 1:0] write_words[0:N_WDS_PER_WRITE-1];
+always @(*) begin
+  write_words[0] = current_word;
 end
 
-wire[P_DATA_WIDTH-1:0] buff_din = {current_word, wd_0, wd_1, wd_2, eoe_in};
+generate
+  genvar i_wd;
+  for (i_wd = 1; i_wd < N_WDS_PER_WRITE; i_wd = i_wd + 1) begin
+    always @(posedge clk) begin
+      write_words[i_wd] <= write_words[i_wd - 1];
+    end
+  end
+endgenerate
+
+wire[P_DATA_WIDTH-1:0] buff_din = {
+  write_words[0],
+  write_words[1],
+  write_words[2],
+  write_words[3],
+  eoe_in,
+  write_words[4],
+  write_words[5],
+  write_words[6],
+  write_words[7],
+  1'b0 // dummy EOE bit because the read controller reads in groups of four words, not eight
+};
 
 wire[8:0] hdr_data_cnt;
 generate
   // verify correct configuration parameters made it down here 
-  if (P_HDR_WIDTH == 104 && P_ADR_WIDTH == 10 && P_DATA_WIDTH == 85 &&
+  if (P_HDR_WIDTH == 102 && P_ADR_WIDTH == 9 && P_DATA_WIDTH == 170 &&
       PER_CYCLE_DATA_WIDTH == 22) begin
-    BUFFER_1024_85 WAVEFORM_DISCR_BUFF (
+    MDOM_CHANNEL_BUFFER WAVEFORM_DISCR_BUFF (
       .clka(clk),
       .wea(wvb_wrreq),
       .addra(wvb_wr_addr),

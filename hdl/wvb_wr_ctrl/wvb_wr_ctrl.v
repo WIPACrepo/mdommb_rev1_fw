@@ -51,7 +51,7 @@ module wvb_wr_ctrl #(parameter P_ADR_WIDTH = 12,
 `include "mDOM_wvb_hdr_bundle_3_inc.v" // T. Anderson Sat 05/21/2022_14:35:13.75
 `include "mDOM_wvb_hdr_bundle_4_inc.v"
 
-localparam MAX_WRITES_PER_PAYLOAD = 255;
+localparam MAX_WRITES_PER_PAYLOAD = 127;
 
 // register synchronous rst
 (* DONT_TOUCH = "true" *) reg i_rst = 0;
@@ -95,8 +95,8 @@ reg[31:0] cnt = 0;
 // minimum values for various length configs
 localparam PRE_CONF_MIN = 3,
            POST_CONF_MIN = 4,
-           TEST_CONF_MIN = 4,
-           CONST_CONF_MIN = 4;
+           TEST_CONF_MIN = 8,
+           CONST_CONF_MIN = 8;
 // update interal length conf values
 always @(posedge clk) begin
   if (i_rst) begin
@@ -114,9 +114,9 @@ always @(posedge clk) begin
   else if (fsm == S_IDLE) begin
     i_pre_conf <= pre_config >= PRE_CONF_MIN ? pre_config : PRE_CONF_MIN;
     i_post_conf <= post_config >= POST_CONF_MIN ? post_config : POST_CONF_MIN;
-    // constrain test conf / cnst conf to multiples of 4
-    i_test_conf <= test_config >= TEST_CONF_MIN ? {test_config[P_TEST_CONF_WIDTH-1:2], 2'b0} : TEST_CONF_MIN;
-    i_const_conf <= cnst_config >= CONST_CONF_MIN ? {cnst_config[P_CONST_CONF_WIDTH-1:2], 2'b0} : CONST_CONF_MIN;
+    // constrain test conf / cnst conf to multiples of 8
+    i_test_conf <= test_config >= TEST_CONF_MIN ? {test_config[P_TEST_CONF_WIDTH-1:3], 3'b0} : TEST_CONF_MIN;
+    i_const_conf <= cnst_config >= CONST_CONF_MIN ? {cnst_config[P_CONST_CONF_WIDTH-1:3], 3'b0} : CONST_CONF_MIN;
 
     i_pre_cnt_max <= i_pre_conf - 1;
     i_post_cnt_max <= i_post_conf - 1;
@@ -125,6 +125,7 @@ always @(posedge clk) begin
   end
 end
 
+wire writing_event;
 // We want to latch the local coincidence flag if it fires at any time while writing the event. 
 always @(posedge clk)
   if(writing_event && local_coinc) i_local_coinc <= 1'b1;
@@ -167,10 +168,10 @@ end
 wire write_condition = (trig && !overflow_in) || (fsm != S_IDLE);
 wire mode_0_condition = (trig_mode == 0);
 wire mode_1_condition = (trig_mode == 1) && armed;
-wire writing_event = !overflow_out && write_condition && (mode_0_condition || mode_1_condition);
+assign writing_event = !overflow_out && write_condition && (mode_0_condition || mode_1_condition);
 
-// when writing an event, we assert wvb_wren every fourth clock cycle 
-reg[1:0] write_cnt = 0;
+// when writing an event, we assert wvb_wren every eighth clock cycle
+reg[2:0] write_cnt = 0;
 always @(posedge clk) begin
   if (fsm == S_IDLE) begin
     write_cnt <= 1;
@@ -179,13 +180,13 @@ always @(posedge clk) begin
   end
 end
 
-assign wvb_wren = writing_event && (write_cnt == 2'h3);
+assign wvb_wren = writing_event && (write_cnt == 3'h7);
 
 // signal that this is the final write of a waveform
 reg final_write = 0;
 reg final_cnt_check = 0;
 
-// quick test; register cnt comparisons to help
+// register cnt comparisons to help
 // with timing of hdr_wren
 always @(posedge clk) begin
   if (i_rst) begin
@@ -199,7 +200,7 @@ always @(posedge clk) begin
       S_IDLE:  final_cnt_check <= 0;
       S_PRE:   final_cnt_check <= 0;
       S_SOT:   final_cnt_check <= 0;
-      S_POST:  final_cnt_check <= (cnt >= i_post_cnt_max - 1) && (write_cnt == 2);
+      S_POST:  final_cnt_check <= (cnt >= i_post_cnt_max - 1) && (write_cnt == 6);
       S_CONST: final_cnt_check <= cnt == i_const_cnt_max - 1;
       S_TEST:  final_cnt_check <= cnt == i_test_cnt_max - 1;
       default: final_cnt_check <= 0;
@@ -395,7 +396,7 @@ always @(posedge clk) begin
         end
 
         else begin
-          if (cnt >= i_post_cnt_max && (write_cnt == 3)) begin
+          if (cnt >= i_post_cnt_max && (write_cnt == 7)) begin
             cnt <= 0;
             fsm <= S_IDLE;
           end

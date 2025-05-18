@@ -1,6 +1,6 @@
 [
     {
-	   "output"    : "mDOM_wvb_hdr_bundle_4",
+	   "output"    : "mDOM_scdb_hdr_bundle",
 	   "min_width" : 0,
 	   "element"   : [
 	    {
@@ -11,12 +11,12 @@
 
 	    {
 		   "input" : "start_addr",
-		   "width" : 9,
+		   "width" : 12,
 		   "description" : "Starting address in waveform buffer RAM"
 	    },
 	    {
 		   "input" : "stop_addr",
-		   "width" : 9,
+		   "width" : 12,
 		   "description" : "Stopping address for the event by the wvb writer"
 	    },
 	    {
@@ -68,6 +68,11 @@
 				"input" : "continued_wfm",
 				"width" : 1,
 				"description" : "Whether the waveform is a continuation of a previous payload"
+		 },
+		 {
+				"input" : "channel_idx",
+				"width" : 5,
+				"description" : "Which channel the waveform came from"
 		 }
 	 ]
   }

@@ -1,5 +1,4 @@
 // Aaron Fienberg
-// Feb 2021
 //
 // mDOM waveform buffer read control format 3
 // Like format 2 except no footer and bits for partial/continued wfms
@@ -8,14 +7,11 @@
 
 // writes data in chunks of 8 16-bit words
 //
-// DPRAM mode 0: truncate after first DPRAM
-//
-//
 // Writes 32-bit words; order of 16-bit sub-words within the 32-bit words
 // set so that, when read as a sequence of 16-bit words through the
 // direct readout DPRAM read port, the order will be as written below
 //
-// Waveform Format 0:
+// Waveform Format 3:
 //
 // CHANNEL      - [15] 1
 //                [14:13] 0
@@ -58,7 +54,6 @@ module wvb_rd_ctrl_fmt_3 #(parameter P_WVB_ADR_WIDTH = 10,
 
   // wvb_reader interface
   input req,
-  input[7:0] idx,
   input dpram_mode,
   output reg ack = 0,
   output rd_ctrl_more,
@@ -94,10 +89,11 @@ wire bsum_valid;
 wire local_coinc; // T. Anderson Sat 05/21/2022_14:32:00.75
 wire partial_wfm;
 wire continued_wfm;
+wire[4:0] hdr_fan_out_channel_idx;
 
 generate
-  if (P_WVB_ADR_WIDTH == 10 && P_HDR_WIDTH == 104 && P_DATA_WIDTH == 85) begin
-    mDOM_wvb_hdr_bundle_4_fan_out HDR_FAN_OUT (
+  if (P_WVB_ADR_WIDTH == 12 && P_HDR_WIDTH == 113 && P_DATA_WIDTH == 85) begin
+    mDOM_scdb_hdr_bundle_fan_out HDR_FAN_OUT (
       .bundle(hdr_data),
       .evt_ltc({evt_ltc, odd_ltc_bit}),
       .start_addr(start_addr),
@@ -111,7 +107,8 @@ generate
       .bsum_valid(bsum_valid),
       .local_coinc(local_coinc),
       .partial_wfm(partial_wfm),
-      .continued_wfm(continued_wfm)
+      .continued_wfm(continued_wfm),
+      .channel_idx(hdr_fan_out_channel_idx)
     );
   end
   else begin
@@ -119,11 +116,13 @@ generate
   end
 endgenerate
 
+wire[7:0] payload_channel_idx = {3'b0, hdr_fan_out_channel_idx};
 
 // calculate evt_len
 wire[P_WVB_ADR_WIDTH-1:0] addr_diff = stop_addr - start_addr;
-wire[13:0] words_written = addr_diff + 16'd1;
-wire[15:0] evt_len = {words_written, 2'b0};
+wire[12:0] words_written = addr_diff + 16'd1;
+// shift left by 3 to get to units of samples
+wire[15:0] evt_len = {words_written, 3'b0};
 
 // decode wvb_data
 wire[83:0] buffer_words = wvb_data[84:1];
@@ -186,7 +185,7 @@ wire[127:0] evt_hdr = {
   evt_ltc[47:32], 
   hdr_0,
   evt_len_reg,
-  L_FMT, idx
+  L_FMT, payload_channel_idx
 };
 
 wire[127:0] data_word = {
