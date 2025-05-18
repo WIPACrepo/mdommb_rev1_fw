@@ -11,15 +11,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="83450001fs"></ZoomEndTime>
-      <Cursor1Time time="2000000fs"></Cursor1Time>
+      <ZoomStartTime time="1983000000fs"></ZoomStartTime>
+      <ZoomEndTime time="2354000001fs"></ZoomEndTime>
+      <Cursor1Time time="2055000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="188"></NameColumnWidth>
       <ValueColumnWidth column_width="155"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="41" />
+   <WVObjectSize size="49" />
+   <wave_markers>
+      <marker time="2325000000" label="" />
+   </wave_markers>
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -121,25 +124,37 @@
       <obj_property name="ElementShortName">capacity_check_sum[12:0]</obj_property>
       <obj_property name="ObjectShortName">capacity_check_sum[12:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_0" type="array">
-      <obj_property name="ElementShortName">adc_word_0[11:0]</obj_property>
-      <obj_property name="ObjectShortName">adc_word_0[11:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/SCDB/buf_rdreq" type="logic">
+      <obj_property name="ElementShortName">buf_rdreq</obj_property>
+      <obj_property name="ObjectShortName">buf_rdreq</obj_property>
    </wvobject>
-   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_1" type="array">
-      <obj_property name="ElementShortName">adc_word_1[11:0]</obj_property>
-      <obj_property name="ObjectShortName">adc_word_1[11:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/SCDB/buf_hdr_rdreq" type="logic">
+      <obj_property name="ElementShortName">buf_hdr_rdreq</obj_property>
+      <obj_property name="ObjectShortName">buf_hdr_rdreq</obj_property>
    </wvobject>
-   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_2" type="array">
-      <obj_property name="ElementShortName">adc_word_2[11:0]</obj_property>
-      <obj_property name="ObjectShortName">adc_word_2[11:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/WVB_READER/rd_ctrl_req" type="logic">
+      <obj_property name="ElementShortName">rd_ctrl_req</obj_property>
+      <obj_property name="ObjectShortName">rd_ctrl_req</obj_property>
    </wvobject>
-   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_3" type="array">
-      <obj_property name="ElementShortName">adc_word_3[11:0]</obj_property>
-      <obj_property name="ObjectShortName">adc_word_3[11:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/WVB_READER/\genblk2.RD_CTRL /wait_cnt" type="array">
+      <obj_property name="ElementShortName">wait_cnt[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wait_cnt[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/WVB_READER/wvb_rdreq" type="array">
+      <obj_property name="ElementShortName">wvb_rdreq[0:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_rdreq[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/WVB_READER/hdr_rdreq" type="array">
+      <obj_property name="ElementShortName">hdr_rdreq[0:0]</obj_property>
+      <obj_property name="ObjectShortName">hdr_rdreq[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/WVB_READER/wvb_data_mux_out_reg" type="array">
+      <obj_property name="ElementShortName">wvb_data_mux_out_reg[84:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_data_mux_out_reg[84:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/WVB_READER/hdr_data_mux_out_reg" type="array">
+      <obj_property name="ElementShortName">hdr_data_mux_out_reg[112:0]</obj_property>
+      <obj_property name="ObjectShortName">hdr_data_mux_out_reg[112:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/channel_idx" type="array">
       <obj_property name="ElementShortName">channel_idx[7:0]</obj_property>
@@ -171,6 +186,26 @@
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/dpram_a" type="array">
       <obj_property name="ElementShortName">dpram_a[7:0]</obj_property>
       <obj_property name="ObjectShortName">dpram_a[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_0" type="array">
+      <obj_property name="ElementShortName">adc_word_0[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_0[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_1" type="array">
+      <obj_property name="ElementShortName">adc_word_1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_1[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_2" type="array">
+      <obj_property name="ElementShortName">adc_word_2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_2[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/adc_word_3" type="array">
+      <obj_property name="ElementShortName">adc_word_3[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_word_3[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/dpram_wren" type="logic">
       <obj_property name="ElementShortName">dpram_wren</obj_property>

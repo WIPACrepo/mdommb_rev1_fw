@@ -248,6 +248,10 @@ always @(posedge clk) begin
     trig_src <= 3;
   end
 
+  if (ltc >= 249) begin
+    test_conf <= 64;
+  end
+
   // overflow test; start secondary buffer later
   // if (ltc == 8999) begin
   //   secondary_buffer_enable <= 1;

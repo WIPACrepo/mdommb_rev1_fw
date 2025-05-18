@@ -164,12 +164,10 @@ localparam L_DPRAM_A_LAST_DATA=8'd254;
 // FSM logic
 localparam
   S_IDLE = 0,
-  S_CHAN_LEN = 1,
-  S_HDR_0_LTC_2 = 2,
-  S_LTC_1_LTC_0 = 3,
-  S_PAT_1_PAT_0 = 4,
-  S_SAMPLE_WORD = 5,
-  S_ACK = 6;
+  S_HDR = 1,
+  S_WAIT = 2,
+  S_SAMPLE_WORD = 3,
+  S_ACK = 4;
 
 reg[3:0] fsm = S_IDLE;
 reg[31:0] wait_cnt = 0;
@@ -194,6 +192,8 @@ wire[127:0] data_word = {
   sub_data_words[1],
   sub_data_words[0]
 };
+
+localparam WAIT_CNT_MAX = 5;
 
 always @(posedge clk) begin
   if (rst) begin
@@ -226,42 +226,25 @@ always @(posedge clk) begin
         evt_len_reg <= 0;
 
         if (req) begin
-          // begin streaming the sample data
-          wvb_rdreq <= 1;
-          evt_len_reg <= evt_len;
-
-          fsm <= S_CHAN_LEN;
+          wait_cnt <= 1;
+          fsm <= S_WAIT;
         end
       end
 
-      S_CHAN_LEN: begin
-        // TODO: give states better names following change to 128 bits per cycle 
+      S_WAIT: begin
+        evt_len_reg <= evt_len;
+        wvb_rdreq <= 1;
+        wait_cnt <= wait_cnt + 1;
+        if (wait_cnt == WAIT_CNT_MAX) begin
+          fsm <= S_HDR;
+        end else begin
+          fsm <= S_WAIT;
+        end
+      end
+
+      S_HDR: begin
         dpram_data <= evt_hdr;
         dpram_wren <= 1;
-
-        wvb_rdreq <= 1;
-        fsm <= S_HDR_0_LTC_2;
-      end
-
-      S_HDR_0_LTC_2: begin
-        // dummy state to retain latency of rd_ctrl_fmt_2
-        dpram_wren <= 0;
-
-        wvb_rdreq <= 1;
-        fsm <= S_LTC_1_LTC_0;
-      end
-
-      S_LTC_1_LTC_0: begin
-        // dummy state to retain latency of rd_ctrl_fmt_2
-        dpram_wren <= 0;
-
-        wvb_rdreq <= 1;
-        fsm <= S_PAT_1_PAT_0;
-      end
-
-      S_PAT_1_PAT_0: begin
-        // dummy state to retain latency of rd_ctrl_fmt_2
-        dpram_wren <= 0;
 
         wvb_rdreq <= 1;
         fsm <= S_SAMPLE_WORD;

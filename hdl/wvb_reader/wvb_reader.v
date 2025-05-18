@@ -159,21 +159,15 @@ endgenerate
 reg[3:0] fsm = 0;
 localparam
   S_IDLE = 0,
-  S_HDR_WAIT = 1,
-  S_RD_CTRL_REQ = 2,
-  S_DPRAM_RUN = 3,
-  S_DPRAM_BUSY = 4,
-  S_DPRAM_DONE = 5;
-
-
-reg[31:0] cnt = 0;
-localparam HDR_WT_CNT = 3;
+  S_RD_CTRL_REQ = 1,
+  S_DPRAM_RUN = 2,
+  S_DPRAM_BUSY = 3,
+  S_DPRAM_DONE = 4;
 
 always @(posedge clk) begin
   if (rst || !en) begin
     fsm <= S_IDLE;
 
-    cnt <= 0;
     rd_ctrl_req <= 0;
     i_hdr_rdreq <= 0;
     dpram_run <= 0;
@@ -184,15 +178,17 @@ always @(posedge clk) begin
   else begin
     i_hdr_rdreq <= 0;
     dpram_run <= 0;
+    dpram_len <= dpram_len;
 
     case (fsm)
       S_IDLE: begin
         rd_ctrl_req <= 0;
-        cnt <= 0;
+        dpram_len <= 0;
 
         if (!hdr_empty_mux_out && !dpram_busy && !rd_ctrl_ack) begin
           i_hdr_rdreq <= 1;
-          fsm <= S_HDR_WAIT;
+          rd_ctrl_req <= 1;
+          fsm <= S_RD_CTRL_REQ;
         end
 
         else begin
@@ -202,21 +198,13 @@ always @(posedge clk) begin
         end
       end
 
-      S_HDR_WAIT: begin
-        // wait for HDR to become available
-        cnt <= cnt + 1;
-        if (cnt == HDR_WT_CNT - 1) begin
-          cnt <= 0;
-          fsm <= S_RD_CTRL_REQ;
-        end
-      end
-
       S_RD_CTRL_REQ: begin
         rd_ctrl_req <= 1;
         // wait for ack
         if (rd_ctrl_ack) begin
           rd_ctrl_req <= 0;
           dpram_len <= rd_ctrl_dpram_len;
+          dpram_run <= 1;
           fsm <= S_DPRAM_RUN;
         end
       end
@@ -238,18 +226,10 @@ always @(posedge clk) begin
       S_DPRAM_DONE: begin
         // wait for DPRAM to be done (no longer busy)
         if (!dpram_busy) begin
-          if (dpram_mode == 1 && rd_ctrl_more) begin
-            // more data to read
-            if (!rd_ctrl_ack) begin
-              fsm <= S_RD_CTRL_REQ;
-            end
-          end
-
-          else begin
-            // cycle to the next channel
-            chan_index <= (chan_index + 1) % N_CHANNELS;
-            fsm <= S_IDLE;
-          end
+          // cycle to the next channel
+          chan_index <= (chan_index + 1) % N_CHANNELS;
+          dpram_len <= 0;
+          fsm <= S_IDLE;
         end
       end
 
