@@ -222,23 +222,40 @@ always @(posedge clk) begin
     rst <= 0;
   end
 
-  // external trigger at ltc == 45  
-  if (ltc == 44) begin
-    trig <= 1;
-    trig_src <= 3;
-  end
+  // // external trigger at ltc == 45  
+  // if (ltc == 44) begin
+  //   trig <= 1;
+  //   trig_src <= 3;
+  // end
 
-  // trigger again at ltc == 175 with a long wfm
+  // overflow from a few long wfms
+  // // trigger again at ltc == 175 with a long wfm
+  // if (ltc == 169) begin
+  //   test_conf <= 4095;
+  // end
+    
+  // overflow from many short wfms (full header fifo)
   if (ltc == 169) begin
-    test_conf <= 2048;
+    // test_conf <= 8;
+    test_conf <= 16;
+    // test_conf <= 24;
+    // test_conf <= 32;
+    // test_conf <= 80;
   end
-     
-  if (ltc == 174) begin
+    
+  if (ltc >= 174) begin
     trig <= 1;
     trig_src <= 3;
   end
 
-  if (ltc == 324) begin
+  // overflow test; start secondary buffer later
+  // if (ltc == 8999) begin
+  //   secondary_buffer_enable <= 1;
+  // end
+
+  // check whether secondary buffer can keep up with 1 channel
+  // start secondary buffer early
+  if (ltc == 9) begin
     secondary_buffer_enable <= 1;
   end
 
@@ -291,6 +308,9 @@ always @(posedge clk) begin
 
     if (rdout_dpram_rd_addr == max_rd_addr) begin
       rdout_dpram_rd_addr <= max_rd_addr;
+      // for testing,
+      // artificially slow down the reader so that the secondary buffer fills up
+      // #10000
       dpram_done <= 1;
     end
   end

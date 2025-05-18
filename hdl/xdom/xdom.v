@@ -226,6 +226,9 @@ wire [31:0] debug_err_data;
 wire [15:0] debug_logic_rd_data;
 wire        debug_logic_ack;
 wire        debug_err_ack;
+//
+// not used; held in reset
+//
 ft232r_proc_buffered UART_DEBUG_0
  (
   // Outputs
@@ -239,7 +242,8 @@ ft232r_proc_buffered UART_DEBUG_0
   .err_data         (debug_err_data[31:0]),
   // Inputs
   .clk              (clk),
-  .rst              (rst),
+  // .rst              (rst),
+  .rst(1'b1),
   .txd              (debug_txd),
   .rts_n            (debug_rts_n),
   .logic_rd_data    (debug_logic_rd_data[15:0]),
@@ -260,6 +264,9 @@ wire [31:0] icm_err_data;
 wire [15:0] icm_logic_rd_data;
 wire        icm_logic_ack;
 wire        icm_err_ack;
+//
+// not used; held in reset
+//
 ft232r_proc_buffered UART_ICM_0
  (
   // Outputs
@@ -273,7 +280,8 @@ ft232r_proc_buffered UART_ICM_0
   .err_data   (icm_err_data[31:0]),
   // Inputs
   .clk    (clk),
-  .rst    (rst),
+  // .rst    (rst),
+  .rst(1'b1),
   .txd    (icm_rx),
   .rts_n    (icm_cts),
   .logic_rd_data  (icm_logic_rd_data[15:0]),
@@ -321,6 +329,10 @@ wire [11:0] y_adr;
 wire [15:0] y_wr_data;
 wire        y_wr;
 reg [15:0] y_rd_data;
+//
+// Only using the FMC, not peripherals
+// the crs_master will be held in reset
+//
 crs_master CRSM_0
  (
   // Outputs
@@ -341,7 +353,8 @@ crs_master CRSM_0
   .a3_buf_rd        (),
   // Inputs
   .clk              (clk),
-  .rst              (rst),
+  // .rst              (rst),
+  .rst(1'b1),
   .y_rd_data        (y_rd_data[15:0]),
   .a0_wr_req        (debug_logic_wr_req),
   .a0_bwr_req       (1'b0),
@@ -372,7 +385,8 @@ crs_master CRSM_0
   .a3_buf_empty     (),
   .a3_buf_wr_data   (),
   // Priority Override
-  .po_en            (po_en),
+  // .po_en            (po_en),
+  .po_en(1'b1),
   .po_wr            (po_wr),
   .po_adr           (po_a),
   .po_wr_data       (po_din),
@@ -817,7 +831,7 @@ always @(*)
       12'hbf0: begin y_rd_data =       {11'b0, wvb_pre_config};                                end
       12'hbef: begin y_rd_data =       {11'b0, buf_status_sel};                                end
       12'hbee: begin y_rd_data =       buf_n_wfms_mux_out_reg;                                 end
-      12'hbed: begin y_rd_data =       wds_used_mux_out_reg;                                   end
+      12'hbed: begin y_rd_data =       {wds_used_mux_out_reg[12:0], 3'b0};                     end
       12'hbec: begin y_rd_data =       {8'b0, wvb_overflow[N_CHANNELS-1:16]};                  end
       12'hbeb: begin y_rd_data =       wvb_overflow[15:0];                                     end
       12'hbea: begin y_rd_data =       {8'b0, wvb_rst[N_CHANNELS-1:16]};                       end
@@ -932,7 +946,7 @@ always @(*)
       12'hb91: begin y_rd_data =        {15'h0,lc_required};                                   end
       12'hb90: begin y_rd_data =        {4'h0,xdom_thermal_shutdown_temp};                     end
       12'hb8f: begin y_rd_data =        n_wvf_in_scdb;                                         end
-      12'hb8e: begin y_rd_data =        scdb_wds_used;                                         end
+      12'hb8e: begin y_rd_data =        {scdb_wds_used[12:0], 3'b0};                           end
       default:
         begin
           y_rd_data = xdom_dpram_rd_data;

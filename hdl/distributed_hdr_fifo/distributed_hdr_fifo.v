@@ -18,7 +18,7 @@ module distributed_hdr_fifo(
 wire[107:0] i_dout;
 wire i_full;
 wire i_empty;
-wire[5:0] i_data_count;
+wire[6:0] i_data_count;
 MDOM_CHANNEL_HDR_FIFO HDR_FIFO(
   .clk(clk),
   .srst(srst),
@@ -44,6 +44,6 @@ end
 assign dout = dout_0;
 assign full = i_full;
 assign empty = i_empty;
-assign data_count = {1'b0, i_data_count};
+assign data_count = i_data_count;
 
 endmodule

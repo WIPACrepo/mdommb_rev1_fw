@@ -1,6 +1,6 @@
 // Aaron Fienberg
 //
-// Test bench for the overhauled mDOM waveform buffer that moves four words per clock cycle
+// Test bench for the overhauled mDOM waveform buffer that moves eight words per clock cycle
 // 
 // Tests various triggering and overflow cases as well as the fmt_4 write controller
 //

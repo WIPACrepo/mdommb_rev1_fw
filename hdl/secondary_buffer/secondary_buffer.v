@@ -48,7 +48,7 @@ module secondary_buffer #(parameter P_DATA_WIDTH = 170,
   // 
   // Diagnostics
   // 
-  output[15:0] n_wvf_in_buf,
+  output reg[15:0] n_wvf_in_buf = 0,
   output reg[15:0] buf_wds_used = 0
 );
 
@@ -469,7 +469,6 @@ always @(posedge clk) begin
 
         if (wait_cnt == SAMPLE_WAIT_CNT_MAX) begin
           wait_cnt <= 0;
-          wr_cnt <= 0;
           writer_fsm <= S_WR_DATA;
         end else begin
           writer_fsm <= S_SAMPLE_WAIT;
@@ -569,7 +568,7 @@ always @(posedge clk) begin
             writer_fsm <= S_IDLE;
           end
         end else if (wait_cnt == WR_CACHED_SAMPLES_WAIT_CNT_MAX) begin
-          wait_cnt <= SAMPLE_WAIT_CNT_MAX;
+          wait_cnt <= SAMPLE_WAIT_CNT_MAX - 1;
           writer_fsm <= S_SAMPLE_WAIT;
         end else begin
           writer_fsm <= S_WR_CACHED_SAMPLES;
@@ -652,7 +651,7 @@ end
 
 FIFO_2048_117 SCDB_HDR_FIFO (
   .clk(clk),
-  .srst(rst),
+  .srst(rst || !en),
   .din(scdb_hdr_data_in_1),
   .wr_en(scdb_hdr_wren_1),
   .rd_en(buf_hdr_rdreq),
@@ -662,7 +661,17 @@ FIFO_2048_117 SCDB_HDR_FIFO (
   .data_count(scdb_hdr_data_count)
 );
 assign hdr_data_out = scdb_hdr_data_out[P_SCDB_HDR_WIDTH-1:0];
-assign n_wvf_in_buf = {5'b0, scdb_hdr_data_count};
+always @(posedge clk) begin
+  if (rst || !en) begin
+    n_wvf_in_buf <= 0;
+  end else begin
+    if (scdb_hdr_full) begin
+      n_wvf_in_buf <= 16'd2048;
+    end else begin
+      n_wvf_in_buf <= {5'b0, scdb_hdr_data_count};
+    end
+  end
+end
 
 reg[P_DATA_WIDTH-1:0] scdb_wr_data_1 = 0;
 reg[P_SCDB_ADR_WIDTH - 1:0] scdb_wr_addr_1 = 0;
