@@ -11,17 +11,17 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1983000000fs"></ZoomStartTime>
-      <ZoomEndTime time="2354000001fs"></ZoomEndTime>
-      <Cursor1Time time="2055000000fs"></Cursor1Time>
+      <ZoomStartTime time="9984833333fs"></ZoomStartTime>
+      <ZoomEndTime time="10333033334fs"></ZoomEndTime>
+      <Cursor1Time time="10278433000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="188"></NameColumnWidth>
-      <ValueColumnWidth column_width="155"></ValueColumnWidth>
+      <ValueColumnWidth column_width="145"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="49" />
+   <WVObjectSize size="52" />
    <wave_markers>
-      <marker time="2325000000" label="" />
+      <marker time="4935000000" label="" />
    </wave_markers>
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
@@ -223,6 +223,18 @@
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/dpram_busy" type="logic">
       <obj_property name="ElementShortName">dpram_busy</obj_property>
       <obj_property name="ObjectShortName">dpram_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/rd_busy" type="logic">
+      <obj_property name="ElementShortName">rd_busy</obj_property>
+      <obj_property name="ObjectShortName">rd_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/rdout_double_buffer/wr_buffer_index" type="logic">
+      <obj_property name="ElementShortName">wr_buffer_index</obj_property>
+      <obj_property name="ObjectShortName">wr_buffer_index</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/rdout_double_buffer/rd_buffer_index" type="logic">
+      <obj_property name="ElementShortName">rd_buffer_index</obj_property>
+      <obj_property name="ObjectShortName">rd_buffer_index</obj_property>
    </wvobject>
    <wvobject fp_name="/scdb_wvb_reader_integration_tb/dpram_done" type="logic">
       <obj_property name="ElementShortName">dpram_done</obj_property>

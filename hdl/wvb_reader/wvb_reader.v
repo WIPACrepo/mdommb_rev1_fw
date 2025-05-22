@@ -5,8 +5,8 @@
 //
 // cycles between multiple input channels
 //
-// the WVB reader transfers data from the waveform buffers to DPRAMs
-// in 32-bit words
+// the WVB reader transfers data from the waveform buffers to readout DPRAMs
+// in 128-bit words
 //
 
 module wvb_reader #(parameter P_DATA_WIDTH = 22,
@@ -27,8 +27,8 @@ module wvb_reader #(parameter P_DATA_WIDTH = 22,
   output[127:0] dpram_data,
   output[P_DPRAM_ADR_WIDTH-1:0] dpram_addr,
   output dpram_wren,
-  output reg[15:0] dpram_len = 0,
-  output reg dpram_run = 0,
+  output[15:0] dpram_len,
+  output dpram_run,
 
   // Inputs
   input dpram_busy,
@@ -125,8 +125,7 @@ endgenerate
 
 reg rd_ctrl_req = 0;
 wire rd_ctrl_ack;
-wire rd_ctrl_more; // indicates that there is more data to write in the next DPRAM
-wire[15:0] rd_ctrl_dpram_len;
+wire rd_ctrl_more; // not used as of rd_ctrl_fmt_3
 
 // read controller
 generate
@@ -148,21 +147,22 @@ if (P_FMT == 3 && (P_DATA_WIDTH == 85)) begin
     .dpram_a(dpram_addr),
     .dpram_data(dpram_data),
     .dpram_wren(dpram_wren),
-    .dpram_len(rd_ctrl_dpram_len)
+    .dpram_len(dpram_len)
    );
 end else begin
   invalid_p_adr_width invalid_module_conf();
 end
 endgenerate
 
+posedge_detector PEDGE_ACK(.clk(clk), .rst_n(!rst), .a(rd_ctrl_ack), .y(dpram_run));
+
 // FSM logic
 reg[3:0] fsm = 0;
 localparam
   S_IDLE = 0,
   S_RD_CTRL_REQ = 1,
-  S_DPRAM_RUN = 2,
-  S_DPRAM_BUSY = 3,
-  S_DPRAM_DONE = 4;
+  S_DPRAM_BUSY_WAIT = 2,
+  S_DPRAM_DONE = 3;
 
 always @(posedge clk) begin
   if (rst || !en) begin
@@ -170,20 +170,15 @@ always @(posedge clk) begin
 
     rd_ctrl_req <= 0;
     i_hdr_rdreq <= 0;
-    dpram_run <= 0;
-    dpram_len <= 0;
     chan_index <= 0;
   end
 
   else begin
     i_hdr_rdreq <= 0;
-    dpram_run <= 0;
-    dpram_len <= dpram_len;
 
     case (fsm)
       S_IDLE: begin
         rd_ctrl_req <= 0;
-        dpram_len <= 0;
 
         if (!hdr_empty_mux_out && !dpram_busy && !rd_ctrl_ack) begin
           i_hdr_rdreq <= 1;
@@ -203,20 +198,11 @@ always @(posedge clk) begin
         // wait for ack
         if (rd_ctrl_ack) begin
           rd_ctrl_req <= 0;
-          dpram_len <= rd_ctrl_dpram_len;
-          dpram_run <= 1;
-          fsm <= S_DPRAM_RUN;
+          fsm <= S_DPRAM_BUSY_WAIT;
         end
       end
 
-      S_DPRAM_RUN: begin
-        if (!dpram_busy) begin
-          dpram_run <= 1;
-          fsm <= S_DPRAM_BUSY;
-        end
-      end
-
-      S_DPRAM_BUSY: begin
+      S_DPRAM_BUSY_WAIT: begin
         // wait for DPRAM to become busy
         if (dpram_busy) begin
           fsm <= S_DPRAM_DONE;
@@ -228,7 +214,6 @@ always @(posedge clk) begin
         if (!dpram_busy) begin
           // cycle to the next channel
           chan_index <= (chan_index + 1) % N_CHANNELS;
-          dpram_len <= 0;
           fsm <= S_IDLE;
         end
       end

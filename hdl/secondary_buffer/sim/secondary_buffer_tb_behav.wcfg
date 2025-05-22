@@ -3,157 +3,25 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="secondary_buffer_tb_behav.wdb" id="1">
+      <db_ref path="scdb_wvb_reader_integration_tb_behav.wdb" id="1">
          <top_modules>
             <top_module name="glbl" />
-            <top_module name="secondary_buffer_tb" />
+            <top_module name="scdb_wvb_reader_integration_tb" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="3757513334fs"></ZoomStartTime>
-      <ZoomEndTime time="3790433335fs"></ZoomEndTime>
-      <Cursor1Time time="3769053000fs"></Cursor1Time>
+      <ZoomStartTime time="800976250100fs"></ZoomStartTime>
+      <ZoomEndTime time="801004749981fs"></ZoomEndTime>
+      <Cursor1Time time="801000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="329"></NameColumnWidth>
+      <NameColumnWidth column_width="324"></NameColumnWidth>
       <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="33" />
-   <wvobject fp_name="/secondary_buffer_tb/clk" type="logic">
-      <obj_property name="ElementShortName">clk</obj_property>
-      <obj_property name="ObjectShortName">clk</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/rst" type="logic">
-      <obj_property name="ElementShortName">rst</obj_property>
-      <obj_property name="ObjectShortName">rst</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/ltc" type="array">
-      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
-      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/trig" type="logic">
-      <obj_property name="ElementShortName">trig</obj_property>
-      <obj_property name="ObjectShortName">trig</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/adc_in" type="array">
-      <obj_property name="ElementShortName">adc_in[11:0]</obj_property>
-      <obj_property name="ObjectShortName">adc_in[11:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/WVB/WBS/buff_din" type="array">
-      <obj_property name="ElementShortName">buff_din[169:0]</obj_property>
-      <obj_property name="ObjectShortName">buff_din[169:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/wvb_n_wvf_in_buf" type="array">
-      <obj_property name="ElementShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/wvb_wused" type="array">
-      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/WVB/WBS/wvb_wrreq" type="logic">
-      <obj_property name="ElementShortName">wvb_wrreq</obj_property>
-      <obj_property name="ObjectShortName">wvb_wrreq</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/WVB/WBS/hdr_wrreq" type="logic">
-      <obj_property name="ElementShortName">hdr_wrreq</obj_property>
-      <obj_property name="ObjectShortName">hdr_wrreq</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/WVB/hdr_rdreq" type="logic">
-      <obj_property name="ElementShortName">hdr_rdreq</obj_property>
-      <obj_property name="ObjectShortName">hdr_rdreq</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/WVB/wvb_rdreq" type="logic">
-      <obj_property name="ElementShortName">wvb_rdreq</obj_property>
-      <obj_property name="ObjectShortName">wvb_rdreq</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/secondary_buffer_enable" type="logic">
-      <obj_property name="ElementShortName">secondary_buffer_enable</obj_property>
-      <obj_property name="ObjectShortName">secondary_buffer_enable</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/n_wvf_in_scdb" type="array">
-      <obj_property name="ElementShortName">n_wvf_in_scdb[15:0]</obj_property>
-      <obj_property name="ObjectShortName">n_wvf_in_scdb[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/scdb_wds_used" type="array">
-      <obj_property name="ElementShortName">scdb_wds_used[15:0]</obj_property>
-      <obj_property name="ObjectShortName">scdb_wds_used[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/capacity_check_sum" type="array">
-      <obj_property name="ElementShortName">capacity_check_sum[12:0]</obj_property>
-      <obj_property name="ObjectShortName">capacity_check_sum[12:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wr_cnt" type="array">
-      <obj_property name="ElementShortName">wr_cnt[31:0]</obj_property>
-      <obj_property name="ObjectShortName">wr_cnt[31:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wfm_ready_for_channel" type="array">
-      <obj_property name="ElementShortName">wfm_ready_for_channel[7:0]</obj_property>
-      <obj_property name="ObjectShortName">wfm_ready_for_channel[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/query_channels" type="array">
-      <obj_property name="ElementShortName">query_channels[0:7][4:0]</obj_property>
-      <obj_property name="ObjectShortName">query_channels[0:7][4:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/next_base_query_channel" type="array">
-      <obj_property name="ElementShortName">next_base_query_channel[4:0]</obj_property>
-      <obj_property name="ObjectShortName">next_base_query_channel[4:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wfm_ready" type="logic">
-      <obj_property name="ElementShortName">wfm_ready</obj_property>
-      <obj_property name="ObjectShortName">wfm_ready</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/next_chan_index" type="array">
-      <obj_property name="ElementShortName">next_chan_index[4:0]</obj_property>
-      <obj_property name="ObjectShortName">next_chan_index[4:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/current_chan_index" type="array">
-      <obj_property name="ElementShortName">current_chan_index[4:0]</obj_property>
-      <obj_property name="ObjectShortName">current_chan_index[4:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/channel_finder_fsm" type="array">
-      <obj_property name="ElementShortName">channel_finder_fsm[3:0]</obj_property>
-      <obj_property name="ObjectShortName">channel_finder_fsm[3:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/scdb_wr_data" type="array">
-      <obj_property name="ElementShortName">scdb_wr_data[169:0]</obj_property>
-      <obj_property name="ObjectShortName">scdb_wr_data[169:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/scdb_wren" type="logic">
-      <obj_property name="ElementShortName">scdb_wren</obj_property>
-      <obj_property name="ObjectShortName">scdb_wren</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/scdb_hdr_wren" type="logic">
-      <obj_property name="ElementShortName">scdb_hdr_wren</obj_property>
-      <obj_property name="ObjectShortName">scdb_hdr_wren</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wvb_rddone" type="array">
-      <obj_property name="ElementShortName">wvb_rddone[23:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_rddone[23:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/writer_fsm" type="array">
-      <obj_property name="ElementShortName">writer_fsm[3:0]</obj_property>
-      <obj_property name="ObjectShortName">writer_fsm[3:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wvb_hdr_data_mux_out_reg" type="array">
-      <obj_property name="ElementShortName">wvb_hdr_data_mux_out_reg[101:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_hdr_data_mux_out_reg[101:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wvb_data_mux_out_reg" type="array">
-      <obj_property name="ElementShortName">wvb_data_mux_out_reg[169:0]</obj_property>
-      <obj_property name="ObjectShortName">wvb_data_mux_out_reg[169:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/rd_cnt" type="array">
-      <obj_property name="ElementShortName">rd_cnt[31:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_cnt[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/secondary_buffer_tb/SCDB/wait_cnt" type="array">
-      <obj_property name="ElementShortName">wait_cnt[31:0]</obj_property>
-      <obj_property name="ObjectShortName">wait_cnt[31:0]</obj_property>
+   <WVObjectSize size="1" />
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/rdout_double_buffer/wr_buffer_index" type="logic">
+      <obj_property name="ElementShortName">wr_buffer_index</obj_property>
+      <obj_property name="ObjectShortName">wr_buffer_index</obj_property>
    </wvobject>
 </wave_config>

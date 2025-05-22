@@ -173,11 +173,11 @@ assign tot[2] = dpram_word_5[1];
 assign tot[3] = dpram_word_7[1];
 
 wire dpram_wren;
-wire[15:0] dpram_len;
+wire[15:0] dpram_len_in;
 wire dpram_run;
 reg dpram_mode = 0;
-reg dpram_busy = 0;
 reg dpram_done = 0;
+wire dpram_busy;
 
 wire reader_enable = secondary_buffer_enable;
 
@@ -195,7 +195,7 @@ WVB_READER
   .dpram_data(dpram_data),
   .dpram_addr(dpram_a),
   .dpram_wren(dpram_wren),
-  .dpram_len(dpram_len),
+  .dpram_len(dpram_len_in),
   .dpram_run(dpram_run),
   .dpram_busy(dpram_busy),
   .dpram_mode(dpram_mode),
@@ -243,15 +243,14 @@ always @(posedge clk) begin
     // test_conf <= 80;
   end
     
-  if (ltc >= 174) begin
+  if (ltc == 249) begin
+    test_conf <= 24;
+  end
+
+  if (ltc >= 259) begin
     trig <= 1;
     trig_src <= 3;
   end
-
-  if (ltc >= 249) begin
-    test_conf <= 64;
-  end
-
   // overflow test; start secondary buffer later
   // if (ltc == 8999) begin
   //   secondary_buffer_enable <= 1;
@@ -265,32 +264,29 @@ always @(posedge clk) begin
 
 end
 
-// handle rbd signals
-always @(posedge clk) begin
-  if (dpram_run) begin
-    dpram_busy <= 1;
-  end
-
-  else if (dpram_done && dpram_busy) begin
-    dpram_busy <= 0;
-  end
-end
-
 // 
 // DPRAM user
 // 
 
 reg[8:0] rdout_dpram_rd_addr = 0;
 wire[63:0] rdout_dpram_dout;
-HBUF_RDOUT_DPRAM READER_DPRAM_0
-(
-  .clka(clk),
-  .wea(dpram_wren),
-  .addra(dpram_a),
-  .dina(dpram_data),
-  .clkb(clk),
-  .addrb(rdout_dpram_rd_addr),
-  .doutb(rdout_dpram_dout)
+wire[15:0] dpram_len;
+wire rd_busy;
+double_buffer rdout_double_buffer (
+  .rst(rst),
+  .wr_clk(clk),
+  .wr_en(dpram_wren),
+  .wr_addr(dpram_a),
+  .wr_din(dpram_data),
+  .dpram_len_in(dpram_len_in),
+  .run(dpram_run),
+  .wr_busy(dpram_busy),
+  .rd_clk(clk),
+  .rd_addr(rdout_dpram_rd_addr),
+  .rd_dout(rdout_dpram_dout),
+  .dpram_len_out(dpram_len),
+  .done(dpram_done),
+  .rd_busy(rd_busy)
 );
 
 wire[31:0] max_rd_addr = (dpram_len >> 2) - 1; 
@@ -303,19 +299,31 @@ wire[15:0] reader_word_3 = rdout_dpram_dout[63:48];
 wire[11:0] reader_adc_word_0 = reader_word_0[11:0];
 wire[11:0] reader_adc_word_1 = reader_word_2[11:0];
 
+reg[31:0] cnt = 0;
+
+// DPRAM reader
+reg[31:0] read_start_ltc = 1000;
 always @(posedge clk) begin
   dpram_done <= 0;
-  rdout_dpram_rd_addr <= 0;
+  cnt <= 0;
 
-  if (dpram_busy) begin
-    rdout_dpram_rd_addr <= rdout_dpram_rd_addr + 1;
+  if (rd_busy) begin
+    rdout_dpram_rd_addr <= 0;
+    // wait 3 cycles (simulate reader latency)
+    cnt <= cnt + 1;
 
-    if (rdout_dpram_rd_addr == max_rd_addr) begin
-      rdout_dpram_rd_addr <= max_rd_addr;
-      // for testing,
-      // artificially slow down the reader so that the secondary buffer fills up
-      // #10000
-      dpram_done <= 1;
+    if (cnt >= 3 && ltc >= read_start_ltc) begin
+      rdout_dpram_rd_addr <= rdout_dpram_rd_addr + 1;
+
+      if (rdout_dpram_rd_addr == max_rd_addr) begin
+        rdout_dpram_rd_addr <= max_rd_addr;
+        // for testing,
+        // artificially slow down the reader so that the secondary buffer fills up
+        // #10000
+        if (!dpram_done) begin
+          dpram_done <= 1;
+        end
+      end
     end
   end
 end

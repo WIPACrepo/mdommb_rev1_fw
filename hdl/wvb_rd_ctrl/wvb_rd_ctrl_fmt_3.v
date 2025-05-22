@@ -263,13 +263,16 @@ always @(posedge clk) begin
           // or if we see the EOE
           wvb_rddone <= 1;
           wvb_rdreq <= 0;
+
+          // convert to number of 16 bit words
+          dpram_len <= (dpram_a + 16'd2) << 2'h3;
+          ack <= 1;
           fsm <= S_ACK;
         end
       end
 
       S_ACK: begin
-        // convert to number of 16 bit words
-        dpram_len <= (dpram_a + 16'd1) << 2'h3;
+        dpram_len <= dpram_len;
         ack <= 1;
 
         if (!req) begin
