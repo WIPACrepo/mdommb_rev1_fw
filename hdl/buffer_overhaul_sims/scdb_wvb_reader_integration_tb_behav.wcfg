@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="9984833333fs"></ZoomStartTime>
-      <ZoomEndTime time="10333033334fs"></ZoomEndTime>
-      <Cursor1Time time="10278433000fs"></Cursor1Time>
+      <ZoomStartTime time="10839416666fs"></ZoomStartTime>
+      <ZoomEndTime time="11002116667fs"></ZoomEndTime>
+      <Cursor1Time time="10873517000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="188"></NameColumnWidth>
-      <ValueColumnWidth column_width="145"></ValueColumnWidth>
+      <NameColumnWidth column_width="264"></NameColumnWidth>
+      <ValueColumnWidth column_width="148"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="52" />
+   <WVObjectSize size="53" />
    <wave_markers>
       <marker time="4935000000" label="" />
    </wave_markers>
@@ -254,5 +254,10 @@
       <obj_property name="ElementShortName">reader_adc_word_1[11:0]</obj_property>
       <obj_property name="ObjectShortName">reader_adc_word_1[11:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/scdb_wvb_reader_integration_tb/test_conf" type="array">
+      <obj_property name="ElementShortName">test_conf[11:0]</obj_property>
+      <obj_property name="ObjectShortName">test_conf[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>

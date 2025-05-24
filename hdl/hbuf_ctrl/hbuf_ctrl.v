@@ -67,7 +67,7 @@ module hbuf_ctrl
   // wvb reader DPRAM interface
   input[15:0] dpram_len_in,
   input rdout_dpram_run,
-  output reg dpram_busy = 0,
+  output dpram_busy,
   input rdout_dpram_wren,
   input[7:0] rdout_dpram_wr_addr,
   input[127:0] rdout_dpram_data,
@@ -88,20 +88,28 @@ module hbuf_ctrl
 
    
 //
-// wvb_reader readout DPRAM
+// wvb_reader readout double buffer
 //
-
+wire[15:0] dpram_len;
+reg dpram_done = 0;
 reg[8:0] rdout_dpram_rd_addr = 0;
 wire[63:0] rdout_dpram_dout;
-HBUF_RDOUT_DPRAM READER_DPRAM_0
-(
-  .clka(clk),
-  .wea(rdout_dpram_wren),
-  .addra(rdout_dpram_wr_addr),
-  .dina(rdout_dpram_data),
-  .clkb(clk),
-  .addrb(rdout_dpram_rd_addr),
-  .doutb(rdout_dpram_dout)
+wire rdout_dpram_rd_busy;
+double_buffer rdout_double_buffer(
+  .rst(rst || !en),
+  .wr_clk(clk),
+  .wr_en(rdout_dpram_wren),
+  .wr_addr(rdout_dpram_wr_addr),
+  .wr_din(rdout_dpram_data),
+  .dpram_len_in(dpram_len_in),
+  .run(rdout_dpram_run),
+  .wr_busy(dpram_busy),
+  .rd_clk(clk),
+  .rd_addr(rdout_dpram_rd_addr),
+  .rd_dout(rdout_dpram_dout),
+  .dpram_len_out(dpram_len),
+  .done(dpram_done),
+  .rd_busy(rdout_dpram_rd_busy)
 );
 
 //
@@ -121,31 +129,6 @@ HBUF_DDR3_PG DDR3_PG_DPRAM_0
   .addrb(ddr3_dpram_rd_addr),
   .doutb(ddr3_dpram_dout)
 );
-
-//
-// rbd signal process
-//
-
-reg[15:0] dpram_len = 0;
-reg dpram_done = 0;
-always @(posedge clk) begin
-  if (rst || !en) begin
-    dpram_busy <= 0;
-    dpram_len <= 0;
-  end
-
-  else begin
-    if (rdout_dpram_run) begin
-      dpram_len <= dpram_len_in;
-      dpram_busy <= 1;
-    end
-
-    else if (dpram_done) begin
-      dpram_busy <= 0;
-      dpram_len <= 0;
-    end
-  end
-end
 
 //
 // logic and processes to handle n_pgs_used, start_pg, stop_pg,
@@ -465,7 +448,7 @@ always @(posedge clk) begin
       end
 
       S_DPRAM_DONE_WAIT: begin
-        if (!dpram_busy) begin
+        if (!rdout_dpram_rd_busy) begin
           if (pg_dpram_wr_addr == LAST_PG_DPRAM_ADDR - 1) begin
             ret <= S_IDLE;
             fsm <= S_CRC_WAIT;
@@ -492,7 +475,7 @@ always @(posedge clk) begin
 
       S_SEND_PG: begin
         // pg_addr <= (wr_pg_num << 27'd12);
-	pg_addr <= (wr_pg_num << 27'd11);
+        pg_addr <= (wr_pg_num << 27'd11);
         pg_optype <= 1'b1;
         pg_req <= 1;
 
@@ -504,7 +487,7 @@ always @(posedge clk) begin
 
       S_INC_WR_PG: begin
         if (!pg_ack_s) begin
-          buffered_data <= dpram_busy;
+          buffered_data <= rdout_dpram_rd_busy;
 
           wr_pg_num <= next_wr_pg_num;
           if (next_wr_pg_num == rd_pg_num) begin

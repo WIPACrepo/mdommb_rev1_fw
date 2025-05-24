@@ -59,6 +59,7 @@ localparam P_RD_ADR_WIDTH = P_SCDB_ADR_WIDTH + 1;
 // 
 reg[4:0] next_chan_index = 0;
 reg[4:0] current_chan_index = 0;
+reg[4:0] prev_chan_index = 0;
 
 wire[P_DATA_WIDTH-1:0] wvb_data_mux_out;
 wire[P_WVB_HDR_WIDTH-1:0] wvb_hdr_data_mux_out;
@@ -85,9 +86,11 @@ always @(posedge clk) begin
   if (rst || !en) begin
     wvb_data_mux_out_reg <= 0;
     wvb_hdr_data_mux_out_reg <= 0;
+    prev_chan_index <= 0;
   end else begin
     wvb_data_mux_out_reg <= wvb_data_mux_out;
     wvb_hdr_data_mux_out_reg <= wvb_hdr_data_mux_out;
+    prev_chan_index <= current_chan_index;
   end
 end
 
@@ -300,7 +303,7 @@ mDOM_scdb_hdr_bundle_fan_in SCDB_HDR_FAN_IN(
   .local_coinc(local_coinc),
   .partial_wfm(partial_wfm),
   .continued_wfm(continued_wfm),
-  .channel_idx(current_chan_index)
+  .channel_idx(prev_chan_index)
 );
 
 // 
