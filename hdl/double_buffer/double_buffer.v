@@ -34,7 +34,7 @@ module double_buffer
   // reader interface
   input rd_clk,
   input[P_RD_ADDR_WIDTH - 1:0] rd_addr,
-  input[P_RD_DATA_WIDTH - 1:0] rd_dout,
+  output[P_RD_DATA_WIDTH - 1:0] rd_dout,
   output[15:0] dpram_len_out,
   input done,
   output rd_busy
@@ -168,8 +168,19 @@ generate
       .clkb(rd_clk),
       .doutb(rd_dout)
     );
+  end else if
+     (P_WR_ADDR_WIDTH == 9 && P_RD_ADDR_WIDTH == 8 &&
+      P_WR_DATA_WIDTH == 64 && P_RD_DATA_WIDTH == 128 && P_SYNC_RD_ADDR) begin
+      HBUF_DDR3_PG_DOUBLE_BUFFER DOUBLE_BUFFER_DPRAM(
+      .addra(internal_wr_addr),
+      .clka(wr_clk),
+      .dina(wr_din),
+      .wea(wr_en),
+      .addrb(internal_rd_addr),
+      .clkb(rd_clk),
+      .doutb(rd_dout)
+    );
   end else begin
-    // TODO: support DDR3 page double buffer as well
     unsupported_parameter_set invalid_module_conf();
   end
 endgenerate

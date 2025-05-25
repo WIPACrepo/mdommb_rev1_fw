@@ -172,30 +172,6 @@ SCDB
 wire[7:0] dpram_a;
 wire[127:0] dpram_data;
 
-wire[15:0] dpram_word_0 = dpram_data[15:0];
-wire[15:0] dpram_word_1 = dpram_data[31:16];
-wire[15:0] dpram_word_2 = dpram_data[47:32];
-wire[15:0] dpram_word_3 = dpram_data[63:48];
-wire[15:0] dpram_word_4 = dpram_data[79:64];
-wire[15:0] dpram_word_5 = dpram_data[95:80];
-wire[15:0] dpram_word_6 = dpram_data[111:96];
-wire[15:0] dpram_word_7 = dpram_data[127:112];
-
-wire[11:0] adc_word_0 = dpram_word_0[11:0];
-wire[11:0] adc_word_1 = dpram_word_2[11:0];
-wire[11:0] adc_word_2 = dpram_word_4[11:0];
-wire[11:0] adc_word_3 = dpram_word_6[11:0];
-
-wire[7:0] channel_idx = dpram_word_0;
-wire[15:0] hdr_0 = dpram_word_2;
-wire[48:0] header_ltc = {dpram_word_3, dpram_word_4, dpram_word_5, hdr_0[2]};
-
-wire tot[0:3];
-assign tot[0] = dpram_word_1[1];
-assign tot[1] = dpram_word_3[1];
-assign tot[2] = dpram_word_5[1];
-assign tot[3] = dpram_word_7[1];
-
 wire dpram_wren;
 wire[15:0] dpram_len_in;
 wire dpram_run;
@@ -255,7 +231,7 @@ wire empty;
 wire full;
 
 wire[127:0] ddr3_dpram_dout;
-wire[7:0] ddr3_dpram_rd_addr;
+reg[7:0] ddr3_dpram_rd_addr = 0;
 wire pg_optype;
 
 hbuf_ctrl HBUF_CTRL_0
@@ -326,7 +302,7 @@ always @(posedge clk) begin
 
   // continuous triggers w/ wfm length 2
   if (ltc == 149) begin
-    test_conf <=128;
+    test_conf <= 24;
   end
 
   if (ltc >= 159) begin
@@ -365,6 +341,11 @@ always @(posedge ddr3_clk) begin
   if (pg_req_sync && !pg_ack) begin
     if (wait_cnt < PG_TRANSFER_WAIT_CNT_MAX) begin
       wait_cnt <= wait_cnt + 1;
+      if (wait_cnt == 0) begin
+        ddr3_dpram_rd_addr <= 0;
+      end else if (ddr3_dpram_rd_addr < 255) begin
+        ddr3_dpram_rd_addr <= ddr3_dpram_rd_addr + 1;
+      end
     end else begin
       pg_ack <= 1;
       wait_cnt <= 0;
@@ -375,5 +356,22 @@ always @(posedge ddr3_clk) begin
     pg_ack <= 0;
   end
 end
+
+wire[15:0] rd_pg_dpram_word_0 = ddr3_dpram_dout[15:0];
+wire[15:0] rd_pg_dpram_word_1 = ddr3_dpram_dout[31:16];
+wire[15:0] rd_pg_dpram_word_2 = ddr3_dpram_dout[47:32];
+wire[15:0] rd_pg_dpram_word_3 = ddr3_dpram_dout[63:48];
+wire[15:0] rd_pg_dpram_word_4 = ddr3_dpram_dout[79:64];
+wire[15:0] rd_pg_dpram_word_5 = ddr3_dpram_dout[95:80];
+wire[15:0] rd_pg_dpram_word_6 = ddr3_dpram_dout[111:96];
+wire[15:0] rd_pg_dpram_word_7 = ddr3_dpram_dout[127:112];
+
+wire[11:0] rd_pg_adc_word_0 = rd_pg_dpram_word_0[11:0];
+wire[11:0] rd_pg_adc_word_1 = rd_pg_dpram_word_2[11:0];
+wire[11:0] rd_pg_adc_word_2 = rd_pg_dpram_word_4[11:0];
+wire[11:0] rd_pg_adc_word_3 = rd_pg_dpram_word_6[11:0];
+
+wire[7:0] rd_pg_channel_idx_a = rd_pg_dpram_word_0;
+wire[7:0] rd_pg_channel_idx_b = rd_pg_dpram_word_4;
 
 endmodule

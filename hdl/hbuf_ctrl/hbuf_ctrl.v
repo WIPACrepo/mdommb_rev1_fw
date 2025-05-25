@@ -113,21 +113,38 @@ double_buffer rdout_double_buffer(
 );
 
 //
-// DDR3 page transfer dpram
+// DDR3 page double buffer
 //
 
 reg pg_dpram_wren = 0;
 reg[8:0] pg_dpram_wr_addr = 0;
 reg[63:0] pg_dpram_din = 0;
-HBUF_DDR3_PG DDR3_PG_DPRAM_0
-(
-  .clka(clk),
-  .wea(pg_dpram_wren),
-  .addra(pg_dpram_wr_addr),
-  .dina(pg_dpram_din),
-  .clkb(ddr3_ui_clk),
-  .addrb(ddr3_dpram_rd_addr),
-  .doutb(ddr3_dpram_dout)
+wire[15:0] pg_dpram_len_in = 16'd2048;
+wire[15:0] pg_dpram_len;
+reg pg_dpram_run = 0;
+wire pg_dpram_wr_busy;
+reg pg_dpram_done = 0;
+wire pg_dpram_rd_busy;
+double_buffer #(.P_WR_ADDR_WIDTH(9),
+                .P_WR_DATA_WIDTH(64),
+                .P_RD_ADDR_WIDTH(8),
+                .P_RD_DATA_WIDTH(128),
+                .P_SYNC_RD_ADDR(1))
+ddr3_pg_double_buffer(
+  .rst(rst || !en),
+  .wr_clk(clk),
+  .wr_en(pg_dpram_wren),
+  .wr_addr(pg_dpram_wr_addr),
+  .wr_din(pg_dpram_din),
+  .dpram_len_in(pg_dpram_len_in),
+  .run(pg_dpram_run),
+  .wr_busy(pg_dpram_wr_busy),
+  .rd_clk(ddr3_ui_clk),
+  .rd_addr(ddr3_dpram_rd_addr),
+  .rd_dout(ddr3_dpram_dout),
+  .dpram_len_out(pg_dpram_len),
+  .done(pg_dpram_done),
+  .rd_busy(pg_dpram_rd_busy)
 );
 
 //
@@ -240,24 +257,31 @@ always @(posedge clk) begin
   end
 end
 
-//
-// hbuf controller fsm
-//
-
+// FSM states used by the writer and page fsms
 localparam S_IDLE = 0,
            S_WR_HDR = 1,
            S_START_STREAM = 2,
            S_WR_DATA = 3,
-           S_DPRAM_DONE_WAIT = 4,
+           S_RDOUT_DPRAM_NOT_BUSY_WAIT = 4,
            S_WR_FTR = 5,
            S_SEND_PG = 6,
            S_INC_WR_PG = 7,
            S_FLUSH = 8,
            S_FLUSH_ACK = 9,
            S_FULL = 10,
-           S_CRC_WAIT = 11;
-reg[3:0] fsm = S_IDLE;
-assign full = fsm == S_FULL;
+           S_CRC_WAIT = 11,
+           S_PRE_REQ_WAIT = 12,
+           S_PG_DPRAM_BUSY_WAIT = 13,
+           S_PG_DPRAM_NOT_BUSY_WAIT = 14;
+
+//
+// hbuf controller fsms
+// separate writer & page fsms
+//
+
+reg[3:0] writer_fsm = S_IDLE;
+reg[3:0] pg_fsm = S_IDLE;
+assign full = pg_fsm == S_FULL;
 assign empty = (!en) || ((rd_pg_num == wr_pg_num) && !full);
 
 localparam DPRAM_RD_LATENCY = 2;
@@ -281,7 +305,6 @@ end
 
 wire[15:0] next_wr_pg_num = wr_pg_num == i_stop_pg ? i_start_pg : wr_pg_num + 1;
 
-
 // Mon 04/04/2022_13:46:04.97
 // This is for Jim Braun's issue #11
 // We need a register for the number
@@ -293,22 +316,21 @@ wire[15:0] next_wr_pg_num = wr_pg_num == i_stop_pg ? i_start_pg : wr_pg_num + 1;
 // waveform packets. Those are included
 // in the number of valid words. The footer
 // is not included in i_n_words_written. 
-   reg [3:0] prev_fsm = 0; 
+reg [3:0] prev_fsm = 0;
 reg [15:0] 	   i_n_words_written = 0; 
 always @(posedge clk) begin
-   prev_fsm <= fsm; 
-   if(rst || !en) begin
+    prev_fsm <= writer_fsm;
+    if(rst || !en) begin
       i_n_words_written <= 16'd0;
-   end
+    end
 
-   else if(pg_dpram_wren) begin
-      if(prev_fsm==S_WR_HDR)
-	i_n_words_written <= 16'd4;
-      else if(prev_fsm==S_WR_DATA) begin
-	 i_n_words_written <= i_n_words_written + 16'h4; 
+    else if(pg_dpram_wren) begin
+      if(prev_fsm==S_WR_HDR) begin
+	      i_n_words_written <= 16'd4;
+      end else if(prev_fsm==S_WR_DATA) begin
+	      i_n_words_written <= i_n_words_written + 16'h4;
       end
-   end
-   
+    end
 end
    
 // crc module
@@ -339,60 +361,56 @@ sync PGACKSYNC(.clk(clk), .rst_n(!rst), .a(pg_ack), .y(pg_ack_s));
 reg[31:0] cnt = 0;
 // state to return to after writing the header
 reg[3:0] ret = S_IDLE;
+reg writer_has_buffered_data = 0;
 always @(posedge clk) begin
   if (rst || !en) begin
-    wr_pg_num <= 0;
     dpram_done <= 0;
     flush_ack <= 0;
     rdout_dpram_rd_addr <= 0;
 
-    pg_req <= 0;
-    pg_optype <= 0;
-    pg_addr <= 0;
     pg_dpram_wr_addr <= LAST_PG_DPRAM_ADDR;
     pg_dpram_din <= 0;
     pg_dpram_wren <= 0;
 
-    buffered_data <= 0;
+    writer_has_buffered_data <= 0;
 
     crc_rst <= 1;
     crc_en <= 0;
 
+    pg_dpram_run <= 0;
+
     cnt <= 0;
     ret <= S_IDLE;
-    fsm <= S_IDLE;
+    writer_fsm <= S_IDLE;
   end
 
   else begin
     pg_dpram_wren <= 0;
     dpram_done <= 0;
-    pg_req <= 0;
+
     flush_ack <= 0;
 
     crc_rst <= 0;
     crc_en <= 0;
 
-    case (fsm)
+    pg_dpram_run <= 0;
+
+    case (writer_fsm)
       S_IDLE: begin
         ret <= S_IDLE;
 
-        if (en_pe) begin
-          wr_pg_num <= start_pg;
-        end
-
         if (pg_dpram_wr_addr == LAST_PG_DPRAM_ADDR) begin
-          ret <= S_IDLE;
-          fsm <= S_WR_HDR;
+          writer_fsm <= S_WR_HDR;
         end
 
         else if (dpram_len != 0) begin
           cnt <= 0;
           rdout_dpram_rd_addr <= 0;
-          fsm <= S_START_STREAM;
+          writer_fsm <= S_START_STREAM;
         end
 
         else if (flush_req) begin
-          fsm <= S_FLUSH;
+          writer_fsm <= S_FLUSH;
         end
 
       end
@@ -404,7 +422,7 @@ always @(posedge clk) begin
 
         crc_rst <= 1;
 
-        fsm <= ret;
+        writer_fsm <= ret;
       end
 
       S_START_STREAM: begin
@@ -412,12 +430,12 @@ always @(posedge clk) begin
         cnt <= cnt + 1;
 
         if (cnt >= DPRAM_RD_LATENCY - 1) begin
-          fsm <= S_WR_DATA;
+          writer_fsm <= S_WR_DATA;
         end
       end
 
       S_WR_DATA: begin
-        buffered_data <= 1;
+        writer_has_buffered_data <= 1;
 
         rdout_dpram_rd_addr <= rdout_dpram_rd_addr + 1;
 
@@ -434,7 +452,7 @@ always @(posedge clk) begin
             pg_dpram_din <= {32'b0, rdout_dpram_dout[31:0]};
           end
 
-          fsm <= S_DPRAM_DONE_WAIT;
+          writer_fsm <= S_RDOUT_DPRAM_NOT_BUSY_WAIT;
         end
 
         else if (pg_dpram_wr_addr == LAST_PG_DPRAM_ADDR - 2) begin
@@ -443,26 +461,26 @@ always @(posedge clk) begin
           rdout_dpram_rd_addr <= stream_rd_addr + 1;
           cnt <= 0;
           ret <= S_START_STREAM;
-          fsm <= S_CRC_WAIT;
+          writer_fsm <= S_CRC_WAIT;
         end
       end
 
-      S_DPRAM_DONE_WAIT: begin
+      S_RDOUT_DPRAM_NOT_BUSY_WAIT: begin
         if (!rdout_dpram_rd_busy) begin
           if (pg_dpram_wr_addr == LAST_PG_DPRAM_ADDR - 1) begin
             ret <= S_IDLE;
-            fsm <= S_CRC_WAIT;
+            writer_fsm <= S_CRC_WAIT;
           end
 
           else begin
-            fsm <= S_IDLE;
+            writer_fsm <= S_IDLE;
           end
         end
       end
 
       S_CRC_WAIT: begin
         // wait one clock cycle for the CRC
-        fsm <= S_WR_FTR;
+        writer_fsm <= S_WR_FTR;
       end
 
       S_WR_FTR: begin
@@ -470,39 +488,24 @@ always @(posedge clk) begin
         pg_dpram_wren <= 1;
         pg_dpram_din <= pg_ftr;
 
-        fsm <= S_SEND_PG;
+        pg_dpram_run <= 1;
+        writer_fsm <= S_PG_DPRAM_BUSY_WAIT;
       end
 
-      S_SEND_PG: begin
-        // pg_addr <= (wr_pg_num << 27'd12);
-        pg_addr <= (wr_pg_num << 27'd11);
-        pg_optype <= 1'b1;
-        pg_req <= 1;
+      S_PG_DPRAM_BUSY_WAIT: begin
+        writer_fsm <= S_PG_DPRAM_BUSY_WAIT;
 
-        if (pg_ack_s) begin
-          pg_req <= 0;
-          fsm <= S_INC_WR_PG;
+        if (pg_dpram_wr_busy) begin
+          writer_fsm <= S_PG_DPRAM_NOT_BUSY_WAIT;
         end
       end
 
-      S_INC_WR_PG: begin
-        if (!pg_ack_s) begin
-          buffered_data <= rdout_dpram_rd_busy;
+      S_PG_DPRAM_NOT_BUSY_WAIT: begin
+        writer_fsm <= S_PG_DPRAM_NOT_BUSY_WAIT;
 
-          wr_pg_num <= next_wr_pg_num;
-          if (next_wr_pg_num == rd_pg_num) begin
-            fsm <= S_FULL;
-          end
-
-          else begin
-            fsm <= S_WR_HDR;
-          end
-        end
-      end
-
-      S_FULL: begin
-        if ((rd_pg_num != wr_pg_num) || full_clear) begin
-          fsm <= S_WR_HDR;
+        if (!pg_dpram_wr_busy) begin
+          writer_has_buffered_data <= rdout_dpram_rd_busy;
+          writer_fsm <= S_WR_HDR;
         end
       end
 
@@ -515,7 +518,7 @@ always @(posedge clk) begin
 
         if (pg_dpram_wr_addr == LAST_PG_DPRAM_ADDR - 2) begin
           ret <= S_FLUSH_ACK;
-          fsm <= S_CRC_WAIT;
+          writer_fsm <= S_CRC_WAIT;
         end
       end
 
@@ -523,14 +526,111 @@ always @(posedge clk) begin
         flush_ack <= 1;
         if (!flush_req) begin
           flush_ack <= 0;
-          fsm <= S_IDLE;
+          writer_fsm <= S_IDLE;
         end
       end
 
       default: begin
-        fsm <= S_IDLE;
+        writer_fsm <= S_IDLE;
       end
     endcase
+  end
+end
+
+//
+// hbuf controller page transfer fsm
+//
+reg[31:0] pg_wait_cnt = 0;
+localparam PRE_REQ_WAIT_CNT_MAX = 5;
+
+always @(posedge clk) begin
+  if (rst || !en) begin
+    pg_dpram_done <= 0;
+    pg_req <= 0;
+    pg_optype <= 0;
+    pg_addr <= 0;
+    wr_pg_num <= 0;
+    pg_wait_cnt <= 0;
+    pg_fsm <= S_IDLE;
+  end else begin
+    pg_dpram_done <= 0;
+    pg_req <= 0;
+
+    case (pg_fsm)
+      S_IDLE: begin
+        pg_wait_cnt <= 0;
+        pg_fsm <= S_IDLE;
+
+        if (en_pe) begin
+          wr_pg_num <= start_pg;
+        end
+
+        if (pg_dpram_len != 0) begin
+          pg_wait_cnt <= 1;
+          pg_fsm <= S_PRE_REQ_WAIT;
+        end
+      end
+
+      // wait a few clock cycles for the double buffer pg read address
+      // to move through the synchronizer in the DDR3 clock domain
+      S_PRE_REQ_WAIT: begin
+        pg_wait_cnt <= pg_wait_cnt + 1;
+        pg_fsm <= S_PRE_REQ_WAIT;
+
+        if (pg_wait_cnt == PRE_REQ_WAIT_CNT_MAX) begin
+          pg_fsm <= S_SEND_PG;
+        end
+      end
+
+      S_SEND_PG: begin
+        pg_addr <= (wr_pg_num << 27'd11);
+        pg_optype <= 1'b1;
+        pg_req <= 1;
+        pg_fsm <= S_SEND_PG;
+
+        if (pg_ack_s) begin
+          pg_req <= 0;
+          pg_dpram_done <= 1;
+          pg_fsm <= S_PG_DPRAM_NOT_BUSY_WAIT;
+        end
+      end
+
+      S_PG_DPRAM_NOT_BUSY_WAIT: begin
+        pg_fsm <= S_PG_DPRAM_NOT_BUSY_WAIT;
+        if (!pg_dpram_rd_busy) begin
+          pg_fsm <= S_INC_WR_PG;
+        end
+      end
+
+      S_INC_WR_PG: begin
+        pg_fsm <= S_INC_WR_PG;
+        if (!pg_ack_s) begin
+          wr_pg_num <= next_wr_pg_num;
+          if (next_wr_pg_num == rd_pg_num) begin
+            pg_fsm <= S_FULL;
+          end
+
+          else begin
+            pg_fsm <= S_IDLE;
+          end
+        end
+      end
+
+      S_FULL: begin
+        if ((rd_pg_num != wr_pg_num) || full_clear) begin
+          pg_fsm <= S_IDLE;
+        end
+      end
+    endcase
+  end
+end
+
+// handle buffered data signal
+always @(posedge clk) begin
+  if (rst || !en) begin
+    buffered_data <= 0;
+  end else begin
+    buffered_data <= writer_has_buffered_data || pg_dpram_wr_busy || pg_dpram_rd_busy;
   end
 end
 
