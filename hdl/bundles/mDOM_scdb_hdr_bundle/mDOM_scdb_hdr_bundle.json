@@ -11,12 +11,12 @@
 
 	    {
 		   "input" : "start_addr",
-		   "width" : 12,
+		   "width" : 11,
 		   "description" : "Starting address in waveform buffer RAM"
 	    },
 	    {
 		   "input" : "stop_addr",
-		   "width" : 12,
+		   "width" : 11,
 		   "description" : "Stopping address for the event by the wvb writer"
 	    },
 	    {

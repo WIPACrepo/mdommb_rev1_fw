@@ -8,11 +8,12 @@
 module secondary_buffer #(parameter P_DATA_WIDTH = 170,
                           parameter N_CHANNELS = 24,
                           parameter P_WVB_ADR_WIDTH = 9,
-                          parameter P_SCDB_ADR_WIDTH = 12,
+                          parameter P_SCDB_ADR_WIDTH = 11,
                           parameter P_WVB_HDR_WIDTH = 102,
-                          parameter P_SCDB_HDR_WIDTH = 113,
+                          parameter P_SCDB_HDR_WIDTH = 111,
                           parameter CHANNELS_PER_CYCLE = 8,
-                          parameter P_OUTPUT_DATA_WIDTH = 85
+                          parameter P_OUTPUT_DATA_WIDTH = 85,
+                          parameter P_CHANNEL_OFFSET = 0
                          )
 (
   input clk,
@@ -120,6 +121,10 @@ reg[CHANNELS_PER_CYCLE - 1:0] wfm_ready_for_channel = 0;
 
 generate
   for (i_chan = 0; i_chan < CHANNELS_PER_CYCLE; i_chan = i_chan + 1) begin
+    initial begin
+      query_channels[i_chan] = 0;
+    end
+
     wire[4:0] query_channel = (next_base_query_channel + i_chan) % N_CHANNELS;
     always @(posedge clk) begin
       if (rst || !en) begin
@@ -288,6 +293,7 @@ mDOM_scdb_hdr_bundle_fan_out SCDB_HDR_FAN_OUT (
 // SCDB hdr fan in
 wire[P_SCDB_HDR_WIDTH-1:0] scdb_hdr_bundle;
 reg[P_SCDB_ADR_WIDTH-1:0] scdb_start_addr = 0;
+wire[4:0] hdr_chan_index = prev_chan_index + P_CHANNEL_OFFSET;
 mDOM_scdb_hdr_bundle_fan_in SCDB_HDR_FAN_IN(
   .bundle(scdb_hdr_bundle),
   .evt_ltc(evt_ltc),
@@ -303,7 +309,7 @@ mDOM_scdb_hdr_bundle_fan_in SCDB_HDR_FAN_IN(
   .local_coinc(local_coinc),
   .partial_wfm(partial_wfm),
   .continued_wfm(continued_wfm),
-  .channel_idx(prev_chan_index)
+  .channel_idx(hdr_chan_index)
 );
 
 // 
@@ -638,7 +644,6 @@ end
 
 wire[116:0] scdb_hdr_data_in = {{117-P_SCDB_HDR_WIDTH{1'b0}}, scdb_hdr_bundle};
 wire[116:0] scdb_hdr_data_out;
-wire[10:0] scdb_hdr_data_count;
 
 reg[116:0] scdb_hdr_data_in_1 = 0;
 reg scdb_hdr_wren_1 = 0;
@@ -652,7 +657,20 @@ always @(posedge clk) begin
   end
 end
 
-FIFO_2048_117 SCDB_HDR_FIFO (
+// wire[10:0] scdb_hdr_data_count;
+// FIFO_2048_117 SCDB_HDR_FIFO (
+//   .clk(clk),
+//   .srst(rst || !en),
+//   .din(scdb_hdr_data_in_1),
+//   .wr_en(scdb_hdr_wren_1),
+//   .rd_en(buf_hdr_rdreq),
+//   .empty(buf_hdr_empty),
+//   .full(scdb_hdr_full),
+//   .dout(scdb_hdr_data_out),
+//   .data_count(scdb_hdr_data_count)
+// );
+wire[9:0] scdb_hdr_data_count;
+FIFO_1024_117 SCDB_HDR_FIFO (
   .clk(clk),
   .srst(rst || !en),
   .din(scdb_hdr_data_in_1),
@@ -669,9 +687,10 @@ always @(posedge clk) begin
     n_wvf_in_buf <= 0;
   end else begin
     if (scdb_hdr_full) begin
-      n_wvf_in_buf <= 16'd2048;
+      n_wvf_in_buf <= 16'd1024;
     end else begin
-      n_wvf_in_buf <= {5'b0, scdb_hdr_data_count};
+      // n_wvf_in_buf <= {5'b0, scdb_hdr_data_count};
+      n_wvf_in_buf <= {6'b0, scdb_hdr_data_count};
     end
   end
 end

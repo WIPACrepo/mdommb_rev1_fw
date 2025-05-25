@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="multi_scdb_24_channel_integration_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="multi_scdb_24_channel_integration_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="8923433334fs"></ZoomStartTime>
+      <ZoomEndTime time="9059433335fs"></ZoomEndTime>
+      <Cursor1Time time="8696100000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="264"></NameColumnWidth>
+      <ValueColumnWidth column_width="124"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="53" />
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/ltc" type="array">
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/trig" type="array">
+      <obj_property name="ElementShortName">trig[23:0]</obj_property>
+      <obj_property name="ObjectShortName">trig[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf" type="array">
+      <obj_property name="ElementShortName">wvb_n_wvf_in_buf[0:23][15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_n_wvf_in_buf[0:23][15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[0]" type="array">
+         <obj_property name="ElementShortName">[0][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[1]" type="array">
+         <obj_property name="ElementShortName">[1][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[1][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[2]" type="array">
+         <obj_property name="ElementShortName">[2][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[2][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[3]" type="array">
+         <obj_property name="ElementShortName">[3][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[3][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[4]" type="array">
+         <obj_property name="ElementShortName">[4][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[4][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[5]" type="array">
+         <obj_property name="ElementShortName">[5][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[5][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[6]" type="array">
+         <obj_property name="ElementShortName">[6][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[6][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[7]" type="array">
+         <obj_property name="ElementShortName">[7][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[7][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[8]" type="array">
+         <obj_property name="ElementShortName">[8][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[8][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[9]" type="array">
+         <obj_property name="ElementShortName">[9][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[9][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[10]" type="array">
+         <obj_property name="ElementShortName">[10][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[10][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[11]" type="array">
+         <obj_property name="ElementShortName">[11][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[11][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[12]" type="array">
+         <obj_property name="ElementShortName">[12][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[12][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[13]" type="array">
+         <obj_property name="ElementShortName">[13][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[13][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[14]" type="array">
+         <obj_property name="ElementShortName">[14][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[14][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[15]" type="array">
+         <obj_property name="ElementShortName">[15][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[15][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[16]" type="array">
+         <obj_property name="ElementShortName">[16][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[16][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[17]" type="array">
+         <obj_property name="ElementShortName">[17][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[17][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[18]" type="array">
+         <obj_property name="ElementShortName">[18][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[18][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[19]" type="array">
+         <obj_property name="ElementShortName">[19][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[19][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[20]" type="array">
+         <obj_property name="ElementShortName">[20][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[20][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[21]" type="array">
+         <obj_property name="ElementShortName">[21][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[21][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[22]" type="array">
+         <obj_property name="ElementShortName">[22][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[22][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/multi_scdb_24_channel_integration_tb/wvb_n_wvf_in_buf[23]" type="array">
+         <obj_property name="ElementShortName">[23][15:0]</obj_property>
+         <obj_property name="ObjectShortName">[23][15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/overflow_out" type="array">
+      <obj_property name="ElementShortName">overflow_out[0:23]</obj_property>
+      <obj_property name="ObjectShortName">overflow_out[0:23]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/n_wvf_in_scdb" type="array">
+      <obj_property name="ElementShortName">n_wvf_in_scdb[0:2][15:0]</obj_property>
+      <obj_property name="ObjectShortName">n_wvf_in_scdb[0:2][15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/scdb_wds_used" type="array">
+      <obj_property name="ElementShortName">scdb_wds_used[0:2][15:0]</obj_property>
+      <obj_property name="ObjectShortName">scdb_wds_used[0:2][15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /query_channels" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">query_channels[0:1][4:0]</obj_property>
+      <obj_property name="ObjectShortName">query_channels[0:1][4:0]</obj_property>
+      <obj_property name="label">scdb 0 query_channels[0:1][4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /wfm_ready" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wfm_ready</obj_property>
+      <obj_property name="ObjectShortName">wfm_ready</obj_property>
+      <obj_property name="label">scdb 0 wfm_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /next_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="label">scdb 0 next_chan_index[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /current_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="label">scdb 0 current_chan_index[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /writer_fsm" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">writer_fsm[3:0]</obj_property>
+      <obj_property name="ObjectShortName">writer_fsm[3:0]</obj_property>
+      <obj_property name="label">scdb 0 writer_fsm[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /wvb_data_mux_out_reg" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_data_mux_out_reg[169:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_data_mux_out_reg[169:0]</obj_property>
+      <obj_property name="label">scdb 0 wvb_data_mux_out_reg[169:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /scdb_wren" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">scdb_wren</obj_property>
+      <obj_property name="ObjectShortName">scdb_wren</obj_property>
+      <obj_property name="label">scdb 0 scdb_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /scdb_wr_data" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">scdb_wr_data[169:0]</obj_property>
+      <obj_property name="ObjectShortName">scdb_wr_data[169:0]</obj_property>
+      <obj_property name="label">scdb 0 scdb_wr_data[169:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /wvb_rddone" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_rddone[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_rddone[7:0]</obj_property>
+      <obj_property name="label">scdb 0 wvb_rddone[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[0].SCDB /wvb_hdr_rdreq" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_hdr_rdreq[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_hdr_rdreq[7:0]</obj_property>
+      <obj_property name="label">scdb 0 wvb_hdr_rdreq[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[1].SCDB /wvb_rddone" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_rddone[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_rddone[7:0]</obj_property>
+      <obj_property name="label">scdb 1 wvb_rddone[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[1].SCDB /wvb_hdr_rdreq" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_hdr_rdreq[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_hdr_rdreq[7:0]</obj_property>
+      <obj_property name="label">scdb 1 wvb_hdr_rdreq[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[2].SCDB /wvb_rddone" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_rddone[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_rddone[7:0]</obj_property>
+      <obj_property name="label">scdb 2 wvb_rddone[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/\genblk2[2].SCDB /wvb_hdr_rdreq" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">wvb_hdr_rdreq[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_hdr_rdreq[7:0]</obj_property>
+      <obj_property name="label">scdb 2 wvb_hdr_rdreq[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/chan_index" type="array">
+      <obj_property name="ElementShortName">chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/fsm" type="array">
+      <obj_property name="ElementShortName">fsm[3:0]</obj_property>
+      <obj_property name="ObjectShortName">fsm[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/hdr_empty_mux_out" type="logic">
+      <obj_property name="ElementShortName">hdr_empty_mux_out</obj_property>
+      <obj_property name="ObjectShortName">hdr_empty_mux_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/i_hdr_rdreq" type="logic">
+      <obj_property name="ElementShortName">i_hdr_rdreq</obj_property>
+      <obj_property name="ObjectShortName">i_hdr_rdreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/i_wvb_rddone" type="logic">
+      <obj_property name="ElementShortName">i_wvb_rddone</obj_property>
+      <obj_property name="ObjectShortName">i_wvb_rddone</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/buf_hdr_rdreq" type="array">
+      <obj_property name="ElementShortName">buf_hdr_rdreq[2:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_hdr_rdreq[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/buf_rdreq" type="array">
+      <obj_property name="ElementShortName">buf_rdreq[2:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_rdreq[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/buf_rddone" type="array">
+      <obj_property name="ElementShortName">buf_rddone[2:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_rddone[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/dpram_addr" type="array">
+      <obj_property name="ElementShortName">dpram_addr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dpram_addr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/WVB_READER/dpram_wren" type="logic">
+      <obj_property name="ElementShortName">dpram_wren</obj_property>
+      <obj_property name="ObjectShortName">dpram_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/n_used_pgs" type="array">
+      <obj_property name="ElementShortName">n_used_pgs[15:0]</obj_property>
+      <obj_property name="ObjectShortName">n_used_pgs[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/pg_req" type="logic">
+      <obj_property name="ElementShortName">pg_req</obj_property>
+      <obj_property name="ObjectShortName">pg_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/pg_ack" type="logic">
+      <obj_property name="ElementShortName">pg_ack</obj_property>
+      <obj_property name="ObjectShortName">pg_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/ddr3_clk" type="logic">
+      <obj_property name="ElementShortName">ddr3_clk</obj_property>
+      <obj_property name="ObjectShortName">ddr3_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/ddr3_dpram_rd_addr" type="array">
+      <obj_property name="ElementShortName">ddr3_dpram_rd_addr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dpram_rd_addr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/ddr3_dpram_dout" type="array">
+      <obj_property name="ElementShortName">ddr3_dpram_dout[127:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dpram_dout[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_0" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_1" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_2" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_3" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_4" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_4[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_4[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_5" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_5[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_5[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_6" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_6[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_6[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_dpram_word_7" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_7[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_7[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_adc_word_0" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_0[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_0[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_adc_word_1" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_1[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_adc_word_2" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_2[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_adc_word_3" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_3[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_3[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_channel_idx_a" type="array">
+      <obj_property name="ElementShortName">rd_pg_channel_idx_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_channel_idx_a[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_channel_idx_b" type="array">
+      <obj_property name="ElementShortName">rd_pg_channel_idx_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_channel_idx_b[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_ltc_a" type="array">
+      <obj_property name="ElementShortName">rd_pg_ltc_a[48:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_ltc_a[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multi_scdb_24_channel_integration_tb/rd_pg_ltc_b" type="array">
+      <obj_property name="ElementShortName">rd_pg_ltc_b[48:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_ltc_b[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

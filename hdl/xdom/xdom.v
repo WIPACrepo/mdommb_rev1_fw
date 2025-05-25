@@ -172,8 +172,12 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
   output reg [N_CHANNELS-1:0] 		global_trig_rcv_mask,
 
   // secondary buffer status
-  input[15:0] n_wvf_in_scdb,
-  input[15:0] scdb_wds_used,
+  input[15:0] n_wvf_in_scdb_0,
+  input[15:0] scdb_wds_used_0,
+  input[15:0] n_wvf_in_scdb_1,
+  input[15:0] scdb_wds_used_1,
+  input[15:0] n_wvf_in_scdb_2,
+  input[15:0] scdb_wds_used_2,
 
 `ifndef MDOMREV1
   // FGPA_CAL_TRIG trigger
@@ -945,8 +949,12 @@ always @(*)
       12'hb92: begin y_rd_data =        n_lc_thr;                                              end
       12'hb91: begin y_rd_data =        {15'h0,lc_required};                                   end
       12'hb90: begin y_rd_data =        {4'h0,xdom_thermal_shutdown_temp};                     end
-      12'hb8f: begin y_rd_data =        n_wvf_in_scdb;                                         end
-      12'hb8e: begin y_rd_data =        {scdb_wds_used[12:0], 3'b0};                           end
+      12'hb8f: begin y_rd_data =        n_wvf_in_scdb_0;                                       end
+      12'hb8e: begin y_rd_data =        {scdb_wds_used_0[12:0], 3'b0};                         end
+      12'hb8d: begin y_rd_data =        n_wvf_in_scdb_1;                                       end
+      12'hb8c: begin y_rd_data =        {scdb_wds_used_1[12:0], 3'b0};                         end
+      12'hb8b: begin y_rd_data =        n_wvf_in_scdb_2;                                       end
+      12'hb8a: begin y_rd_data =        {scdb_wds_used_2[12:0], 3'b0};                         end
       default:
         begin
           y_rd_data = xdom_dpram_rd_data;

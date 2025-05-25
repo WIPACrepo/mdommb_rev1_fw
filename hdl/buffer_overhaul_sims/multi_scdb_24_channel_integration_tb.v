@@ -1,11 +1,12 @@
 // Aaron Fienberg
 //
-// Test bench for integrating the waveform buffer, secondary buffer, wvb_reader, hbuf controller
+// Test bench for integrating the waveform buffer, three secondary buffers, 
+// the wvb_reader, and the hbuf controller
 // 
 
 `timescale 1ns/1ns
 
-module hbuf_ctrl_integration_tb();
+module multi_scdb_24_channel_integration_tb();
 
 `include "mDOM_wvb_hdr_bundle_4_inc.v"
 `include "mDOM_scdb_hdr_bundle_inc.v"
@@ -32,14 +33,20 @@ always @(clk)
 always @(ddr3_clk)
   #(DDR3_CLK_PERIOD / 2.0) ddr3_clk <= !ddr3_clk;
 
-// dynamic inputs
-reg rst = 1;
-reg[11:0] adc_in = 0;
-// second channel will have adc samples off by 5
-wire[11:0] adc_in_2 = adc_in + 5;
-reg[7:0] discr_in = 5;
-reg trig = 0;
 reg[P_LTC_WIDTH-1:0] ltc = 0;
+// each channel will have its ADC samples equal to LTC + channel_index 
+reg[11:0] adc_in[0:23];
+integer i_chan;
+always @(*) begin
+  for (i_chan = 0; i_chan < 24; i_chan = i_chan + 1) begin
+    adc_in[i_chan] = ltc + i_chan;
+  end
+end
+
+reg rst = 1;
+
+reg[7:0] discr_in = 5;
+reg[23:0] trig = 0;
 reg[1:0] trig_src = 0;
 wire[23:0] wvb_rdreq;
 wire[23:0] wvb_hdr_rdreq;
@@ -60,21 +67,10 @@ reg cnst_run = 0;
 reg[7:0] post_conf = 8;
 reg wvb_rst = 0;
 
-// trigger the two channels off-by-two clock cycles
-reg trig_1 = 0;
-reg trig_2 = 0;
-always @(posedge clk) begin
-  trig_1 <= trig;
-  trig_2 <= trig_1;
-end
-
 // instantiate 24 waveform buffers
-// for now, triggers will only make it into two channels: 23 and 5
 generate
 genvar i;
 for (i = 0; i < 24; i = i + 1) begin
-  // only send triggers to two channels
-  wire trig_i = i == 23 ? trig : i == 5 ? trig_2 : 0;
   waveform_buffer
   #(.P_DATA_WIDTH(P_DATA_WIDTH),
     .P_ADR_WIDTH(P_WVB_ADR_WIDTH),
@@ -100,10 +96,10 @@ for (i = 0; i < 24; i = i + 1) begin
     .clk(clk),
     .rst(rst || wvb_rst),
     .ltc_in(ltc),
-    .adc_in(i == 23 ? adc_in : i == 5 ? adc_in_2 : 0),
+    .adc_in(adc_in[i]),
     .discr_in(discr_in), 
-    .tot(trig_i),
-    .trig(trig_i),
+    .tot(trig[i]),
+    .trig(trig[i]),
     .trig_src(trig_src),
     .arm(1'b0),
 
@@ -114,7 +110,8 @@ for (i = 0; i < 24; i = i + 1) begin
     // Config inputs
     .pre_conf(4),
     .post_conf(post_conf),
-    .test_conf(test_conf),
+    // .test_conf(test_conf),
+    .test_conf(test_conf + (i << 3)), // test different waveform lengths for each channel
     .cnst_run(cnst_run),
     .cnst_conf(cnst_conf),
     .trig_mode(0),
@@ -128,45 +125,61 @@ for (i = 0; i < 24; i = i + 1) begin
   end
 endgenerate
 
-wire overflow_out_5 = overflow_out[5];
-wire overflow_out_23 = overflow_out[23];
-wire[15:0] n_wvf_in_buf_5 = wvb_n_wvf_in_buf[5];
-wire[15:0] n_wvf_in_buf_23 = wvb_n_wvf_in_buf[23];
+// instantiate three secondary buffer;
+// split channels into groups of 8 (0-7, 8-15, 16-23)
+localparam P_N_SCDB = 3;
+localparam P_CHANS_PER_SCDB = 24 / P_N_SCDB;
+wire[P_N_SCDB - 1:0] buf_rdreq;
+wire[P_N_SCDB - 1:0] buf_hdr_rdreq;
+wire[P_N_SCDB - 1:0] buf_rddone;
 
-
-// instantiate secondary buffer
-wire buf_rdreq;
-wire buf_hdr_rdreq;
-wire buf_rddone;
-
-wire[84:0] buf_data_out;
-wire[112:0] buf_hdr_data_out;
-wire buf_hdr_empty;
-wire[15:0] n_wvf_in_scdb;
-wire[15:0] scdb_wds_used;
+wire[P_N_SCDB * P_READER_DATA_WIDTH - 1:0] buf_data_out;
+wire[P_N_SCDB * L_WIDTH_MDOM_SCDB_HDR_BUNDLE - 1:0] buf_hdr_data_out;
+wire[P_N_SCDB - 1 : 0] buf_hdr_empty;
+wire[15:0] n_wvf_in_scdb[0 : P_N_SCDB - 1];
+wire[15:0] scdb_wds_used[0 : P_N_SCDB - 1];
 
 reg secondary_buffer_enable = 0;
-secondary_buffer
-SCDB
-(
-  .clk(clk),
-  .rst(rst),
-  .en(secondary_buffer_enable),
-  .buf_data_out(buf_data_out),
-  .hdr_data_out(buf_hdr_data_out),
-  .buf_hdr_empty(buf_hdr_empty),
-  .n_wvf_in_buf(n_wvf_in_scdb),
-  .buf_wds_used(scdb_wds_used),
-  .buf_rdreq(buf_rdreq),
-  .buf_hdr_rdreq(buf_hdr_rdreq),
-  .buf_rddone(buf_rddone),
-  .wvb_hdr_rdreq(wvb_hdr_rdreq),
-  .wvb_rdreq(wvb_rdreq),
-  .wvb_rddone(wvb_rddone),
-  .wvb_data(wvb_out),
-  .wvb_hdr_data(hdr_out),
-  .wvb_hdr_empty(hdr_empty)
-);
+generate 
+for (i = 0; i < P_N_SCDB; i = i + 1) begin
+  secondary_buffer
+  #(
+    .N_CHANNELS(8),
+    .CHANNELS_PER_CYCLE(2),
+    .P_CHANNEL_OFFSET(i * P_CHANS_PER_SCDB))
+  SCDB
+  (
+    .clk(clk),
+    .rst(rst),
+    .en(secondary_buffer_enable),
+    .buf_data_out
+    (
+      buf_data_out[(i+1)*P_READER_DATA_WIDTH-1:i*P_READER_DATA_WIDTH]
+    ),
+    .hdr_data_out(
+      buf_hdr_data_out[(i+1)*L_WIDTH_MDOM_SCDB_HDR_BUNDLE-1:i*L_WIDTH_MDOM_SCDB_HDR_BUNDLE]
+    ),
+    .buf_hdr_empty(buf_hdr_empty[i]),
+    .n_wvf_in_buf(n_wvf_in_scdb[i]),
+    .buf_wds_used(scdb_wds_used[i]),
+    .buf_rdreq(buf_rdreq[i]),
+    .buf_hdr_rdreq(buf_hdr_rdreq[i]),
+    .buf_rddone(buf_rddone[i]),
+    .wvb_hdr_rdreq(wvb_hdr_rdreq[(i+1)*P_CHANS_PER_SCDB - 1 : i*P_CHANS_PER_SCDB]),
+    .wvb_rdreq(wvb_rdreq[(i+1)*P_CHANS_PER_SCDB - 1 : i*P_CHANS_PER_SCDB]),
+    .wvb_rddone(wvb_rddone[(i+1)*P_CHANS_PER_SCDB - 1 : i*P_CHANS_PER_SCDB]),
+    .wvb_data(
+      wvb_out[(i+1)*P_CHANS_PER_SCDB*P_DATA_WIDTH - 1 :
+              i*P_CHANS_PER_SCDB*P_DATA_WIDTH]
+    ),
+    .wvb_hdr_data(
+      hdr_out[(i+1)*P_CHANS_PER_SCDB*L_WIDTH_MDOM_WVB_HDR_BUNDLE_4 - 1 : 
+              i*P_CHANS_PER_SCDB*L_WIDTH_MDOM_WVB_HDR_BUNDLE_4]
+    ),
+    .wvb_hdr_empty(hdr_empty[(i+1)*P_CHANS_PER_SCDB - 1 : i*P_CHANS_PER_SCDB])
+  );
+end
+endgenerate
 
 // instantiate wvb reader
 wire[7:0] dpram_a;
@@ -182,7 +195,7 @@ wire dpram_busy;
 wire reader_enable = secondary_buffer_enable;
 
 wvb_reader
-#(.N_CHANNELS(1),
+#(.N_CHANNELS(P_N_SCDB),
   .P_DATA_WIDTH(P_READER_DATA_WIDTH),
   .P_WVB_ADR_WIDTH(L_WIDTH_MDOM_SCDB_HDR_BUNDLE_START_ADDR),
   .P_HDR_WIDTH(L_WIDTH_MDOM_SCDB_HDR_BUNDLE),
@@ -286,31 +299,41 @@ wire[33:0] pg_dpram_evt_ltc_low = {pg_dpram_word_0, pg_dpram_word_1, 1'b0};
 wire[8:0] pg_dpram_wr_addr = HBUF_CTRL_0.pg_dpram_wr_addr;
 wire pg_dpram_wren = HBUF_CTRL_0.pg_dpram_wren;
 
+// trigger the channels off by 1 clock cycle from each other
+generate
+for (i = 1; i < 24; i = i + 1) begin
+  always @(posedge clk) begin
+    trig[i] <= trig[i - 1]; // 24 channel test
+    // trig[i] <= 0; // one channel test
+  end
+end
+endgenerate
+
+
 always @(posedge clk) begin
   ltc <= ltc + 1;
 
   if (!rst) begin
-    adc_in <= adc_in + 1;
     discr_in <= discr_in + 1;
   end
 
-  trig <= 0;
+  trig[0] <= 0;
   trig_src <= 0;
 
   if (ltc == 5) begin
     rst <= 0;
   end
 
-  // continuous triggers w/ wfm length 24
   if (ltc == 149) begin
-    test_conf <= 24;
+    test_conf <= 16; // short wfms
+    // test_conf <= 1024; // long wfms (will be split up)
   end
 
   if (ltc >= 159
-      && ltc < 8356
-    )
+      // && ltc < 400
+    ) 
   begin
-    trig <= 1;
+    trig[0] <= 1;
     trig_src <= 3;
   end
 
@@ -323,8 +346,6 @@ always @(posedge clk) begin
     hbuf_en <= 1;
   end  
 
-  // check whether secondary buffer can keep up with 1 channel
-  // start secondary buffer early
   if (ltc == 99) begin
     secondary_buffer_enable <= 1;
   end
@@ -339,9 +360,6 @@ always @(posedge clk) begin
     pg_clr_req <= 1;
     // pg_clr_cnt <= 1;
     pg_clr_cnt <= 100;
-  end else if (ltc == 14394) begin
-    pg_clr_req <= 1;
-    pg_clr_cnt <= 3;
   end
 end
 

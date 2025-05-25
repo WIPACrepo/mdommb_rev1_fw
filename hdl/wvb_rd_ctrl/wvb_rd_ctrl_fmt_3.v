@@ -92,7 +92,7 @@ wire continued_wfm;
 wire[4:0] hdr_fan_out_channel_idx;
 
 generate
-  if (P_WVB_ADR_WIDTH == 12 && P_HDR_WIDTH == 113 && P_DATA_WIDTH == 85) begin
+  if (P_WVB_ADR_WIDTH == 11 && P_HDR_WIDTH == 111 && P_DATA_WIDTH == 85) begin
     mDOM_scdb_hdr_bundle_fan_out HDR_FAN_OUT (
       .bundle(hdr_data),
       .evt_ltc({evt_ltc, odd_ltc_bit}),

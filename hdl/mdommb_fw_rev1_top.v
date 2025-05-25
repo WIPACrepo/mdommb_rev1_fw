@@ -396,6 +396,10 @@ localparam P_HDR_WIDTH = L_WIDTH_MDOM_WVB_HDR_BUNDLE_4; // A. Fienberg 2025
 // localparam P_FMT = 2; // T. Anderson Sat 05/21/2022_14:19:23.51
 localparam P_FMT = 3;
 
+localparam P_N_SCDB = 3; // n secondary buffers
+localparam P_CHANNELS_PER_SCDB = N_CHANNELS / P_N_SCDB; // channels per secondary buffer
+localparam P_SCDB_CHANNELS_PER_CYCLES = 2;
+
 //
 // clock generation
 //
@@ -831,8 +835,12 @@ endgenerate
 //     12'hb96: [15:0] global trig receiver mask [15:0]
 //
 //     secondary buffer diagnostics
-//     12h'b8f: [15:0] n_wvf_in_secondary_buffer
-//     12h'b8e: [15:0] secondary_buffer_wds_used
+//     12h'b8f: [15:0] n_wvf_in_secondary_buffer 0 (chans 0 - 7)
+//     12h'b8e: [15:0] secondary_buffer_wds_used 0 (chans 0 - 7)
+//     12h'b8d: [15:0] n_wvf_in_secondary_buffer 1 (chans 8 - 15)
+//     12h'b8c: [15:0] secondary_buffer_wds_used 1 (chans 8 - 15)
+//     12h'b8b: [15:0] n_wvf_in_secondary_buffer 2 (chans 16 - 23)
+//     12h'b8a: [15:0] secondary_buffer_wds_used 2 (chans 16 - 23)
 //
 
 // trigger/wvb conf
@@ -856,23 +864,37 @@ always @(posedge lclk) begin
 end
 
 // secondary buffer
-wire[15:0] n_wvf_in_scdb;
-wire[15:0] scdb_wds_used;
+// pipeline for diagnostic outputs
+wire[15:0] n_wvf_in_scdb[0:P_N_SCDB - 1];
+wire[15:0] scdb_wds_used[0:P_N_SCDB - 1];
 
-reg[15:0] n_wvf_in_scdb_1 = 0;
-reg[15:0] scdb_wds_used_1 = 0;
-reg[15:0] n_wvf_in_scdb_2 = 0;
-reg[15:0] scdb_wds_used_2 = 0;
-reg[15:0] n_wvf_in_scdb_3 = 0;
-reg[15:0] scdb_wds_used_3 = 0;
-always @(posedge lclk) begin
-  n_wvf_in_scdb_1 <= n_wvf_in_scdb;
-  scdb_wds_used_1 <= scdb_wds_used;
-  n_wvf_in_scdb_2 <= n_wvf_in_scdb_1;
-  scdb_wds_used_2 <= scdb_wds_used_1;
-  n_wvf_in_scdb_3 <= n_wvf_in_scdb_2;
-  scdb_wds_used_3 <= scdb_wds_used_2;
+reg[15:0] n_wvf_in_scdb_1[0: P_N_SCDB - 1];
+reg[15:0] scdb_wds_used_1[0: P_N_SCDB - 1];
+reg[15:0] n_wvf_in_scdb_2[0: P_N_SCDB - 1];
+reg[15:0] scdb_wds_used_2[0: P_N_SCDB - 1];
+reg[15:0] n_wvf_in_scdb_3[0: P_N_SCDB - 1];
+reg[15:0] scdb_wds_used_3[0: P_N_SCDB - 1];
+generate
+for (i = 0; i < P_N_SCDB; i = i + 1 ) begin
+  initial begin
+    n_wvf_in_scdb_1[i] = 0;
+    scdb_wds_used_1[i] = 0;
+    n_wvf_in_scdb_2[i] = 0;
+    scdb_wds_used_2[i] = 0;
+    n_wvf_in_scdb_3[i] = 0;
+    scdb_wds_used_3[i] = 0;
+  end
+
+  always @(posedge lclk) begin
+    n_wvf_in_scdb_1[i] <= n_wvf_in_scdb[i];
+    scdb_wds_used_1[i] <= scdb_wds_used[i];
+    n_wvf_in_scdb_2[i] <= n_wvf_in_scdb_1[i];
+    scdb_wds_used_2[i] <= scdb_wds_used_1[i];
+    n_wvf_in_scdb_3[i] <= n_wvf_in_scdb_2[i];
+    scdb_wds_used_3[i] <= scdb_wds_used_2[i];
+  end
 end
+endgenerate
 
 // wvb reader
 wire[15:0] rdout_dpram_len;
@@ -1265,8 +1287,13 @@ xdom #(.N_CHANNELS(N_CHANNELS)) XDOM_0
   .global_trig_src_mask(global_trig_src_mask),
   .global_trig_rcv_mask(global_trig_rcv_mask),
 
-  .n_wvf_in_scdb(n_wvf_in_scdb_3),
-  .scdb_wds_used(scdb_wds_used_3),
+  // secondary buffer diagnostics
+  .n_wvf_in_scdb_0(n_wvf_in_scdb_3[0]),
+  .scdb_wds_used_0(scdb_wds_used_3[0]),
+  .n_wvf_in_scdb_1(n_wvf_in_scdb_3[1]),
+  .scdb_wds_used_1(scdb_wds_used_3[1]),
+  .n_wvf_in_scdb_2(n_wvf_in_scdb_3[2]),
+  .scdb_wds_used_2(scdb_wds_used_3[2]),
 
 `ifndef MDOMREV1
   // FPGA_CAL_TRIG trigger
@@ -1586,45 +1613,64 @@ wire scdb_enable = i_wvb_reader_en_2;
 
 localparam P_READER_DATA_WIDTH = 85;
 
-wire[P_READER_DATA_WIDTH-1:0] scdb_data_out;
-wire[L_WIDTH_MDOM_SCDB_HDR_BUNDLE-1:0] scdb_hdr_data_out;
-wire scdb_hdr_empty;
-wire scdb_rdreq;
-wire scdb_hdr_rdreq;
-wire scdb_rddone;
+wire[P_N_SCDB * P_READER_DATA_WIDTH - 1:0] scdb_data_out;
+wire[P_N_SCDB * L_WIDTH_MDOM_SCDB_HDR_BUNDLE - 1:0] scdb_hdr_data_out;
+wire[P_N_SCDB - 1 : 0] scdb_hdr_empty;
+wire[P_N_SCDB - 1 : 0] scdb_rdreq;
+wire[P_N_SCDB - 1 : 0] scdb_hdr_rdreq;
+wire[P_N_SCDB - 1 : 0] scdb_rddone;
 
-secondary_buffer
-SCDB
-(
-  .clk(lclk),
-  .rst(lclk_rst),
-  .en(scdb_enable),
+generate
+for (i = 0; i < P_N_SCDB; i = i + 1) begin
+  secondary_buffer
+  #(
+    .N_CHANNELS(P_CHANNELS_PER_SCDB),
+    .CHANNELS_PER_CYCLE(P_SCDB_CHANNELS_PER_CYCLES),
+    .P_CHANNEL_OFFSET(i * P_CHANNELS_PER_SCDB)
+  )
+  SCDB
+  (
+    .clk(lclk),
+    .rst(lclk_rst),
+    .en(scdb_enable),
 
-  // Reader interface
-  .buf_data_out(scdb_data_out),
-  .hdr_data_out(scdb_hdr_data_out),
-  .buf_hdr_empty(scdb_hdr_empty),
+    // Reader interface
+    .buf_data_out(
+      scdb_data_out[(i+1)*P_READER_DATA_WIDTH-1:i*P_READER_DATA_WIDTH]
+    ),
+    .hdr_data_out(
+      scdb_hdr_data_out[(i+1)*L_WIDTH_MDOM_SCDB_HDR_BUNDLE-1:i*L_WIDTH_MDOM_SCDB_HDR_BUNDLE]
+    ),
+    .buf_hdr_empty(scdb_hdr_empty[i]),
 
-  .buf_rdreq(scdb_rdreq),
-  .buf_hdr_rdreq(scdb_hdr_rdreq),
-  .buf_rddone(scdb_rddone),
+    .buf_rdreq(scdb_rdreq[i]),
+    .buf_hdr_rdreq(scdb_hdr_rdreq[i]),
+    .buf_rddone(scdb_rddone[i]),
 
-  // WVB interface
-  .wvb_hdr_rdreq(wvb_hdr_rdreq),
-  .wvb_rdreq(wvb_wvb_rdreq),
-  .wvb_rddone(wvb_rddone),
-  .wvb_data(wvb_data_out),
-  .wvb_hdr_data(wvb_hdr_data),
-  .wvb_hdr_empty(wvb_hdr_empty),
+    // WVB interface
+    .wvb_hdr_rdreq(wvb_hdr_rdreq[(i+1)*P_CHANNELS_PER_SCDB - 1 : i*P_CHANNELS_PER_SCDB]),
+    .wvb_rdreq(wvb_wvb_rdreq[(i+1)*P_CHANNELS_PER_SCDB - 1 : i*P_CHANNELS_PER_SCDB]),
+    .wvb_rddone(wvb_rddone[(i+1)*P_CHANNELS_PER_SCDB - 1 : i*P_CHANNELS_PER_SCDB]),
+    .wvb_data(
+      wvb_data_out[(i+1)*P_CHANNELS_PER_SCDB*P_DATA_WIDTH - 1 :
+                   i*P_CHANNELS_PER_SCDB*P_DATA_WIDTH]
+    ),
+    .wvb_hdr_data(
+      wvb_hdr_data[(i+1)*P_CHANNELS_PER_SCDB*L_WIDTH_MDOM_WVB_HDR_BUNDLE_4 - 1 :
+                   i*P_CHANNELS_PER_SCDB*L_WIDTH_MDOM_WVB_HDR_BUNDLE_4]
+    ),
+    .wvb_hdr_empty(wvb_hdr_empty[(i+1)*P_CHANNELS_PER_SCDB - 1 : i*P_CHANNELS_PER_SCDB]),
 
-  // Diagnostics
-  .n_wvf_in_buf(n_wvf_in_scdb),
-  .buf_wds_used(scdb_wds_used)
-);
+    // Diagnostics
+    .n_wvf_in_buf(n_wvf_in_scdb[i]),
+    .buf_wds_used(scdb_wds_used[i])
+  );
+end
+endgenerate
 
 wire rdout_dpram_busy = hbuf_enable ? hbuf_dpram_busy : xdom_rdout_dpram_busy;
 
-wvb_reader #(.N_CHANNELS(1),
+wvb_reader #(.N_CHANNELS(P_N_SCDB),
              .P_DATA_WIDTH(P_READER_DATA_WIDTH),
              .P_WVB_ADR_WIDTH(L_WIDTH_MDOM_SCDB_HDR_BUNDLE_START_ADDR),
              .P_HDR_WIDTH(L_WIDTH_MDOM_SCDB_HDR_BUNDLE),

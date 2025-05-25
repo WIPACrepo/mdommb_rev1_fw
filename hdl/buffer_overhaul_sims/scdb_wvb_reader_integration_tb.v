@@ -252,15 +252,15 @@ always @(posedge clk) begin
     trig_src <= 3;
   end
   // overflow test; start secondary buffer later
-  // if (ltc == 8999) begin
-  //   secondary_buffer_enable <= 1;
-  // end
+  if (ltc == 8999) begin
+    secondary_buffer_enable <= 1;
+  end
 
   // check whether secondary buffer can keep up with 1 channel
   // start secondary buffer early
-  if (ltc == 9) begin
-    secondary_buffer_enable <= 1;
-  end
+  // if (ltc == 9) begin
+  //   secondary_buffer_enable <= 1;
+  // end
 
 end
 

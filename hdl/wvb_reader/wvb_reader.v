@@ -198,11 +198,17 @@ always @(posedge clk) begin
         // wait for ack
         if (rd_ctrl_ack) begin
           rd_ctrl_req <= 0;
+
+          chan_index <= (chan_index + 1) % N_CHANNELS;
           fsm <= S_DPRAM_BUSY_WAIT;
         end
       end
 
       S_DPRAM_BUSY_WAIT: begin
+        if (hdr_empty_mux_out) begin
+            chan_index <= (chan_index + 1) % N_CHANNELS;
+        end
+
         // wait for DPRAM to become busy
         if (dpram_busy) begin
           fsm <= S_DPRAM_DONE;
@@ -210,10 +216,12 @@ always @(posedge clk) begin
       end
 
       S_DPRAM_DONE: begin
+        if (hdr_empty_mux_out) begin
+            chan_index <= (chan_index + 1) % N_CHANNELS;
+        end
+
         // wait for DPRAM to be done (no longer busy)
         if (!dpram_busy) begin
-          // cycle to the next channel
-          chan_index <= (chan_index + 1) % N_CHANNELS;
           fsm <= S_IDLE;
         end
       end

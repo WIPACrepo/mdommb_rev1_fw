@@ -19,10 +19,10 @@ module mDOM_scdb_hdr_bundle_fan_out
 
 `include "mDOM_scdb_hdr_bundle_inc.v"
 
-   input [112:0] bundle;
+   input [110:0] bundle;
    output [48:0] evt_ltc;
-   output [11:0] start_addr;
-   output [11:0] stop_addr;
+   output [10:0] start_addr;
+   output [10:0] stop_addr;
    output [1:0] trig_src;
    output [0:0] cnst_run;
    output [4:0] pre_conf;
@@ -36,18 +36,18 @@ module mDOM_scdb_hdr_bundle_fan_out
    output [4:0] channel_idx;
 
 assign evt_ltc = bundle[48:0];
-assign start_addr = bundle[60:49];
-assign stop_addr = bundle[72:61];
-assign trig_src = bundle[74:73];
-assign cnst_run = bundle[75:75];
-assign pre_conf = bundle[80:76];
-assign sync_rdy = bundle[81:81];
-assign bsum = bundle[100:82];
-assign bsum_len_sel = bundle[103:101];
-assign bsum_valid = bundle[104:104];
-assign local_coinc = bundle[105:105];
-assign partial_wfm = bundle[106:106];
-assign continued_wfm = bundle[107:107];
-assign channel_idx = bundle[112:108];
+assign start_addr = bundle[59:49];
+assign stop_addr = bundle[70:60];
+assign trig_src = bundle[72:71];
+assign cnst_run = bundle[73:73];
+assign pre_conf = bundle[78:74];
+assign sync_rdy = bundle[79:79];
+assign bsum = bundle[98:80];
+assign bsum_len_sel = bundle[101:99];
+assign bsum_valid = bundle[102:102];
+assign local_coinc = bundle[103:103];
+assign partial_wfm = bundle[104:104];
+assign continued_wfm = bundle[105:105];
+assign channel_idx = bundle[110:106];
 
 endmodule
