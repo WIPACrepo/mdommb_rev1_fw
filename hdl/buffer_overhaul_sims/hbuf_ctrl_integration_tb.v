@@ -335,7 +335,7 @@ always @(posedge clk) begin
     pg_clr_req <= 1;
     // pg_clr_cnt <= 1;
     pg_clr_cnt <= 100;
-  end end else if (ltc == 14394) begin
+  end else if (ltc == 14394) begin
     pg_clr_req <= 1;
     pg_clr_cnt <= 3;
   end
