@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2021 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2025 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -57,8 +57,8 @@
 HBUF_RDOUT_DPRAM your_instance_name (
   .clka(clka),    // input wire clka
   .wea(wea),      // input wire [0 : 0] wea
-  .addra(addra),  // input wire [9 : 0] addra
-  .dina(dina),    // input wire [31 : 0] dina
+  .addra(addra),  // input wire [7 : 0] addra
+  .dina(dina),    // input wire [127 : 0] dina
   .clkb(clkb),    // input wire clkb
   .addrb(addrb),  // input wire [8 : 0] addrb
   .doutb(doutb)  // output wire [63 : 0] doutb

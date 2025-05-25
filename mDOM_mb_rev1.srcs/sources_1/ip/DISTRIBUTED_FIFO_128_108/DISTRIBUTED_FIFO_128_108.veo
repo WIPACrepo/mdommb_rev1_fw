@@ -63,7 +63,7 @@ DISTRIBUTED_FIFO_128_108 your_instance_name (
   .dout(dout),              // output wire [107 : 0] dout
   .full(full),              // output wire full
   .empty(empty),            // output wire empty
-  .data_count(data_count)  // output wire [6 : 0] data_count
+  .data_count(data_count)  // output wire [5 : 0] data_count
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

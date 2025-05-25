@@ -1,11 +1,11 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Fri Apr 18 12:25:23 2025
+// Date        : Sat May 17 23:13:08 2025
 // Host        : i3DevBox running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub -rename_top DISTRIBUTED_FIFO_128_108 -prefix
-//               DISTRIBUTED_FIFO_128_108_ BUILT_IN_FIFO_512_108_stub.v
-// Design      : BUILT_IN_FIFO_512_108
+// Command     : write_verilog -force -mode synth_stub
+//               C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/DISTRIBUTED_FIFO_128_108/DISTRIBUTED_FIFO_128_108_stub.v
+// Design      : DISTRIBUTED_FIFO_128_108
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7s100fgga676-2
 // --------------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 (* x_core_info = "fifo_generator_v13_2_4,Vivado 2019.1" *)
 module DISTRIBUTED_FIFO_128_108(clk, srst, din, wr_en, rd_en, dout, full, empty, 
   data_count)
-/* synthesis syn_black_box black_box_pad_pin="clk,srst,din[107:0],wr_en,rd_en,dout[107:0],full,empty,data_count[6:0]" */;
+/* synthesis syn_black_box black_box_pad_pin="clk,srst,din[107:0],wr_en,rd_en,dout[107:0],full,empty,data_count[5:0]" */;
   input clk;
   input srst;
   input [107:0]din;
@@ -25,5 +25,5 @@ module DISTRIBUTED_FIFO_128_108(clk, srst, din, wr_en, rd_en, dout, full, empty,
   output [107:0]dout;
   output full;
   output empty;
-  output [6:0]data_count;
+  output [5:0]data_count;
 endmodule
