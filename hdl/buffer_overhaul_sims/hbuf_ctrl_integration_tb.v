@@ -300,12 +300,12 @@ always @(posedge clk) begin
     rst <= 0;
   end
 
-  // continuous triggers w/ wfm length 2
+  // continuous triggers w/ wfm length 24
   if (ltc == 149) begin
     test_conf <= 24;
   end
 
-  if (ltc >= 159) begin
+  if (ltc >= 159 && ltc < 8356) begin
     trig <= 1;
     trig_src <= 3;
   end
@@ -326,6 +326,30 @@ always @(posedge clk) begin
   end
 
 end
+
+// page clear reqs
+always @(posedge clk) begin
+  if (pg_clr_req && pg_clr_ack) begin
+    pg_clr_req <= 0;
+  end else if (ltc == 9319) begin
+    pg_clr_req <= 1;
+    // pg_clr_cnt <= 1;
+    pg_clr_cnt <= 100;
+  end end else if (ltc == 14394) begin
+    pg_clr_req <= 1;
+    pg_clr_cnt <= 3;
+  end
+end
+
+// flush reqs
+always @(posedge clk) begin
+  if (flush_req && flush_ack) begin
+    flush_req <= 0;
+  end else if (ltc == 13819) begin
+    flush_req <= 1;
+  end
+end
+
 
 // handle page reqs, acks
 // simulate time to transfer a page (~270 clock cycles in the DDR3 clock domain)
@@ -374,4 +398,19 @@ wire[11:0] rd_pg_adc_word_3 = rd_pg_dpram_word_6[11:0];
 wire[7:0] rd_pg_channel_idx_a = rd_pg_dpram_word_0;
 wire[7:0] rd_pg_channel_idx_b = rd_pg_dpram_word_4;
 
+reg[15:0] prev_word_6 = 0;
+reg[15:0] prev_word_7 = 0;
+always @(posedge ddr3_clk) begin
+  prev_word_6 <= rd_pg_dpram_word_6;
+  prev_word_7 <= rd_pg_dpram_word_7;
+end
+
+wire[48:0] rd_pg_ltc_a = {rd_pg_dpram_word_3, 
+                          rd_pg_dpram_word_4,
+                          rd_pg_dpram_word_5,
+                          rd_pg_dpram_word_2[2]};
+wire[48:0] rd_pg_ltc_b = {prev_word_7, 
+                          rd_pg_dpram_word_0,
+                          rd_pg_dpram_word_1,
+                          prev_word_6[2]};
 endmodule
