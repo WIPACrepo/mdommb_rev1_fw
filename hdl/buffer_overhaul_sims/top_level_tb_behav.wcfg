@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="top_level_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="top_level_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="20873583333fs"></ZoomStartTime>
+      <ZoomEndTime time="21025283334fs"></ZoomEndTime>
+      <Cursor1Time time="21000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="264"></NameColumnWidth>
+      <ValueColumnWidth column_width="109"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="31" />
+   <wvobject fp_name="/top_level_tb/UUT_0/lclk" type="logic">
+      <obj_property name="ElementShortName">lclk</obj_property>
+      <obj_property name="ObjectShortName">lclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ltc" type="array">
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/XDOM_0/y_wr" type="logic">
+      <obj_property name="ElementShortName">y_wr</obj_property>
+      <obj_property name="ObjectShortName">y_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/XDOM_0/y_adr" type="array">
+      <obj_property name="ElementShortName">y_adr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">y_adr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/FMC_CEn" type="logic">
+      <obj_property name="ElementShortName">FMC_CEn</obj_property>
+      <obj_property name="ObjectShortName">FMC_CEn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/FMC_D" type="array">
+      <obj_property name="ElementShortName">FMC_D[15:0]</obj_property>
+      <obj_property name="ObjectShortName">FMC_D[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/fmc_din" type="array">
+      <obj_property name="ElementShortName">fmc_din[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fmc_din[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/fmc_dout" type="array">
+      <obj_property name="ElementShortName">fmc_dout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fmc_dout[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/i_fmc_oen_ne" type="logic">
+      <obj_property name="ElementShortName">i_fmc_oen_ne</obj_property>
+      <obj_property name="ObjectShortName">i_fmc_oen_ne</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/po_dout" type="array">
+      <obj_property name="ElementShortName">po_dout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">po_dout[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/po_dout_1" type="array">
+      <obj_property name="ElementShortName">po_dout_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">po_dout_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\genblk5[0].SCDB /n_wvf_in_buf" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="label">scdb 0 n wvf</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\genblk5[0].SCDB /buf_wds_used" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">buf_wds_used[15:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_wds_used[15:0]</obj_property>
+      <obj_property name="label">scdb 0 wds used</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\genblk5[1].SCDB /n_wvf_in_buf" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="label">scdb 1 n wvf</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\genblk5[1].SCDB /buf_wds_used" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">buf_wds_used[15:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_wds_used[15:0]</obj_property>
+      <obj_property name="label">scdb 1 wds used</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\genblk5[2].SCDB /n_wvf_in_buf" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="label">scdb 2 n wvf</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\genblk5[2].SCDB /buf_wds_used" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">buf_wds_used[15:0]</obj_property>
+      <obj_property name="ObjectShortName">buf_wds_used[15:0]</obj_property>
+      <obj_property name="label">scdb 2 wds used</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/HBUF_CTRL_0/en" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">en</obj_property>
+      <obj_property name="ObjectShortName">en</obj_property>
+      <obj_property name="label">hbuf_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/WVB_READER/en" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">en</obj_property>
+      <obj_property name="ObjectShortName">en</obj_property>
+      <obj_property name="label">wvb_reader_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/\waveform_acq_gen[15].WFM_ACQ /WVB/trig" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">trig</obj_property>
+      <obj_property name="ObjectShortName">trig</obj_property>
+      <obj_property name="label">channel 15 trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_wren" type="logic">
+      <obj_property name="ElementShortName">pg_dpram_wren</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_wr_addr" type="array">
+      <obj_property name="ElementShortName">pg_dpram_wr_addr[8:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_wr_addr[8:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_channel_number" type="array">
+      <obj_property name="ElementShortName">pg_dpram_channel_number[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_channel_number[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_evt_len" type="array">
+      <obj_property name="ElementShortName">pg_dpram_evt_len[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_evt_len[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_evt_ltc_low" type="array">
+      <obj_property name="ElementShortName">pg_dpram_evt_ltc_low[32:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_evt_ltc_low[32:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_adc_word_0" type="array">
+      <obj_property name="ElementShortName">pg_dpram_adc_word_0[11:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_adc_word_0[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_adc_word_1" type="array">
+      <obj_property name="ElementShortName">pg_dpram_adc_word_1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_adc_word_1[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_word_0" type="array">
+      <obj_property name="ElementShortName">pg_dpram_word_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_word_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_word_1" type="array">
+      <obj_property name="ElementShortName">pg_dpram_word_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_word_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_word_2" type="array">
+      <obj_property name="ElementShortName">pg_dpram_word_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_word_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/pg_dpram_word_3" type="array">
+      <obj_property name="ElementShortName">pg_dpram_word_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pg_dpram_word_3[15:0]</obj_property>
+   </wvobject>
+</wave_config>

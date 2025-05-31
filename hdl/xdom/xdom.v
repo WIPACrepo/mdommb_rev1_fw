@@ -392,8 +392,8 @@ crs_master CRSM_0
   // .po_en            (po_en),
   .po_en(1'b1),
   .po_wr            (po_wr),
-  .po_adr           (po_a),
-  .po_wr_data       (po_din),
+  .po_adr           (po_en ? po_a : 12'b0),
+  .po_wr_data       (po_en ? po_din : 16'b0),
   .po_rd_data       (po_dout)
 );
 
