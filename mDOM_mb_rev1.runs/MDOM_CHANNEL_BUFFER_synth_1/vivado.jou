@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat May 17 16:16:57 2025
+# Process ID: 18632
+# Current directory: C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.runs/MDOM_CHANNEL_BUFFER_synth_1
+# Command line: vivado.exe -log MDOM_CHANNEL_BUFFER.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source MDOM_CHANNEL_BUFFER.tcl
+# Log file: C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.runs/MDOM_CHANNEL_BUFFER_synth_1/MDOM_CHANNEL_BUFFER.vds
+# Journal file: C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.runs/MDOM_CHANNEL_BUFFER_synth_1\vivado.jou
+#-----------------------------------------------------------
+source MDOM_CHANNEL_BUFFER.tcl -notrace

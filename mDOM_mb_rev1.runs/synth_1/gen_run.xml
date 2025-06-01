@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7s100fgga676-2" LaunchTime="1668693863">
+<GenRun Id="synth_1" LaunchPart="xc7s100fgga676-2" LaunchTime="1748806664">
   <File Type="PA-TCL" Name="top.tcl"/>
   <File Type="RDS-PROPCONSTRS" Name="top_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="top_reports.tcl"/>
@@ -11,6 +11,13 @@
   <File Type="VDS-TIMING-PB" Name="top_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/ip/MDOM_CHANNEL_HDR_FIFO/MDOM_CHANNEL_HDR_FIFO.xci">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PPRDIR/hdl/DDR3/DDR3_DPRAM_transfer.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -110,6 +117,20 @@
       </FileInfo>
     </File>
     <File Path="$PPRDIR/hdl/discr_scaler/discr_scaler.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/distributed_hdr_fifo/distributed_hdr_fifo.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/double_buffer/double_buffer.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -242,6 +263,20 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_scdb_hdr_bundle/mDOM_scdb_hdr_bundle_fan_in.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_scdb_hdr_bundle/mDOM_scdb_hdr_bundle_fan_out.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PPRDIR/hdl/bundles/mDOM_trig_bundle/mDOM_trig_bundle_fan_in.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -270,42 +305,14 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_1/mDOM_wvb_hdr_bundle_1_fan_in.v">
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_4/mDOM_wvb_hdr_bundle_4_fan_in.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_1/mDOM_wvb_hdr_bundle_1_fan_out.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_2/mDOM_wvb_hdr_bundle_2_fan_in.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_2/mDOM_wvb_hdr_bundle_2_fan_out.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_3/mDOM_wvb_hdr_bundle_3_fan_in.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_3/mDOM_wvb_hdr_bundle_3_fan_out.v">
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_4/mDOM_wvb_hdr_bundle_4_fan_out.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -390,6 +397,13 @@
       </FileInfo>
     </File>
     <File Path="$PPRDIR/hdl/rs232_ser/rs232_ser.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/secondary_buffer/secondary_buffer.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -487,21 +501,7 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_0.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_1.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_2.v">
+    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_3.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -536,9 +536,71 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_1/mDOM_wvb_hdr_bundle_1_fan_out.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_2/mDOM_wvb_hdr_bundle_2_fan_out.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_0.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_1.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/wvb_rd_ctrl/wvb_rd_ctrl_fmt_2.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_3/mDOM_wvb_hdr_bundle_3_fan_out.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_1/mDOM_wvb_hdr_bundle_1_fan_in.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_2/mDOM_wvb_hdr_bundle_2_fan_in.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_3/mDOM_wvb_hdr_bundle_3_fan_in.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_0/mDOM_wvb_hdr_bundle_0_fan_in.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -546,7 +608,6 @@
     </File>
     <File Path="$PPRDIR/hdl/bundles/mDOM_wvb_hdr_bundle_0/mDOM_wvb_hdr_bundle_0_fan_out.v">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -562,6 +623,69 @@
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="ScopedToCell" Val="mig_7series_0"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/distributed_hdr_fifo/tb/distributed_fifo_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/waveform_buffer/sim/wvb_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/wvb_reader/sim/reader_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/buffer_overhaul_sims/four_word_wr_ctrl_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/secondary_buffer/sim/secondary_buffer_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/buffer_overhaul_sims/scdb_wvb_reader_integration_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/buffer_overhaul_sims/hbuf_ctrl_integration_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/buffer_overhaul_sims/multi_scdb_24_channel_integration_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/hdl/buffer_overhaul_sims/top_level_tb.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <Config>
@@ -598,24 +722,26 @@
     <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
     <Step Id="synth_design"/>
   </Strategy>
-  <BlockFileSet Type="BlockSrcs" Name="BUFFER_1024_22"/>
   <BlockFileSet Type="BlockSrcs" Name="ADC_SERDES"/>
   <BlockFileSet Type="BlockSrcs" Name="FIFO_2048_32"/>
   <BlockFileSet Type="BlockSrcs" Name="DIRECT_RDOUT_DPRAM"/>
   <BlockFileSet Type="BlockSrcs" Name="DIST_BUFFER_32_22"/>
-  <BlockFileSet Type="BlockSrcs" Name="FIFO_256_72"/>
+  <BlockFileSet Type="BlockSrcs" Name="AFE_PULSER_OUTPUT"/>
   <BlockFileSet Type="BlockSrcs" Name="XDOM_DDR3_PG"/>
+  <BlockFileSet Type="BlockSrcs" Name="DISCR_SERDES"/>
   <BlockFileSet Type="BlockSrcs" Name="ddr3_idelay_clk_wiz"/>
   <BlockFileSet Type="BlockSrcs" Name="idelay_discr_clk_wiz"/>
   <BlockFileSet Type="BlockSrcs" Name="lclk_adcclk_wiz"/>
-  <BlockFileSet Type="BlockSrcs" Name="DISCR_SERDES"/>
-  <BlockFileSet Type="BlockSrcs" Name="AFE_PULSER_OUTPUT"/>
   <BlockFileSet Type="BlockSrcs" Name="mig_7series_0"/>
   <BlockFileSet Type="BlockSrcs" Name="HBUF_RDOUT_DPRAM"/>
   <BlockFileSet Type="BlockSrcs" Name="HBUF_DDR3_PG"/>
-  <BlockFileSet Type="BlockSrcs" Name="FIFO_512_108"/>
-  <BlockFileSet Type="BlockSrcs" Name="BUFFER_2048_22"/>
   <BlockFileSet Type="BlockSrcs" Name="DIST_BUFFER_128_12"/>
   <BlockFileSet Type="BlockSrcs" Name="PULSER_OUT_DIFF"/>
   <BlockFileSet Type="BlockSrcs" Name="FIFO_1024_16"/>
+  <BlockFileSet Type="BlockSrcs" Name="FIFO_2048_117"/>
+  <BlockFileSet Type="BlockSrcs" Name="MDOM_SECONDARY_BUFFER"/>
+  <BlockFileSet Type="BlockSrcs" Name="MDOM_CHANNEL_BUFFER"/>
+  <BlockFileSet Type="BlockSrcs" Name="HBUF_RDOUT_DOUBLE_BUFFER"/>
+  <BlockFileSet Type="BlockSrcs" Name="HBUF_DDR3_PG_DOUBLE_BUFFER"/>
+  <BlockFileSet Type="BlockSrcs" Name="FIFO_1024_117"/>
 </GenRun>

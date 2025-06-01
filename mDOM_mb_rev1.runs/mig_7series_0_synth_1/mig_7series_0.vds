@@ -2,13 +2,13 @@
 # Vivado v2019.1 (64-bit)
 # SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Mon Mar 14 17:31:14 2022
-# Process ID: 8252
-# Current directory: D:/icecube/mdommb_rev1_fw/mDOM_mb_rev1.runs/mig_7series_0_synth_1
+# Start of session at: Fri Apr 18 12:03:18 2025
+# Process ID: 38700
+# Current directory: C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.runs/mig_7series_0_synth_1
 # Command line: vivado.exe -log mig_7series_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source mig_7series_0.tcl
-# Log file: D:/icecube/mdommb_rev1_fw/mDOM_mb_rev1.runs/mig_7series_0_synth_1/mig_7series_0.vds
-# Journal file: D:/icecube/mdommb_rev1_fw/mDOM_mb_rev1.runs/mig_7series_0_synth_1\vivado.jou
+# Log file: C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.runs/mig_7series_0_synth_1/mig_7series_0.vds
+# Journal file: C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.runs/mig_7series_0_synth_1\vivado.jou
 #-----------------------------------------------------------
 source mig_7series_0.tcl -notrace
 INFO: [IP_Flow 19-4838] Using cached IP synthesis design for IP mig_7series_0, cache-ID = b7e243e0dbccc01f.
-INFO: [Common 17-206] Exiting Vivado at Mon Mar 14 17:31:20 2022...
+INFO: [Common 17-206] Exiting Vivado at Fri Apr 18 12:03:27 2025...
