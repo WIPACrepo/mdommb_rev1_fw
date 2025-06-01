@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="951000000fs"></ZoomStartTime>
-      <ZoomEndTime time="1009800001fs"></ZoomEndTime>
-      <Cursor1Time time="970400000fs"></Cursor1Time>
+      <ZoomStartTime time="216709258980fs"></ZoomStartTime>
+      <ZoomEndTime time="216898916604fs"></ZoomEndTime>
+      <Cursor1Time time="216717307000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="264"></NameColumnWidth>
-      <ValueColumnWidth column_width="99"></ValueColumnWidth>
+      <ValueColumnWidth column_width="94"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="56" />
+   <WVObjectSize size="58" />
    <wvobject fp_name="/top_level_tb/UUT_0/lclk" type="logic">
       <obj_property name="ElementShortName">lclk</obj_property>
       <obj_property name="ObjectShortName">lclk</obj_property>
@@ -36,6 +36,10 @@
    <wvobject fp_name="/top_level_tb/UUT_0/XDOM_0/y_adr" type="array">
       <obj_property name="ElementShortName">y_adr[11:0]</obj_property>
       <obj_property name="ObjectShortName">y_adr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/FMC_OEn" type="logic">
+      <obj_property name="ElementShortName">FMC_OEn</obj_property>
+      <obj_property name="ObjectShortName">FMC_OEn</obj_property>
    </wvobject>
    <wvobject fp_name="/top_level_tb/FMC_CEn" type="logic">
       <obj_property name="ElementShortName">FMC_CEn</obj_property>
@@ -172,6 +176,11 @@
    <wvobject fp_name="/top_level_tb/UUT_0/hbuf_full" type="logic">
       <obj_property name="ElementShortName">hbuf_full</obj_property>
       <obj_property name="ObjectShortName">hbuf_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/hbuf_n_used_pgs" type="array">
+      <obj_property name="ElementShortName">hbuf_n_used_pgs[15:0]</obj_property>
+      <obj_property name="ObjectShortName">hbuf_n_used_pgs[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/top_level_tb/UUT_0/hbuf_pg_req" type="logic">
       <obj_property name="ElementShortName">hbuf_pg_req</obj_property>

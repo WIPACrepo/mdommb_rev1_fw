@@ -610,12 +610,12 @@ always @(posedge clk) begin
     end else if (hdr_rd_cnt >= HDR_WAIT_CNT) begin
       hdr_rd_cnt <= 0;
     end else if (hdr_rd_cnt > 0 && (hdr_rd_cnt < HDR_WAIT_CNT)) begin
-			hdr_rd_cnt <= hdr_rd_cnt + 1;
-		end
+      hdr_rd_cnt <= hdr_rd_cnt + 1;
+    end
   end
 end
 
-// not that in the following logic,
+// note that in the following logic,
 // we have to shift left to account for the extra bit in the read address 
 wire[P_RD_ADR_WIDTH - 1:0] final_stop_addr = {scdb_stop_addr, 1'b1};
 wire[P_RD_ADR_WIDTH - 1:0] shifted_start_addr =  {reader_wfm_scdb_start_addr, 1'b0};

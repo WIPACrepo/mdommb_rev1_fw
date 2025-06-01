@@ -6,10 +6,11 @@
 //
 // The 10 allocated hit buffer pages become full at ~200 microseconds
 //
-// We then read the first hit buffer page back out of the DDR3 memory
+// We read the first hit buffer page back out of the DDR3 memory at ~180 microseconds,
+// clear one page, and then we read the second hit buffer page at ~200 microseconds
 //
-// Run this for 220 usec to see the full process of filling up the hit buffer and reading back
-// the first page. It takes a few minutes to run.
+// Run this for 220 usec to see the full process of filling up the hit buffer and reading data
+// back out of it. It takes a couple minutes to run.
 
 `timescale 1ps/1ps
 
@@ -696,9 +697,7 @@ module top_level_tb;
         #(10_000_000);
 
         @(posedge clk) FMC_WEn=1; FMC_OEn = 0; FMC_CEn=0; FMC_A=16'hfff; fmc_din=16'h0; #1;
-        @(posedge clk) #1;
-        @(posedge clk) #1;
-        @(posedge clk) FMC_OEn = 1; #1;
+        @(posedge clk) FMC_OEn = 1; FMC_CEn = 1; #1;
         $display("Reading the FW_VNUM reg");
 
         // set pre conf to 4 samples
@@ -762,9 +761,9 @@ module top_level_tb;
         @(posedge clk) FMC_OEn=1; FMC_CEn=1; #1;
 
         //
-        // read the first hit buffer page
+        // read and clear hit buffer pages
         //
-        #(200_000_000); // wait 200 microseconds
+        #(180_000_000); // wait 200 microseconds
         // set the page address (page 21)
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbcc; fmc_din=16'ha800; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
@@ -775,6 +774,30 @@ module top_level_tb;
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbca; fmc_din=16'h1; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
 
+        #(10_000_000); // wait 10 microseconds
+        // clear one page
+        // set the page clear count
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbc0; fmc_din=16'h1; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // clear the page
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbbf; fmc_din=16'h2; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+
+        #(10_000_000); // wait 10 microseconds
+        // read the rd_pg_num
+        @(posedge clk) FMC_WEn=1; FMC_OEn = 0; FMC_CEn=0; FMC_A=16'hbbe; fmc_din=16'h0; #1;
+        @(posedge clk) #1;
+        @(posedge clk) #1;
+        @(posedge clk) FMC_OEn = 1; FMC_CEn = 1; #1;
+        // set the page address (page 22)
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbcc; fmc_din=16'hb000; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // set the optype (read)
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbcb; fmc_din=16'h0; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // send the transfer request
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbca; fmc_din=16'h1; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
 
      end
    `endif
