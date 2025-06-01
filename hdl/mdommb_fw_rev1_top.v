@@ -668,7 +668,7 @@ endgenerate
 //             [7] global_trig_pol
 //             [8] global_trig_en
 //             [9] cal_trig_trig_pol
-//             [10] cal_trig_tirg_en    
+//             [10] cal_trig_trig_en
 //     12'hbfd: trig threshold [11:0] (currently common to all channels)
 //     12'hbfc: [7:0] sw_trig_mask [23:16]
 //     12'hbfb: sw_trig_mask [15:0]
@@ -744,7 +744,7 @@ endgenerate
 //     12'hbca: [0] pg transfer task reg
 //     12'hbc9: DDR3 sys rst (active low)
 //     12'hbc8: DDR3 cal complete
-//     12'hbc7: [11:0] mem interface device 
+//     12'hbc7: [11:0] mem interface device temperature
 //     12'hbc6: [0] ddr3 ui sync rst
 //
 //     hit buffer controller
@@ -1549,7 +1549,6 @@ endgenerate
 //
 wire hbuf_dpram_busy;
 wire[127:0] hbuf_dpram_dout;
-wire[7:0] hbuf_dpram_addr;
 wire hbuf_pg_req;
 wire hbuf_pg_ack;
 wire hbuf_pg_optype;
