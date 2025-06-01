@@ -1,8 +1,17 @@
 //
-// Top level mDOM sim exercising the mDOM waveform buffering
+// Top level mDOM sim exercising the mDOM waveform buffering and DDR3 interface
 //
+// Note that ddr3_cal_complete is not asserted until ~130 microseconds,
+// at which point DDR3 pages begin to fill with data from the hit buffer controller
+//
+// The 10 allocated hit buffer pages become full at ~200 microseconds
+//
+// We then read the first hit buffer page back out of the DDR3 memory
+//
+// Run this for 220 usec to see the full process of filling up the hit buffer and reading back
+// the first page. It takes a few minutes to run.
 
-`timescale 1ns/1ns
+`timescale 1ps/1ps
 
 //////////////////////////////////////////////////////////////////////////////////
 // Test cases
@@ -16,7 +25,7 @@ module top_level_tb;
    //////////////////////////////////////////////////////////////////////
    // I/O
    //////////////////////////////////////////////////////////////////////
-   parameter CLK_PERIOD = 50;
+   parameter CLK_PERIOD = 50000;
    reg clk;
    reg rst;
 
@@ -120,6 +129,7 @@ module top_level_tb;
    wire			ddr3_ras_n;		// From UUT_0 of top.v
    wire			ddr3_reset_n;		// From UUT_0 of top.v
    wire			ddr3_we_n;		// From UUT_0 of top.v
+
    // End of automatics
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
@@ -629,6 +639,26 @@ module top_level_tb;
              .MON_ADC1_SDO		(MON_ADC1_SDO),
              .MON_ADC2_SDO		(MON_ADC2_SDO));
 
+    // include the DDR3 simulation model
+    ddr3_model ddr3(
+      .rst_n(ddr3_reset_n),
+      .ck(ddr3_ck_p),
+      .ck_n(ddr3_ck_n),
+      .cke(ddr3_cke),
+      .cs_n(ddr3_cs_n),
+      .ras_n(ddr3_ras_n),
+      .cas_n(ddr3_cas_n),
+      .we_n(ddr3_we_n),
+      .dm_tdqs(ddr3_dm),
+      .ba(ddr3_ba),
+      .addr(ddr3_addr),
+      .dq(ddr3_dq),
+      .dqs(ddr3_dqs_p),
+      .dqs_n(ddr3_dqs_n),
+      .tdqs_n(),
+      .odt(ddr3_odt)
+    );
+
    //////////////////////////////////////////////////////////////////////
    // Testbench
    //////////////////////////////////////////////////////////////////////
@@ -663,7 +693,7 @@ module top_level_tb;
         $display("------------------------------------------------------");
         $display("Test Case: TEST_CASE_1");
 
-        #(10000);
+        #(10_000_000);
 
         @(posedge clk) FMC_WEn=1; FMC_OEn = 0; FMC_CEn=0; FMC_A=16'hfff; fmc_din=16'h0; #1;
         @(posedge clk) #1;
@@ -689,12 +719,14 @@ module top_level_tb;
         // Enable hbuf controller
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbc5; fmc_din=16'h1; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        $display("Enable the WVB Reader");
 
         // enable wvb reader
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hdf4; fmc_din=16'h1; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        $display("Enable the WVB Reader");
+
+        // enable the memory interface
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbc9; fmc_din=16'h1; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
 
         // set the software trigger mask (channel 15)
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbfb; fmc_din=16'h8000; #1;
@@ -728,20 +760,37 @@ module top_level_tb;
         @(posedge clk) FMC_WEn=1; FMC_OEn <= 0; FMC_CEn<=0; FMC_A=16'hb8a; fmc_din=16'h0; #1;
         @(posedge clk) #1;
         @(posedge clk) FMC_OEn=1; FMC_CEn=1; #1;
+
+        //
+        // read the first hit buffer page
+        //
+        #(200_000_000); // wait 200 microseconds
+        // set the page address (page 21)
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbcc; fmc_din=16'ha800; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // set the optype (read)
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbcb; fmc_din=16'h0; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // send the transfer request
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbca; fmc_din=16'h1; #1;
+        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+
+
      end
    `endif
 
-// trigger the 24 channels, one after another
+// trigger the 24 channels, one after another, periodically
 wire[48:0] ltc = UUT_0.ltc;
 wire lclk = UUT_0.lclk;
+localparam TRIGGER_PERIOD = 250;
 generate
 genvar i_chan;
 for (i_chan = 0; i_chan < 24; i_chan = i_chan + 1) begin
   always @(posedge lclk) begin
-    if (ltc == 599 + i_chan) begin
+    if (ltc >= 599 + i_chan && (ltc - 599 - i_chan) % TRIGGER_PERIOD == 0) begin
       #1;
       force UUT_0.waveform_acq_gen[i_chan].WFM_ACQ.WVB.trig = 1'b1;
-      #20;
+      #20000;
       release UUT_0.waveform_acq_gen[i_chan].WFM_ACQ.WVB.trig;
     end
   end
@@ -766,6 +815,42 @@ wire[32:0] pg_dpram_evt_ltc_low = {pg_dpram_word_0, pg_dpram_word_1, last_wd_2[2
 
 wire[8:0] pg_dpram_wr_addr = UUT_0.HBUF_CTRL_0.pg_dpram_wr_addr;
 wire pg_dpram_wren = UUT_0.HBUF_CTRL_0.pg_dpram_wren;
+
+wire[127:0] ddr3_dpram_din = UUT_0.ddr3_dpram_din;
+wire ddr3_clk = UUT_0.ddr3_ui_clk;
+
+wire[15:0] rd_pg_dpram_word_0 = ddr3_dpram_din[15:0];
+wire[15:0] rd_pg_dpram_word_1 = ddr3_dpram_din[31:16];
+wire[15:0] rd_pg_dpram_word_2 = ddr3_dpram_din[47:32];
+wire[15:0] rd_pg_dpram_word_3 = ddr3_dpram_din[63:48];
+wire[15:0] rd_pg_dpram_word_4 = ddr3_dpram_din[79:64];
+wire[15:0] rd_pg_dpram_word_5 = ddr3_dpram_din[95:80];
+wire[15:0] rd_pg_dpram_word_6 = ddr3_dpram_din[111:96];
+wire[15:0] rd_pg_dpram_word_7 = ddr3_dpram_din[127:112];
+
+wire[11:0] rd_pg_adc_word_0 = rd_pg_dpram_word_0[11:0];
+wire[11:0] rd_pg_adc_word_1 = rd_pg_dpram_word_2[11:0];
+wire[11:0] rd_pg_adc_word_2 = rd_pg_dpram_word_4[11:0];
+wire[11:0] rd_pg_adc_word_3 = rd_pg_dpram_word_6[11:0];
+
+wire[7:0] rd_pg_channel_idx_a = rd_pg_dpram_word_0;
+wire[7:0] rd_pg_channel_idx_b = rd_pg_dpram_word_4;
+
+reg[15:0] prev_word_6 = 0;
+reg[15:0] prev_word_7 = 0;
+always @(posedge ddr3_clk) begin
+  prev_word_6 <= rd_pg_dpram_word_6;
+  prev_word_7 <= rd_pg_dpram_word_7;
+end
+
+wire[48:0] rd_pg_ltc_a = {rd_pg_dpram_word_3,
+                          rd_pg_dpram_word_4,
+                          rd_pg_dpram_word_5,
+                          rd_pg_dpram_word_2[2]};
+wire[48:0] rd_pg_ltc_b = {prev_word_7,
+                          rd_pg_dpram_word_0,
+                          rd_pg_dpram_word_1,
+                          prev_word_6[2]};
 
 endmodule
 

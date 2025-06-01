@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="20873583333fs"></ZoomStartTime>
-      <ZoomEndTime time="21025283334fs"></ZoomEndTime>
-      <Cursor1Time time="21000000000fs"></Cursor1Time>
+      <ZoomStartTime time="951000000fs"></ZoomStartTime>
+      <ZoomEndTime time="1009800001fs"></ZoomEndTime>
+      <Cursor1Time time="970400000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="264"></NameColumnWidth>
-      <ValueColumnWidth column_width="109"></ValueColumnWidth>
+      <ValueColumnWidth column_width="99"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="31" />
+   <WVObjectSize size="56" />
    <wvobject fp_name="/top_level_tb/UUT_0/lclk" type="logic">
       <obj_property name="ElementShortName">lclk</obj_property>
       <obj_property name="ObjectShortName">lclk</obj_property>
@@ -168,5 +168,113 @@
    <wvobject fp_name="/top_level_tb/pg_dpram_word_3" type="array">
       <obj_property name="ElementShortName">pg_dpram_word_3[15:0]</obj_property>
       <obj_property name="ObjectShortName">pg_dpram_word_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/hbuf_full" type="logic">
+      <obj_property name="ElementShortName">hbuf_full</obj_property>
+      <obj_property name="ObjectShortName">hbuf_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/hbuf_pg_req" type="logic">
+      <obj_property name="ElementShortName">hbuf_pg_req</obj_property>
+      <obj_property name="ObjectShortName">hbuf_pg_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/hbuf_pg_ack" type="logic">
+      <obj_property name="ElementShortName">hbuf_pg_ack</obj_property>
+      <obj_property name="ObjectShortName">hbuf_pg_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_cal_complete" type="logic">
+      <obj_property name="ElementShortName">ddr3_cal_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr3_cal_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_ui_clk" type="logic">
+      <obj_property name="ElementShortName">ddr3_ui_clk</obj_property>
+      <obj_property name="ObjectShortName">ddr3_ui_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_ui_sync_rst" type="logic">
+      <obj_property name="ElementShortName">ddr3_ui_sync_rst</obj_property>
+      <obj_property name="ObjectShortName">ddr3_ui_sync_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_dpram_addr" type="array">
+      <obj_property name="ElementShortName">ddr3_dpram_addr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dpram_addr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/hbuf_dpram_dout" type="array">
+      <obj_property name="ElementShortName">hbuf_dpram_dout[127:0]</obj_property>
+      <obj_property name="ObjectShortName">hbuf_dpram_dout[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/app_wdf_data" type="array">
+      <obj_property name="ElementShortName">app_wdf_data[127:0]</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_data[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/app_wdf_wren" type="logic">
+      <obj_property name="ElementShortName">app_wdf_wren</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/app_wdf_rdy" type="logic">
+      <obj_property name="ElementShortName">app_wdf_rdy</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/app_en" type="logic">
+      <obj_property name="ElementShortName">app_en</obj_property>
+      <obj_property name="ObjectShortName">app_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/app_rdy" type="logic">
+      <obj_property name="ElementShortName">app_rdy</obj_property>
+      <obj_property name="ObjectShortName">app_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/xdom_pg_req" type="logic">
+      <obj_property name="ElementShortName">xdom_pg_req</obj_property>
+      <obj_property name="ObjectShortName">xdom_pg_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/xdom_pg_ack" type="logic">
+      <obj_property name="ElementShortName">xdom_pg_ack</obj_property>
+      <obj_property name="ObjectShortName">xdom_pg_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_dpram_wren" type="logic">
+      <obj_property name="ElementShortName">ddr3_dpram_wren</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dpram_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_dpram_dout" type="array">
+      <obj_property name="ElementShortName">ddr3_dpram_dout[127:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dpram_dout[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_adc_word_0" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_0[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_0[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_adc_word_1" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_1[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_adc_word_2" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_2[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_adc_word_3" type="array">
+      <obj_property name="ElementShortName">rd_pg_adc_word_3[11:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_adc_word_3[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_channel_idx_a" type="array">
+      <obj_property name="ElementShortName">rd_pg_channel_idx_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_channel_idx_a[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_channel_idx_b" type="array">
+      <obj_property name="ElementShortName">rd_pg_channel_idx_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_channel_idx_b[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_ltc_a" type="array">
+      <obj_property name="ElementShortName">rd_pg_ltc_a[48:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_ltc_a[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_ltc_b" type="array">
+      <obj_property name="ElementShortName">rd_pg_ltc_b[48:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_ltc_b[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>
