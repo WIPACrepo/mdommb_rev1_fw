@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="216709258980fs"></ZoomStartTime>
-      <ZoomEndTime time="216898916604fs"></ZoomEndTime>
+      <ZoomStartTime time="216616057000fs"></ZoomStartTime>
+      <ZoomEndTime time="216737557001fs"></ZoomEndTime>
       <Cursor1Time time="216717307000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="264"></NameColumnWidth>
-      <ValueColumnWidth column_width="94"></ValueColumnWidth>
+      <ValueColumnWidth column_width="89"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="58" />
+   <WVObjectSize size="70" />
    <wvobject fp_name="/top_level_tb/UUT_0/lclk" type="logic">
       <obj_property name="ElementShortName">lclk</obj_property>
       <obj_property name="ObjectShortName">lclk</obj_property>
@@ -202,10 +202,6 @@
       <obj_property name="ElementShortName">ddr3_ui_sync_rst</obj_property>
       <obj_property name="ObjectShortName">ddr3_ui_sync_rst</obj_property>
    </wvobject>
-   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_dpram_addr" type="array">
-      <obj_property name="ElementShortName">ddr3_dpram_addr[7:0]</obj_property>
-      <obj_property name="ObjectShortName">ddr3_dpram_addr[7:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/top_level_tb/UUT_0/hbuf_dpram_dout" type="array">
       <obj_property name="ElementShortName">hbuf_dpram_dout[127:0]</obj_property>
       <obj_property name="ObjectShortName">hbuf_dpram_dout[127:0]</obj_property>
@@ -213,6 +209,26 @@
    <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/app_wdf_data" type="array">
       <obj_property name="ElementShortName">app_wdf_data[127:0]</obj_property>
       <obj_property name="ObjectShortName">app_wdf_data[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/PG_TRANS_CTRL/n_writes" type="array">
+      <obj_property name="ElementShortName">n_writes[31:0]</obj_property>
+      <obj_property name="ObjectShortName">n_writes[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/PG_TRANS_CTRL/n_app_reqs" type="array">
+      <obj_property name="ElementShortName">n_app_reqs[31:0]</obj_property>
+      <obj_property name="ObjectShortName">n_app_reqs[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/PG_TRANS_CTRL/app_fsm" type="array">
+      <obj_property name="ElementShortName">app_fsm[2:0]</obj_property>
+      <obj_property name="ObjectShortName">app_fsm[2:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/PG_TRANS_CTRL/dpram_fsm" type="array">
+      <obj_property name="ElementShortName">dpram_fsm[2:0]</obj_property>
+      <obj_property name="ObjectShortName">dpram_fsm[2:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/top_level_tb/UUT_0/DDR3_TRANSFER_0/MIG_7_SERIES/app_wdf_wren" type="logic">
       <obj_property name="ElementShortName">app_wdf_wren</obj_property>
@@ -242,6 +258,62 @@
       <obj_property name="ElementShortName">ddr3_dpram_wren</obj_property>
       <obj_property name="ObjectShortName">ddr3_dpram_wren</obj_property>
    </wvobject>
+   <wvobject fp_name="/top_level_tb/UUT_0/ddr3_dpram_addr" type="array">
+      <obj_property name="ElementShortName">ddr3_dpram_addr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dpram_addr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_0" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_0[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_1" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_2" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_3" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_4" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_4[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_4[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_5" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_5[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_5[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_6" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_6[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_6[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_dpram_word_7" type="array">
+      <obj_property name="ElementShortName">rd_pg_dpram_word_7[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_dpram_word_7[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_channel_idx_a" type="array">
+      <obj_property name="ElementShortName">rd_pg_channel_idx_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_channel_idx_a[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_channel_idx_b" type="array">
+      <obj_property name="ElementShortName">rd_pg_channel_idx_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_channel_idx_b[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_ltc_a" type="array">
+      <obj_property name="ElementShortName">rd_pg_ltc_a[48:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_ltc_a[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_level_tb/rd_pg_ltc_b" type="array">
+      <obj_property name="ElementShortName">rd_pg_ltc_b[48:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_pg_ltc_b[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="/top_level_tb/UUT_0/ddr3_dpram_dout" type="array">
       <obj_property name="ElementShortName">ddr3_dpram_dout[127:0]</obj_property>
       <obj_property name="ObjectShortName">ddr3_dpram_dout[127:0]</obj_property>
@@ -264,26 +336,6 @@
    <wvobject fp_name="/top_level_tb/rd_pg_adc_word_3" type="array">
       <obj_property name="ElementShortName">rd_pg_adc_word_3[11:0]</obj_property>
       <obj_property name="ObjectShortName">rd_pg_adc_word_3[11:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/rd_pg_channel_idx_a" type="array">
-      <obj_property name="ElementShortName">rd_pg_channel_idx_a[7:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_pg_channel_idx_a[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/rd_pg_channel_idx_b" type="array">
-      <obj_property name="ElementShortName">rd_pg_channel_idx_b[7:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_pg_channel_idx_b[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/rd_pg_ltc_a" type="array">
-      <obj_property name="ElementShortName">rd_pg_ltc_a[48:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_pg_ltc_a[48:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/rd_pg_ltc_b" type="array">
-      <obj_property name="ElementShortName">rd_pg_ltc_b[48:0]</obj_property>
-      <obj_property name="ObjectShortName">rd_pg_ltc_b[48:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>
