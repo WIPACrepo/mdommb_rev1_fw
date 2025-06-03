@@ -119,6 +119,7 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
   input 				hbuf_empty,
   input 				hbuf_full,
   input 				hbuf_buffered_data,
+  input hbuf_has_queued_page,
 
   // discr scalers
   (* max_fanout = 5 *) output reg [31:0] scaler_period = 0,
@@ -894,7 +895,8 @@ always @(*)
       12'hbbe: begin y_rd_data =       hbuf_rd_pg_num;                                         end
       12'hbbd: begin y_rd_data =       hbuf_wr_pg_num;                                         end
       12'hbbc: begin y_rd_data =       hbuf_n_used_pgs;                                        end
-      12'hbbb: begin y_rd_data =       {13'b0,
+      12'hbbb: begin y_rd_data =       {12'b0,
+                                        hbuf_has_queued_page,
                                         hbuf_buffered_data,
                                         hbuf_full, hbuf_empty};                                end
       12'hbba: begin y_rd_data =        scaler_period[31:16];                                  end

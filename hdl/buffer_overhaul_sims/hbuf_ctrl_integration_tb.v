@@ -215,6 +215,7 @@ wire[15:0] last_pg;
 reg[15:0] stop_pg = 0;
 reg flush_req = 0;
 wire flush_ack;
+wire has_queued_page;
 wire buffered_data;
 
 wire[15:0] rd_pg_num;
@@ -256,7 +257,8 @@ hbuf_ctrl HBUF_CTRL_0
  .pg_clr_ack(pg_clr_ack),
  
  .buffered_data(buffered_data),
- 
+ .has_queued_page(has_queued_page),
+
  .dpram_len_in(dpram_len_in),
  .rdout_dpram_run(dpram_run),
  .dpram_busy(dpram_busy),
@@ -366,7 +368,9 @@ always @(posedge ddr3_clk) begin
   wait_cnt <= 0;
   pg_ack <= pg_ack;
 
-  if (pg_req_sync && !pg_ack) begin
+  if (
+      (ltc > 3000) &&
+      pg_req_sync && !pg_ack) begin
     if (wait_cnt < PG_TRANSFER_WAIT_CNT_MAX) begin
       wait_cnt <= wait_cnt + 1;
       if (wait_cnt == 0) begin

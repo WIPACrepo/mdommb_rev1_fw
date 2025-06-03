@@ -37,7 +37,10 @@ module double_buffer
   output[P_RD_DATA_WIDTH - 1:0] rd_dout,
   output[15:0] dpram_len_out,
   input done,
-  output rd_busy
+  output rd_busy,
+
+  // general status
+  output any_busy
 );
 
 wire clk = wr_clk;
@@ -79,6 +82,8 @@ endgenerate
 assign wr_busy = busy[wr_buffer_index];
 assign rd_busy = busy[rd_buffer_index];
 assign dpram_len_out = dpram_lens[rd_buffer_index];
+
+assign any_busy = |busy;
 
 localparam 
   S_IDLE = 0,

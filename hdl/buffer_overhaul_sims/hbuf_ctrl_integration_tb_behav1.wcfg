@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="190270333333fs"></ZoomStartTime>
-      <ZoomEndTime time="190437933334fs"></ZoomEndTime>
-      <Cursor1Time time="190185000000fs"></Cursor1Time>
+      <ZoomStartTime time="152741333333fs"></ZoomStartTime>
+      <ZoomEndTime time="153033733334fs"></ZoomEndTime>
+      <Cursor1Time time="152985000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="264"></NameColumnWidth>
-      <ValueColumnWidth column_width="128"></ValueColumnWidth>
+      <ValueColumnWidth column_width="123"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="64" />
+   <WVObjectSize size="65" />
    <wave_markers>
       <marker time="13306533000" label="" />
    </wave_markers>
@@ -112,6 +112,14 @@
       <obj_property name="ObjectShortName">n_wvf_in_buf_23[15:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
+   <wvobject fp_name="/hbuf_ctrl_integration_tb/buffered_data" type="logic">
+      <obj_property name="ElementShortName">buffered_data</obj_property>
+      <obj_property name="ObjectShortName">buffered_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hbuf_ctrl_integration_tb/has_queued_page" type="logic">
+      <obj_property name="ElementShortName">has_queued_page</obj_property>
+      <obj_property name="ObjectShortName">has_queued_page</obj_property>
+   </wvobject>
    <wvobject fp_name="/hbuf_ctrl_integration_tb/flush_req" type="logic">
       <obj_property name="ElementShortName">flush_req</obj_property>
       <obj_property name="ObjectShortName">flush_req</obj_property>
@@ -185,10 +193,6 @@
    <wvobject fp_name="/hbuf_ctrl_integration_tb/pg_clr_ack" type="logic">
       <obj_property name="ElementShortName">pg_clr_ack</obj_property>
       <obj_property name="ObjectShortName">pg_clr_ack</obj_property>
-   </wvobject>
-   <wvobject fp_name="/hbuf_ctrl_integration_tb/buffered_data" type="logic">
-      <obj_property name="ElementShortName">buffered_data</obj_property>
-      <obj_property name="ObjectShortName">buffered_data</obj_property>
    </wvobject>
    <wvobject fp_name="/hbuf_ctrl_integration_tb/pg_req" type="logic">
       <obj_property name="ElementShortName">pg_req</obj_property>

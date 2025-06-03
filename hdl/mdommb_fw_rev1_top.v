@@ -371,7 +371,7 @@ module top (
 `include "mDOM_scdb_hdr_bundle_inc.v"
 `include "mDOM_bsum_bundle_inc.v"
 
-localparam[15:0] FW_VNUM = 16'h29;
+localparam[15:0] FW_VNUM = 16'h2a;
 
 // 1 for icm clock, 0 for Q_OSC
 localparam CLK_SRC = 1;
@@ -965,6 +965,7 @@ wire[15:0] hbuf_n_used_pgs;
 wire hbuf_empty;
 wire hbuf_full;
 wire hbuf_buffered_data;
+wire hbuf_has_queued_page;
 
 // discr scalers
 wire[31:0] scaler_period_xdom;
@@ -1236,6 +1237,7 @@ xdom #(.N_CHANNELS(N_CHANNELS)) XDOM_0
   .hbuf_empty(hbuf_empty),
   .hbuf_full(hbuf_full),
   .hbuf_buffered_data(hbuf_buffered_data),
+  .hbuf_has_queued_page(hbuf_has_queued_page),
 
   // scalers
   .scaler_period(scaler_period_xdom),
@@ -1579,6 +1581,7 @@ hbuf_ctrl HBUF_CTRL_0
  .pg_clr_ack(hbuf_pg_clr_ack),
 
  .buffered_data(hbuf_buffered_data),
+ .has_queued_page(hbuf_has_queued_page),
 
  .dpram_len_in(rdout_dpram_len),
  .rdout_dpram_run(rdout_dpram_run && hbuf_enable),

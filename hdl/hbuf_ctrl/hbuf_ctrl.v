@@ -60,9 +60,9 @@ module hbuf_ctrl
   input pg_clr_req,
   output reg pg_clr_ack = 0,
 
-  // whether the controller has buffered data
-  // that has not been sent to DDR3 memory
+  // whether the controller has a partially filled memory page
   output reg buffered_data = 0,
+  output reg has_queued_page = 0,
 
   // wvb reader DPRAM interface
   input[15:0] dpram_len_in,
@@ -86,7 +86,7 @@ module hbuf_ctrl
 
 // instantiate the reader DPRAM and the DDR3 DPRAM
 
-   
+
 //
 // wvb_reader readout double buffer
 //
@@ -109,7 +109,8 @@ double_buffer rdout_double_buffer(
   .rd_dout(rdout_dpram_dout),
   .dpram_len_out(dpram_len),
   .done(dpram_done),
-  .rd_busy(rdout_dpram_rd_busy)
+  .rd_busy(rdout_dpram_rd_busy),
+  .any_busy()
 );
 
 //
@@ -125,6 +126,7 @@ reg pg_dpram_run = 0;
 wire pg_dpram_wr_busy;
 reg pg_dpram_done = 0;
 wire pg_dpram_rd_busy;
+wire any_pg_busy;
 double_buffer #(.P_WR_ADDR_WIDTH(9),
                 .P_WR_DATA_WIDTH(64),
                 .P_RD_ADDR_WIDTH(8),
@@ -144,7 +146,8 @@ ddr3_pg_double_buffer(
   .rd_dout(ddr3_dpram_dout),
   .dpram_len_out(pg_dpram_len),
   .done(pg_dpram_done),
-  .rd_busy(pg_dpram_rd_busy)
+  .rd_busy(pg_dpram_rd_busy),
+  .any_busy(any_pg_busy)
 );
 
 //
@@ -310,14 +313,14 @@ wire[15:0] next_wr_pg_num = wr_pg_num == i_stop_pg ? i_start_pg : wr_pg_num + 1;
 // We need a register for the number
 // of words written so that the software
 // knows how many words to read during a
-// flush. 
+// flush.
 // The hit buffer sometimes inserts
 // two extra words of zeros at the end of
 // waveform packets. Those are included
 // in the number of valid words. The footer
-// is not included in i_n_words_written. 
+// is not included in i_n_words_written.
 reg [3:0] prev_fsm = 0;
-reg [15:0] 	   i_n_words_written = 0; 
+reg [15:0] 	   i_n_words_written = 0;
 always @(posedge clk) begin
     prev_fsm <= writer_fsm;
     if(rst || !en) begin
@@ -332,7 +335,7 @@ always @(posedge clk) begin
       end
     end
 end
-   
+
 // crc module
 reg crc_rst = 1;
 reg crc_en = 0;
@@ -406,6 +409,8 @@ always @(posedge clk) begin
         else if (dpram_len != 0) begin
           cnt <= 0;
           rdout_dpram_rd_addr <= 0;
+
+          writer_has_buffered_data <= 1;
           writer_fsm <= S_START_STREAM;
         end
 
@@ -435,8 +440,6 @@ always @(posedge clk) begin
       end
 
       S_WR_DATA: begin
-        writer_has_buffered_data <= 1;
-
         rdout_dpram_rd_addr <= rdout_dpram_rd_addr + 1;
 
         pg_dpram_wr_addr <= pg_dpram_wr_addr + 1;
@@ -496,6 +499,7 @@ always @(posedge clk) begin
         writer_fsm <= S_PG_DPRAM_BUSY_WAIT;
 
         if (pg_dpram_wr_busy) begin
+          writer_has_buffered_data <= rdout_dpram_rd_busy;
           writer_fsm <= S_PG_DPRAM_NOT_BUSY_WAIT;
         end
       end
@@ -504,7 +508,6 @@ always @(posedge clk) begin
         writer_fsm <= S_PG_DPRAM_NOT_BUSY_WAIT;
 
         if (!pg_dpram_wr_busy) begin
-          writer_has_buffered_data <= rdout_dpram_rd_busy;
           writer_fsm <= S_WR_HDR;
         end
       end
@@ -626,11 +629,16 @@ always @(posedge clk) begin
 end
 
 // handle buffered data signal
+always @(*) begin
+  buffered_data = writer_has_buffered_data;
+end
+
+// handle has_queued_page
 always @(posedge clk) begin
   if (rst || !en) begin
-    buffered_data <= 0;
+    has_queued_page <= 0;
   end else begin
-    buffered_data <= writer_has_buffered_data || pg_dpram_wr_busy || pg_dpram_rd_busy;
+    has_queued_page <= any_pg_busy;
   end
 end
 

@@ -760,10 +760,19 @@ module top_level_tb;
         @(posedge clk) #1;
         @(posedge clk) FMC_OEn=1; FMC_CEn=1; #1;
 
+        // read hit buffer status signals
+        @(posedge clk) FMC_WEn=1; FMC_OEn = 0; FMC_CEn=0; FMC_A=16'hbbb; fmc_din=16'h0; #1;
+        @(posedge clk) FMC_OEn = 1; FMC_CEn = 1; #1;
+
+        // read hit buffer status signals again
+        #(30_000_000);
+        @(posedge clk) FMC_WEn=1; FMC_OEn = 0; FMC_CEn=0; FMC_A=16'hbbb; fmc_din=16'h0; #1;
+        @(posedge clk) FMC_OEn = 1; FMC_CEn = 1; #1;
+
         //
         // read and clear hit buffer pages
         //
-        #(180_000_000); // wait 200 microseconds
+        #(150_000_000); // wait 200 microseconds
         // set the page address (page 21)
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hbcc; fmc_din=16'ha800; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
