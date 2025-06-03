@@ -762,6 +762,7 @@ endgenerate
 //     12'hbbb: [0] empty
 //              [1] full
 //              [2] buffered_data
+//              [3] queued_page
 //
 //     rate scalers
 //     12'hbba: scaler_period [31:16] (8 ns units)
