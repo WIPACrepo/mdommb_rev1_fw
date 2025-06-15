@@ -75,7 +75,13 @@ module waveform_acquisition #(parameter P_DATA_WIDTH = 22,
 
   //
   input local_coinc, // T. Anderson Sat 05/21/2022_14:43:19.49  
-  input lc_required  // T. Anderson Sat 05/21/2022_14:43:19.49  
+  input lc_required,  // T. Anderson Sat 05/21/2022_14:43:19.49
+
+  // overflow logging interface
+  input overflow_fifo_ack,
+  output overflow_fifo_req,
+  output[P_LTC_WIDTH-1:0] overflow_start_ltc,
+  output[P_LTC_WIDTH-1:0] overflow_end_ltc
 );
 `include "mDOM_bsum_bundle_inc.v"
 
@@ -327,7 +333,12 @@ waveform_buffer
    .bsum(bsum),
    .bsum_len_sel(prev_sum_len_sel),
    .bsum_valid(bsum_valid),
-   .local_coinc(local_coinc_2) // T. Anderson Sat 05/21/2022_14:44:06.33
+   .local_coinc(local_coinc_2), // T. Anderson Sat 05/21/2022_14:44:06.33
+
+   .overflow_fifo_ack(overflow_fifo_ack),
+   .overflow_fifo_req(overflow_fifo_req),
+   .overflow_start_ltc(overflow_start_ltc),
+   .overflow_end_ltc(overflow_end_ltc)
   );
 
 endmodule

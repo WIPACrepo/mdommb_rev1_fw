@@ -19,7 +19,7 @@ module wvb_wr_ctrl #(parameter P_ADR_WIDTH = 12,
   input rst,
 
   // Outputs
-  output reg overflow_out = 0,
+  output overflow_out,
   output reg armed = 0,
   output reg eoe = 0,
   (*max_fanout=5*) output reg[P_ADR_WIDTH-1:0] wvb_wr_addr = 0,
@@ -134,18 +134,17 @@ always @(posedge clk)
 // stop addr will always update along with wvb_wr_addr
 always @(*) i_stop_addr = wvb_wr_addr;
 
-// overflow control
-// an overflow will stop all writes
-// until the write controller is reset
+// overflow signals
+reg overflow_state = 0;
 always @(posedge clk) begin
   if (i_rst) begin
-    overflow_out <= 0;
-  end
-
-  else if (overflow_in || overflow_out) begin
-    overflow_out <= 1;
+    overflow_state <= 0;
+  end begin
+    overflow_state <= overflow_in;
   end
 end
+wire overflow_pe = overflow_in && !overflow_state;
+assign overflow_out = overflow_state;
 
 // handle trigger arm logic
 always @(posedge clk) begin
@@ -165,10 +164,10 @@ always @(posedge clk) begin
 end
 
 // writing_event logic
-wire write_condition = (trig && !overflow_in) || (fsm != S_IDLE);
+wire write_condition = (trig && !overflow_pe) || fsm != S_IDLE;
 wire mode_0_condition = (trig_mode == 0);
 wire mode_1_condition = (trig_mode == 1) && armed;
-assign writing_event = !overflow_out && write_condition && (mode_0_condition || mode_1_condition);
+assign writing_event = !overflow_state && write_condition && (mode_0_condition || mode_1_condition);
 
 // when writing an event, we assert wvb_wren every eighth clock cycle
 reg[2:0] write_cnt = 0;
@@ -242,9 +241,9 @@ always @(posedge clk) begin
     end
   end
 end
-assign split_evt = (n_writes_check) && (wvb_wren) && (!final_write) && (!overflow_in);
+assign split_evt = (n_writes_check) && (wvb_wren) && (!final_write) && (!overflow_pe);
 
-assign hdr_wren = wvb_wren && (final_write || overflow_in || split_evt);
+assign hdr_wren = wvb_wren && (final_write || overflow_pe || split_evt);
 always @(*) eoe = hdr_wren;
 
 
@@ -315,7 +314,7 @@ always @(posedge clk) begin
     fsm <= S_IDLE;
     wvb_wr_addr <= 0;
     sot_cnt <= 0;
-  end else if (overflow_out) begin
+  end else if (overflow_state) begin
     cnt <= 0;
     fsm <= S_IDLE;
     sot_cnt <= 0;

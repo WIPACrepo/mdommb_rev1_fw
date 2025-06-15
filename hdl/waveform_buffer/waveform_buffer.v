@@ -58,7 +58,14 @@ module waveform_buffer
   input[P_BSUM_WIDTH-1:0] bsum,
   input[P_BSUM_LEN_SEL_WIDTH-1:0] bsum_len_sel,
   input bsum_valid,
-  input local_coinc // T. Anderson Sat 05/21/2022_14:41:38.84
+  input local_coinc, // T. Anderson Sat 05/21/2022_14:41:38.84
+
+
+  // overflow logging interface
+  input overflow_fifo_ack,
+  output overflow_fifo_req,
+  output[P_LTC_WIDTH-1:0] overflow_start_ltc,
+  output[P_LTC_WIDTH-1:0] overflow_end_ltc
 );
 
 // register synchronous reset
@@ -193,7 +200,8 @@ wvb_rd_addr_ctrl
 wvb_overflow_ctrl
  #(
    .P_ADR_WIDTH(P_ADR_WIDTH),
-   .P_HDR_WIDTH(P_HDR_WIDTH)
+   .P_HDR_WIDTH(P_HDR_WIDTH),
+   .P_LTC_WIDTH(P_LTC_WIDTH)
   )
  OVERFLOW_CTRL
   (
@@ -208,7 +216,14 @@ wvb_overflow_ctrl
    .wvb_rddone(wvb_rddone),
    .wvb_wr_addr(wvb_wr_addr),
    .hdr_data(hdr_data_out),
-   .hdr_full(hdr_full)
+   .hdr_full(hdr_full),
+   .hdr_empty(hdr_empty),
+
+   .ltc(ltc_in),
+   .overflow_fifo_ack(overflow_fifo_ack),
+   .overflow_fifo_req(overflow_fifo_req),
+   .overflow_start_ltc(overflow_start_ltc),
+   .overflow_end_ltc(overflow_end_ltc)
   );
 
 endmodule

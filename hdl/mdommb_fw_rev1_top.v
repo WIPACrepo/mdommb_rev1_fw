@@ -371,7 +371,7 @@ module top (
 `include "mDOM_scdb_hdr_bundle_inc.v"
 `include "mDOM_bsum_bundle_inc.v"
 
-localparam[15:0] FW_VNUM = 16'h2a;
+localparam[15:0] FW_VNUM = 16'h2b;
 
 // 1 for icm clock, 0 for Q_OSC
 localparam CLK_SRC = 1;
@@ -1439,6 +1439,12 @@ wire cal_trig_s;
 sync SYNC_CAL_TRIG(.clk(lclk), .rst_n(!lclk_rst), .a(i_fpga_cal_trig), .y(cal_trig_s)); 
 wire cal_trig_trig_run = cal_trig_trig_pol == 1 ? cal_trig_s : ~cal_trig_s; 
 `endif
+
+// overflow FIFO signals
+wire[N_CHANNELS-1:0] overflow_fifo_req;
+wire[N_CHANNELS-1:0] overflow_fifo_ack;
+wire[N_CHANNELS*P_LTC_WIDTH-1:0] overflow_start_ltc;
+wire[N_CHANNELS*P_LTC_WIDTH-1:0] overflow_end_ltc;
    
 generate
   for (i = 0; i < N_CHANNELS; i = i + 1) begin : waveform_acq_gen
@@ -1495,7 +1501,12 @@ generate
     
       .bsum_bundle(xdom_bsum_bundle_reg),
       .local_coinc(local_coinc[i]), // T. Anderson Sat 05/21/2022_14:48:16.12
-      .lc_required(xdom_lc_required) // T. Anderson Sat 05/21/2022_14:48:16.12
+      .lc_required(xdom_lc_required), // T. Anderson Sat 05/21/2022_14:48:16.12
+
+      .overflow_fifo_ack(overflow_fifo_ack[i]),
+      .overflow_fifo_req(overflow_fifo_req[i]),
+      .overflow_start_ltc(overflow_start_ltc[P_LTC_WIDTH*(i+1)-1:P_LTC_WIDTH*i]),
+      .overflow_end_ltc(overflow_end_ltc[P_LTC_WIDTH*(i+1)-1:P_LTC_WIDTH*i])
     );
   end
 endgenerate

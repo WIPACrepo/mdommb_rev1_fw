@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="overflow_recovery_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="overflow_recovery_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="130573000fs"></ZoomStartTime>
+      <ZoomEndTime time="429973001fs"></ZoomEndTime>
+      <Cursor1Time time="186373000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="264"></NameColumnWidth>
+      <ValueColumnWidth column_width="119"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="23" />
+   <wvobject fp_name="/overflow_recovery_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/ltc" type="array">
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/overflow_out" type="logic">
+      <obj_property name="ElementShortName">overflow_out</obj_property>
+      <obj_property name="ObjectShortName">overflow_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/overflow_fifo_req" type="logic">
+      <obj_property name="ElementShortName">overflow_fifo_req</obj_property>
+      <obj_property name="ObjectShortName">overflow_fifo_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/overflow_fifo_ack" type="logic">
+      <obj_property name="ElementShortName">overflow_fifo_ack</obj_property>
+      <obj_property name="ObjectShortName">overflow_fifo_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/overflow_start_ltc" type="array">
+      <obj_property name="ElementShortName">overflow_start_ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">overflow_start_ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/overflow_end_ltc" type="array">
+      <obj_property name="ElementShortName">overflow_end_ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">overflow_end_ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/hdr_wrreq" type="logic">
+      <obj_property name="ElementShortName">hdr_wrreq</obj_property>
+      <obj_property name="ObjectShortName">hdr_wrreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/wvb_wrreq" type="logic">
+      <obj_property name="ElementShortName">wvb_wrreq</obj_property>
+      <obj_property name="ObjectShortName">wvb_wrreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/hdr_full" type="logic">
+      <obj_property name="ElementShortName">hdr_full</obj_property>
+      <obj_property name="ObjectShortName">hdr_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/hdr_empty" type="logic">
+      <obj_property name="ElementShortName">hdr_empty</obj_property>
+      <obj_property name="ObjectShortName">hdr_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/wvb_wused" type="array">
+      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/wvb_n_wvf_in_buf" type="array">
+      <obj_property name="ElementShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/OVERFLOW_CTRL/overflow_condition" type="logic">
+      <obj_property name="ElementShortName">overflow_condition</obj_property>
+      <obj_property name="ObjectShortName">overflow_condition</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/OVERFLOW_CTRL/overflow_pe_ltc" type="array">
+      <obj_property name="ElementShortName">overflow_pe_ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">overflow_pe_ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/OVERFLOW_CTRL/overflow_clear" type="logic">
+      <obj_property name="ElementShortName">overflow_clear</obj_property>
+      <obj_property name="ObjectShortName">overflow_clear</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/OVERFLOW_CTRL/in_overflow" type="logic">
+      <obj_property name="ElementShortName">in_overflow</obj_property>
+      <obj_property name="ObjectShortName">in_overflow</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/OVERFLOW_CTRL/overflow_start_ltc_0" type="array">
+      <obj_property name="ElementShortName">overflow_start_ltc_0[48:0]</obj_property>
+      <obj_property name="ObjectShortName">overflow_start_ltc_0[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/WVB/OVERFLOW_CTRL/overflow_end_ltc_0" type="array">
+      <obj_property name="ElementShortName">overflow_end_ltc_0[48:0]</obj_property>
+      <obj_property name="ObjectShortName">overflow_end_ltc_0[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/wvb_rdreq" type="logic">
+      <obj_property name="ElementShortName">wvb_rdreq</obj_property>
+      <obj_property name="ObjectShortName">wvb_rdreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/hdr_rdreq" type="logic">
+      <obj_property name="ElementShortName">hdr_rdreq</obj_property>
+      <obj_property name="ObjectShortName">hdr_rdreq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_tb/wvb_rddone" type="logic">
+      <obj_property name="ElementShortName">wvb_rddone</obj_property>
+      <obj_property name="ObjectShortName">wvb_rddone</obj_property>
+   </wvobject>
+</wave_config>
