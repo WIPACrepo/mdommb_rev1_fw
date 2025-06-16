@@ -99,19 +99,7 @@ localparam PRE_CONF_MIN = 3,
            CONST_CONF_MIN = 8;
 // update interal length conf values
 always @(posedge clk) begin
-  if (i_rst) begin
-    i_pre_conf <= 0;
-    i_post_conf <= 0;
-    i_test_conf <= 0;
-    i_const_conf <= 0;
-
-    i_pre_cnt_max <= 0;
-    i_post_cnt_max <= 0;
-    i_test_cnt_max <= 0;
-    i_const_cnt_max <= 0;
-  end
-
-  else if (fsm == S_IDLE) begin
+  if (fsm == S_IDLE) begin
     i_pre_conf <= pre_config >= PRE_CONF_MIN ? pre_config : PRE_CONF_MIN;
     i_post_conf <= post_config >= POST_CONF_MIN ? post_config : POST_CONF_MIN;
     // constrain test conf / cnst conf to multiples of 8
@@ -137,12 +125,9 @@ always @(*) i_stop_addr = wvb_wr_addr;
 // overflow signals
 reg overflow_state = 0;
 always @(posedge clk) begin
-  if (i_rst) begin
-    overflow_state <= 0;
-  end begin
-    overflow_state <= overflow_in;
-  end
+  overflow_state <= overflow_in;
 end
+
 wire overflow_pe = overflow_in && !overflow_state;
 assign overflow_out = overflow_state;
 
@@ -188,23 +173,17 @@ reg final_cnt_check = 0;
 // register cnt comparisons to help
 // with timing of hdr_wren
 always @(posedge clk) begin
-  if (i_rst) begin
-    final_cnt_check <= 0;
-  end
-
-  else begin
-    // check against cnt_max - 1 so that final_cnt_check
-    // will be true on the cycle where cnt == i_<x>_cnt_max
-    case (fsm)
-      S_IDLE:  final_cnt_check <= 0;
-      S_PRE:   final_cnt_check <= 0;
-      S_SOT:   final_cnt_check <= 0;
-      S_POST:  final_cnt_check <= (cnt >= i_post_cnt_max - 1) && (write_cnt == 6);
-      S_CONST: final_cnt_check <= cnt == i_const_cnt_max - 1;
-      S_TEST:  final_cnt_check <= cnt == i_test_cnt_max - 1;
-      default: final_cnt_check <= 0;
+  // check against cnt_max - 1 so that final_cnt_check
+  // will be true on the cycle where cnt == i_<x>_cnt_max
+  case (fsm)
+    S_IDLE:  final_cnt_check <= 0;
+    S_PRE:   final_cnt_check <= 0;
+    S_SOT:   final_cnt_check <= 0;
+    S_POST:  final_cnt_check <= (cnt >= i_post_cnt_max - 1) && (write_cnt == 6);
+    S_CONST: final_cnt_check <= cnt == i_const_cnt_max - 1;
+    S_TEST:  final_cnt_check <= cnt == i_test_cnt_max - 1;
+    default: final_cnt_check <= 0;
   endcase
-  end
 end
 
 // "final write" logic
@@ -226,19 +205,13 @@ reg split_evt_prev = 0;
 reg n_writes_check = 0;
 wire split_evt;
 always @(posedge clk) begin
-  if (i_rst) begin
-    n_writes <= 0;
-    split_evt_prev <= 0;
-    n_writes_check <= 0;
-  end else begin
-    split_evt_prev <= split_evt;
-    n_writes_check <= n_writes == MAX_WRITES_PER_PAYLOAD - 1;
+  split_evt_prev <= split_evt;
+  n_writes_check <= n_writes == MAX_WRITES_PER_PAYLOAD - 1;
 
-    if ((fsm == S_IDLE) || hdr_wren) begin
-      n_writes <= 0;
-    end else if (writing_event) begin  
-      n_writes <= n_writes + wvb_wren;
-    end
+  if ((fsm == S_IDLE) || hdr_wren) begin
+    n_writes <= 0;
+  end else if (writing_event) begin
+    n_writes <= n_writes + wvb_wren;
   end
 end
 assign split_evt = (n_writes_check) && (wvb_wren) && (!final_write) && (!overflow_pe);
@@ -251,30 +224,18 @@ always @(*) eoe = hdr_wren;
 // or after writing into the header fifo (e.g. after splitting a long event)
 reg hdr_wren_prev = 0;
 always @(posedge clk) begin
-  if (i_rst) begin
-    i_evt_ltc <= 0;
-    i_start_addr <= 0;
-    i_trig_src <= 0;
-    i_cnst_run <= 0;
-    i_icm_sync_rdy <= 0;
-    i_bsum <= 0;
-    i_bsum_len_sel <= 0;
-    i_bsum_valid <= 0;
-    hdr_wren_prev <= 0;
-  end else begin
-    hdr_wren_prev <= hdr_wren;
+  hdr_wren_prev <= hdr_wren;
 
-    if ((fsm == S_IDLE) || hdr_wren_prev) begin
-      i_evt_ltc <= ltc;
-      i_trig_src <= trig_src;
-      i_start_addr <= wvb_wr_addr;
-      i_cnst_run <= cnst_run;
-      i_icm_sync_rdy <= icm_sync_rdy;
-      i_bsum <= bsum;
-      i_bsum_len_sel <= bsum_len_sel;
-      i_bsum_valid <= bsum_valid;
-      i_continued_wfm <= split_evt_prev;
-    end
+  if ((fsm == S_IDLE) || hdr_wren_prev) begin
+    i_evt_ltc <= ltc;
+    i_trig_src <= trig_src;
+    i_start_addr <= wvb_wr_addr;
+    i_cnst_run <= cnst_run;
+    i_icm_sync_rdy <= icm_sync_rdy;
+    i_bsum <= bsum;
+    i_bsum_len_sel <= bsum_len_sel;
+    i_bsum_valid <= bsum_valid;
+    i_continued_wfm <= split_evt_prev;
   end
 end
 
