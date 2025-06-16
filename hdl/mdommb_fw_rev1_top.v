@@ -843,6 +843,18 @@ endgenerate
 //     12h'b8b: [15:0] n_wvf_in_secondary_buffer 2 (chans 16 - 23)
 //     12h'b8a: [15:0] secondary_buffer_wds_used 2 (chans 16 - 23)
 //
+//     overflow recovery fifo
+//     12'hb89: [15:0] overflow FIFO data count
+//     12'hb88: [0] overflow FIFO pop
+//     12'hb87: [15:0] overflow_start_ltc[48:33]
+//     12'hb86: [15:0] overflow_start_ltc[32:17]
+//     12'hb85: [15:0] overflow_start_ltc[16:1]
+//     12'hb84: [15:0] overflow_end_ltc[48:33]
+//     12'hb83: [15:0] overflow_end_ltc[32:17]
+//     12'hb82: [15:0] overflow_end_ltc[16:1]
+//     12'hb81: [15]   overflow_start_ltc[0]
+//              [14]   overflow_end_ltc[0]
+//              [4:0]  overflow_channel_index
 
 // trigger/wvb conf
 wire[L_WIDTH_MDOM_TRIG_BUNDLE-1:0] xdom_trig_bundle;
@@ -869,12 +881,12 @@ end
 wire[15:0] n_wvf_in_scdb[0:P_N_SCDB - 1];
 wire[15:0] scdb_wds_used[0:P_N_SCDB - 1];
 
-reg[15:0] n_wvf_in_scdb_1[0: P_N_SCDB - 1];
-reg[15:0] scdb_wds_used_1[0: P_N_SCDB - 1];
-reg[15:0] n_wvf_in_scdb_2[0: P_N_SCDB - 1];
-reg[15:0] scdb_wds_used_2[0: P_N_SCDB - 1];
-reg[15:0] n_wvf_in_scdb_3[0: P_N_SCDB - 1];
-reg[15:0] scdb_wds_used_3[0: P_N_SCDB - 1];
+reg[15:0] n_wvf_in_scdb_1[0:P_N_SCDB - 1];
+reg[15:0] scdb_wds_used_1[0:P_N_SCDB - 1];
+reg[15:0] n_wvf_in_scdb_2[0:P_N_SCDB - 1];
+reg[15:0] scdb_wds_used_2[0:P_N_SCDB - 1];
+reg[15:0] n_wvf_in_scdb_3[0:P_N_SCDB - 1];
+reg[15:0] scdb_wds_used_3[0:P_N_SCDB - 1];
 generate
 for (i = 0; i < P_N_SCDB; i = i + 1 ) begin
   initial begin
@@ -896,6 +908,27 @@ for (i = 0; i < P_N_SCDB; i = i + 1 ) begin
   end
 end
 endgenerate
+
+// overflow FIFO signals
+//
+wire[15:0] overflow_fifo_data_count;
+wire overflow_fifo_pop;
+wire[P_LTC_WIDTH-1:0] overflow_start_ltc_out;
+wire[P_LTC_WIDTH-1:0] overflow_end_ltc_out;
+wire[4:0] overflow_channel_index_out;
+// pipeline for overflow fifo outputs
+reg[15:0] overflow_fifo_data_count_1;
+reg[P_LTC_WIDTH-1:0] overflow_start_ltc_out_1;
+reg[P_LTC_WIDTH-1:0] overflow_end_ltc_out_1;
+reg[4:0] overflow_channel_index_out_1;
+always @(posedge lclk) begin
+  // pipeline for overflow fifo outputs
+  overflow_fifo_data_count_1 <= overflow_fifo_data_count;
+  overflow_start_ltc_out_1 <= overflow_start_ltc_out;
+  overflow_end_ltc_out_1 <= overflow_end_ltc_out;
+  overflow_channel_index_out_1 <= overflow_channel_index_out;
+end
+
 
 // wvb reader
 wire[15:0] rdout_dpram_len;
@@ -1297,6 +1330,12 @@ xdom #(.N_CHANNELS(N_CHANNELS)) XDOM_0
   .scdb_wds_used_1(scdb_wds_used_3[1]),
   .n_wvf_in_scdb_2(n_wvf_in_scdb_3[2]),
   .scdb_wds_used_2(scdb_wds_used_3[2]),
+
+  .overflow_fifo_data_count(overflow_fifo_data_count_1),
+  .overflow_fifo_pop(overflow_fifo_pop),
+  .overflow_start_ltc_out(overflow_start_ltc_out_1),
+  .overflow_end_ltc_out(overflow_end_ltc_out_1),
+  .overflow_channel_index_out(overflow_channel_index_out_1),
 
 `ifndef MDOMREV1
   // FPGA_CAL_TRIG trigger
@@ -1822,7 +1861,28 @@ thermal_shutdown THERMAL_SHUTDOWN_0 (
   .thermal_shutdown_temp(xdom_thermal_shutdown_temp),
   .thermal_shutdown(thermal_shutdown)
 ); 
-   
+
+//
+// overflow FIFO controller
+//
+overflow_fifo_ctrl #(.P_LTC_WIDTH(P_LTC_WIDTH),
+                     .N_CHANNELS(24))
+OVERFLOW_FIFO_CTRL
+(
+  .clk(lclk),
+  .rst(lclk_rst),
+  .req(overflow_fifo_req),
+  .overflow_start_ltc(overflow_start_ltc),
+  .overflow_end_ltc(overflow_end_ltc),
+  .ack(overflow_fifo_ack),
+  .rd_req(overflow_fifo_pop),
+  .overflow_fifo_count(overflow_fifo_data_count),
+  .overflow_start_ltc_out(overflow_start_ltc_out),
+  .overflow_end_ltc_out(overflow_end_ltc_out),
+  .channel_index_out(overflow_channel_index_out)
+);
+
+
 //
 // ADC3424 serial controls
 //

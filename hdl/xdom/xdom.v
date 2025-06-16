@@ -180,6 +180,13 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
   input[15:0] n_wvf_in_scdb_2,
   input[15:0] scdb_wds_used_2,
 
+  // overflow fifo
+  input[15:0] overflow_fifo_data_count,
+  output reg overflow_fifo_pop = 0,
+  input[48:0] overflow_start_ltc_out,
+  input[48:0] overflow_end_ltc_out,
+  input[4:0] overflow_channel_index_out,
+
 `ifndef MDOMREV1
   // FGPA_CAL_TRIG trigger
   output reg 				cal_trig_trig_en = 0,
@@ -957,6 +964,18 @@ always @(*)
       12'hb8c: begin y_rd_data =        {scdb_wds_used_1[12:0], 3'b0};                         end
       12'hb8b: begin y_rd_data =        n_wvf_in_scdb_2;                                       end
       12'hb8a: begin y_rd_data =        {scdb_wds_used_2[12:0], 3'b0};                         end
+      12'hb89: begin y_rd_data =        overflow_fifo_data_count;                              end
+      12'hb88: begin y_rd_data =        16'b0;                                                 end
+      12'hb87: begin y_rd_data =        overflow_start_ltc_out[48:33];                         end
+      12'hb86: begin y_rd_data =        overflow_start_ltc_out[32:17];                         end
+      12'hb85: begin y_rd_data =        overflow_start_ltc_out[16:1];                          end
+      12'hb84: begin y_rd_data =        overflow_end_ltc_out[48:33];                           end
+      12'hb83: begin y_rd_data =        overflow_end_ltc_out[32:17];                           end
+      12'hb82: begin y_rd_data =        overflow_end_ltc_out[16:1];                            end
+      12'hb81: begin y_rd_data =        {overflow_start_ltc_out[0],
+                                         overflow_end_ltc_out[0],
+                                         9'b0,
+                                         overflow_channel_index_out};                          end
       default:
         begin
           y_rd_data = xdom_dpram_rd_data;
@@ -986,6 +1005,8 @@ always @(posedge clk)
     fpga_cal_trig_single <= 0;
 
     slo_nconvst_os <= 0;
+
+    overflow_fifo_pop <= 0;
 
     if(y_wr)
       case(y_adr)
@@ -1128,6 +1149,7 @@ always @(posedge clk)
 	      12'hb92: begin n_lc_thr <= y_wr_data;                                                  end
 	      12'hb91: begin lc_required <= y_wr_data[0];                                            end
 	      12'hb90: begin xdom_thermal_shutdown_temp <= y_wr_data[11:0];                          end
+        12'hb88: begin overflow_fifo_pop <= y_wr_data[0];                                      end
 	      default: begin                                                                         end
       endcase
 end // always @ (posedge clk)

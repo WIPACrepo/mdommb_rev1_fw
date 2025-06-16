@@ -132,7 +132,6 @@ always @(posedge clk)
 begin
   if (rst) begin
     in_overflow <= 0;
-    overflow_pe_ltc <= 0;
   end else begin
     if (overflow_condition && !in_overflow) begin
       overflow_pe_ltc <= ltc;
@@ -152,7 +151,8 @@ localparam
   S_OVERFLOW = 1,
   S_CLEAR = 2,
   S_REQ = 3,
-  S_ACK_WAIT = 4;
+  S_ACK_WAIT = 4,
+  S_ACK_CLEAR_WAIT = 5;
 
 reg[2:0] fsm = S_IDLE;
 reg[P_LTC_WIDTH - 1:0] overflow_start_ltc_0 = 0;
@@ -160,9 +160,9 @@ reg[P_LTC_WIDTH - 1:0] overflow_end_ltc_0 = 0;
 always @(posedge clk) begin
   if (rst) begin
     overflow_clear <= 0;
-    overflow_start_ltc_0 <= 0;
-    overflow_end_ltc_0 <= 0;
     overflow_fifo_req <= 0;
+
+    fsm <= S_IDLE;
   end else begin
     overflow_clear <= 0;
     overflow_fifo_req <= 0;
@@ -198,6 +198,13 @@ always @(posedge clk) begin
 
         if (overflow_fifo_ack) begin
           overflow_fifo_req <= 0;
+          fsm <= S_ACK_CLEAR_WAIT;
+        end
+      end
+
+      S_ACK_CLEAR_WAIT: begin
+        fsm <= S_ACK_CLEAR_WAIT;
+        if (!overflow_fifo_ack) begin
           fsm <= S_IDLE;
         end
       end

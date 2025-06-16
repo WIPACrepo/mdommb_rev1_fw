@@ -50,7 +50,7 @@ reg[7:0] post_conf = 8;
 reg wvb_rst = 0;
 
 wire overflow_fifo_req;
-reg overflow_fifo_ack = 0;
+wire overflow_fifo_ack;
 wire[P_LTC_WIDTH-1:0] overflow_start_ltc;
 wire[P_LTC_WIDTH-1:0] overflow_end_ltc;
 
@@ -132,14 +132,14 @@ always @(posedge clk) begin
   // end
 
   // overflow from full buffer
-  if (ltc == 19) begin
-    test_conf <= 2040;
-  end
+  // if (ltc == 19) begin
+  //   test_conf <= 2040;
+  // end
 
   // overflow from full hdr fifo
-  // if (ltc == 19) begin
-  //   test_conf <= 16;
-  // end
+  if (ltc == 19) begin
+    test_conf <= 16;
+  end
 
   // start continuous triggering to cause an overflow
   if (ltc > 44) begin
@@ -163,12 +163,54 @@ always @(*) begin
   wvb_rddone = overflow_out && (clear_cnt == 4);
 end
 
-// acknowledge overflow req after two overflows have occurred
+// simulate handshakes
+// // acknowledge overflow req after two overflows have occurred
+// reg i_overflow_fifo_ack = 0;
+// assign overflow_fifo_ack = i_overflow_fifo_ack;
+// always @(posedge clk) begin
+//   if (ltc > 8999) begin
+//     i_overflow_fifo_ack <= overflow_fifo_req;
+//   end
+// end
+
+// include the real overflow fifo controller
+wire[23:0] overflow_fifo_ack_24;
+assign overflow_fifo_ack = overflow_fifo_ack_24[0];
+
+localparam N_CHANNELS = 24;
+
+wire[N_CHANNELS*P_LTC_WIDTH-1:0] overflow_start_ltc_24 = {{P_LTC_WIDTH*23{1'b0}}, overflow_start_ltc};
+wire[N_CHANNELS*P_LTC_WIDTH-1:0] overflow_end_ltc_24 = {{P_LTC_WIDTH*23{1'b0}}, overflow_end_ltc};
+
+reg overflow_fifo_rdreq = 0;
+
+wire[15:0] overflow_fifo_count;
+wire[P_LTC_WIDTH - 1:0] overflow_start_ltc_out;
+wire[P_LTC_WIDTH - 1:0] overflow_end_ltc_out;
+wire[4:0] channel_index_out;
+
+overflow_fifo_ctrl #(.P_LTC_WIDTH(P_LTC_WIDTH))
+OVFLW_FIFO_CTRL
+(
+  .clk(clk),
+  .rst(rst),
+  .req({23'b0, overflow_fifo_req}),
+  .overflow_start_ltc(overflow_start_ltc_24),
+  .overflow_end_ltc(overflow_end_ltc_24),
+  .ack(overflow_fifo_ack_24),
+  .rd_req(overflow_fifo_rdreq),
+  .overflow_fifo_count(overflow_fifo_count),
+  .overflow_start_ltc_out(overflow_start_ltc_out),
+  .overflow_end_ltc_out(overflow_end_ltc_out),
+  .channel_index_out(channel_index_out)
+);
+
+// read out an overflow event after the fifo is completely full
 
 always @(posedge clk) begin
-  if (ltc > 8999) begin
-    overflow_fifo_ack <= overflow_fifo_req;
+  overflow_fifo_rdreq <= 0;
+  if (ltc == 2117221) begin
+    overflow_fifo_rdreq <= 1;
   end
 end
-
 endmodule
