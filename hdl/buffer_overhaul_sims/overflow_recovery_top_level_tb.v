@@ -851,7 +851,7 @@ always @(posedge lclk) begin
       #(CLK_PERIOD * 2 + 1000);
       $display("Forcing pg_transfer_ack high");
       force UUT_0.hbuf_pg_ack = 1'b1;
-    end else if (pg_transfer_req && pg_transfer_ack) begin
+    end else if (!pg_transfer_req && pg_transfer_ack) begin
       #(CLK_PERIOD * 2 + 1000);
       $display("Forcing pg_transfer_ack low");
       force UUT_0.hbuf_pg_ack = 1'b0;
