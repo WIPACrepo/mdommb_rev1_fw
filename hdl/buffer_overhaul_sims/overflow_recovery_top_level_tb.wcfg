@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="overflow_recovery_top_level_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="overflow_recovery_top_level_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="65139499333fs"></ZoomStartTime>
+      <ZoomEndTime time="65322099334fs"></ZoomEndTime>
+      <Cursor1Time time="65151599333fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="264"></NameColumnWidth>
+      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="27" />
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/lclk" type="logic">
+      <obj_property name="ElementShortName">lclk</obj_property>
+      <obj_property name="ObjectShortName">lclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/ltc" type="array">
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/XDOM_0/y_wr" type="logic">
+      <obj_property name="ElementShortName">y_wr</obj_property>
+      <obj_property name="ObjectShortName">y_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/XDOM_0/y_adr" type="array">
+      <obj_property name="ElementShortName">y_adr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">y_adr[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/FMC_OEn" type="logic">
+      <obj_property name="ElementShortName">FMC_OEn</obj_property>
+      <obj_property name="ObjectShortName">FMC_OEn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/FMC_CEn" type="logic">
+      <obj_property name="ElementShortName">FMC_CEn</obj_property>
+      <obj_property name="ObjectShortName">FMC_CEn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/FMC_D" type="array">
+      <obj_property name="ElementShortName">FMC_D[15:0]</obj_property>
+      <obj_property name="ObjectShortName">FMC_D[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/fmc_din" type="array">
+      <obj_property name="ElementShortName">fmc_din[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fmc_din[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/fmc_dout" type="array">
+      <obj_property name="ElementShortName">fmc_dout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fmc_dout[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/i_fmc_oen_ne" type="logic">
+      <obj_property name="ElementShortName">i_fmc_oen_ne</obj_property>
+      <obj_property name="ObjectShortName">i_fmc_oen_ne</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/po_dout" type="array">
+      <obj_property name="ElementShortName">po_dout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">po_dout[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/po_dout_1" type="array">
+      <obj_property name="ElementShortName">po_dout_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">po_dout_1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/HBUF_CTRL_0/en" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">en</obj_property>
+      <obj_property name="ObjectShortName">en</obj_property>
+      <obj_property name="label">hbuf_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/WVB_READER/en" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">en</obj_property>
+      <obj_property name="ObjectShortName">en</obj_property>
+      <obj_property name="label">wvb_reader_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\waveform_acq_gen[15].WFM_ACQ /WVB/trig" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">trig</obj_property>
+      <obj_property name="ObjectShortName">trig</obj_property>
+      <obj_property name="label">channel 15 trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/hbuf_full" type="logic">
+      <obj_property name="ElementShortName">hbuf_full</obj_property>
+      <obj_property name="ObjectShortName">hbuf_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/hbuf_n_used_pgs" type="array">
+      <obj_property name="ElementShortName">hbuf_n_used_pgs[15:0]</obj_property>
+      <obj_property name="ObjectShortName">hbuf_n_used_pgs[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/hbuf_pg_req" type="logic">
+      <obj_property name="ElementShortName">hbuf_pg_req</obj_property>
+      <obj_property name="ObjectShortName">hbuf_pg_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/hbuf_pg_ack" type="logic">
+      <obj_property name="ElementShortName">hbuf_pg_ack</obj_property>
+      <obj_property name="ObjectShortName">hbuf_pg_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/ddr3_cal_complete" type="logic">
+      <obj_property name="ElementShortName">ddr3_cal_complete</obj_property>
+      <obj_property name="ObjectShortName">ddr3_cal_complete</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\genblk5[0].SCDB /current_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="label">scdb 0 current_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\genblk5[0].SCDB /next_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="label">scdb 0 next_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\genblk5[1].SCDB /current_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="label">scdb 1 current_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\genblk5[1].SCDB /next_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="label">scdb 2 next_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\genblk5[2].SCDB /current_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">current_chan_index[4:0]</obj_property>
+      <obj_property name="label">scdb 2 current_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/\genblk5[2].SCDB /next_chan_index" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">next_chan_index[4:0]</obj_property>
+      <obj_property name="label">scdb 2 next_chan_index[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/wvb_overflow" type="array">
+      <obj_property name="ElementShortName">wvb_overflow[23:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_overflow[23:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+</wave_config>
