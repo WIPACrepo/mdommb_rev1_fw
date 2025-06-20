@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-| Date         : Sun Jun  1 12:41:54 2025
+| Date         : Thu Jun 19 23:05:10 2025
 | Host         : i3DevBox running 64-bit major release  (build 9200)
 | Command      : report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb
 | Design       : top
@@ -30,16 +30,16 @@ Table of Contents
 +----------------------------+-------+-------+-----------+-------+
 |          Site Type         |  Used | Fixed | Available | Util% |
 +----------------------------+-------+-------+-----------+-------+
-| Slice LUTs*                | 32842 |     0 |     64000 | 51.32 |
-|   LUT as Logic             | 32293 |     0 |     64000 | 50.46 |
+| Slice LUTs*                | 34569 |     0 |     64000 | 54.01 |
+|   LUT as Logic             | 34020 |     0 |     64000 | 53.16 |
 |   LUT as Memory            |   549 |     0 |     17600 |  3.12 |
 |     LUT as Distributed RAM |     0 |     0 |           |       |
 |     LUT as Shift Register  |   549 |     0 |           |       |
-| Slice Registers            | 43059 |     0 |    128000 | 33.64 |
-|   Register as Flip Flop    | 43059 |     0 |    128000 | 33.64 |
+| Slice Registers            | 47553 |     0 |    128000 | 37.15 |
+|   Register as Flip Flop    | 47553 |     0 |    128000 | 37.15 |
 |   Register as Latch        |     0 |     0 |    128000 |  0.00 |
-| F7 Muxes                   |  1342 |     0 |     32000 |  4.19 |
-| F8 Muxes                   |     9 |     0 |     16000 |  0.06 |
+| F7 Muxes                   |  1406 |     0 |     32000 |  4.39 |
+| F8 Muxes                   |     0 |     0 |     16000 |  0.00 |
 +----------------------------+-------+-------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 
@@ -58,8 +58,8 @@ Table of Contents
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 803   |          Yes |         Set |            - |
-| 42256 |          Yes |       Reset |            - |
+| 772   |          Yes |         Set |            - |
+| 46781 |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -148,16 +148,16 @@ Table of Contents
 +------------+-------+---------------------+
 |  Ref Name  |  Used | Functional Category |
 +------------+-------+---------------------+
-| FDRE       | 42256 |        Flop & Latch |
-| LUT4       | 11496 |                 LUT |
-| LUT6       |  8352 |                 LUT |
-| CARRY4     |  6179 |          CarryLogic |
-| LUT3       |  5656 |                 LUT |
-| LUT2       |  5616 |                 LUT |
-| LUT1       |  5106 |                 LUT |
-| LUT5       |  4704 |                 LUT |
-| MUXF7      |  1342 |               MuxFx |
-| FDSE       |   803 |        Flop & Latch |
+| FDRE       | 46781 |        Flop & Latch |
+| LUT4       | 12227 |                 LUT |
+| LUT6       |  9201 |                 LUT |
+| CARRY4     |  6500 |          CarryLogic |
+| LUT2       |  5759 |                 LUT |
+| LUT3       |  5650 |                 LUT |
+| LUT1       |  5075 |                 LUT |
+| LUT5       |  4798 |                 LUT |
+| MUXF7      |  1406 |               MuxFx |
+| FDSE       |   772 |        Flop & Latch |
 | SRL16E     |   549 |  Distributed Memory |
 | OBUF       |    48 |                  IO |
 | IBUF       |    39 |                  IO |
@@ -165,7 +165,6 @@ Table of Contents
 | IBUFDS     |    15 |                  IO |
 | ODDR       |    12 |                  IO |
 | OBUFDS     |    12 |                  IO |
-| MUXF8      |     9 |               MuxFx |
 | INV        |     6 |                 LUT |
 | PULLUP     |     2 |                 I/O |
 | IDELAYCTRL |     1 |                  IO |
@@ -195,6 +194,7 @@ Table of Contents
 | idelay_discr_clk_wiz       |    1 |
 | ddr3_idelay_clk_wiz        |    1 |
 | XDOM_DDR3_PG               |    1 |
+| OVERFLOW_FIFO              |    1 |
 | HBUF_RDOUT_DOUBLE_BUFFER   |    1 |
 | HBUF_DDR3_PG_DOUBLE_BUFFER |    1 |
 | DIRECT_RDOUT_DPRAM         |    1 |

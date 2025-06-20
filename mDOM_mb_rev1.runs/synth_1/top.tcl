@@ -139,6 +139,9 @@ read_verilog -library xil_defaultlib {
   C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/hbuf_ctrl_integration_tb.v
   C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/multi_scdb_24_channel_integration_tb.v
   C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/top_level_tb.v
+  C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/overflow_fifo_ctrl/overflow_fifo_ctrl.v
+  C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/overflow_recovery_tb.v
+  C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/overflow_recovery_top_level_tb.v
 }
 read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/MDOM_CHANNEL_HDR_FIFO/MDOM_CHANNEL_HDR_FIFO.xci
 set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/MDOM_CHANNEL_HDR_FIFO/MDOM_CHANNEL_HDR_FIFO.xdc]
@@ -226,6 +229,10 @@ set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/
 read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/FIFO_1024_117/FIFO_1024_117.xci
 set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/FIFO_1024_117/FIFO_1024_117.xdc]
 set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/FIFO_1024_117/FIFO_1024_117_ooc.xdc]
+
+read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/OVERFLOW_FIFO_1/OVERFLOW_FIFO.xci
+set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/OVERFLOW_FIFO_1/OVERFLOW_FIFO.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/OVERFLOW_FIFO_1/OVERFLOW_FIFO_ooc.xdc]
 
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the

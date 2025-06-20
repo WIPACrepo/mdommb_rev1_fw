@@ -98,6 +98,7 @@ set rc [catch {
   read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/HBUF_RDOUT_DOUBLE_BUFFER/HBUF_RDOUT_DOUBLE_BUFFER.xci
   read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/HBUF_DDR3_PG_DOUBLE_BUFFER/HBUF_DDR3_PG_DOUBLE_BUFFER.xci
   read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/FIFO_1024_117/FIFO_1024_117.xci
+  read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/OVERFLOW_FIFO_1/OVERFLOW_FIFO.xci
   read_xdc C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/constrs/clocks.xdc
   read_xdc C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/constrs/io.xdc
   link_design -top top -part xc7s100fgga676-2

@@ -16,9 +16,11 @@ set_property src_info {type:XDC file:1 line:43 export:INPUT save:INPUT read:READ
 set_max_delay -from [get_pins {po_dout_1_reg[*]/C}] -to [get_clocks fmc_clk] 16.667 -datapath_only
 set_property src_info {type:XDC file:1 line:56 export:INPUT save:INPUT read:READ} [current_design]
 set_false_path -from [get_pins {i_fmc_a_1_reg[*]_rep/C}] -to [get_pins {po_dout_1_reg[*]/D}]
-set_property src_info {type:XDC file:1 line:73 export:INPUT save:INPUT read:READ} [current_design]
+set_property src_info {type:XDC file:1 line:57 export:INPUT save:INPUT read:READ} [current_design]
+set_false_path -from [get_pins {i_fmc_a_1_reg[*]_rep__*/C}] -to [get_pins {po_dout_1_reg[*]/D}]
+set_property src_info {type:XDC file:1 line:74 export:INPUT save:INPUT read:READ} [current_design]
 set_max_delay -from [get_clocks -of_objects [get_pins LCLK_ADCCLK_WIZ_0/inst/mmcm_adv_inst/CLKOUT0]] -to [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] 12.308 -datapath_only
-set_property src_info {type:XDC file:1 line:76 export:INPUT save:INPUT read:READ} [current_design]
+set_property src_info {type:XDC file:1 line:77 export:INPUT save:INPUT read:READ} [current_design]
 set_max_delay -from [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks -of_objects [get_pins LCLK_ADCCLK_WIZ_0/inst/mmcm_adv_inst/CLKOUT0]] 16.667 -datapath_only
 set_property src_info {type:XDC file:2 line:4 export:INPUT save:INPUT read:READ} [current_design]
 set_property PACKAGE_PIN AC19 [get_ports ADC0_CLOCK_P]
