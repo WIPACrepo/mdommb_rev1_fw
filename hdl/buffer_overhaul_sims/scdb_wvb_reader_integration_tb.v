@@ -107,7 +107,12 @@ WVB
    .bsum(19'b1),
    .bsum_len_sel(3'b1),
    .bsum_valid(1'b1),
-   .local_coinc(1'b0)
+   .local_coinc(1'b0),
+   .lc_required(1'b0),
+   .overflow_fifo_ack(1'b0),
+   .overflow_fifo_req(),
+   .overflow_start_ltc(),
+   .overflow_end_ltc()
   );
 
 // instantiate secondary buffer
@@ -252,15 +257,15 @@ always @(posedge clk) begin
     trig_src <= 3;
   end
   // overflow test; start secondary buffer later
-  if (ltc == 8999) begin
-    secondary_buffer_enable <= 1;
-  end
+  // if (ltc == 8999) begin
+  //   secondary_buffer_enable <= 1;
+  // end
 
   // check whether secondary buffer can keep up with 1 channel
   // start secondary buffer early
-  // if (ltc == 9) begin
-  //   secondary_buffer_enable <= 1;
-  // end
+  if (ltc == 9) begin
+    secondary_buffer_enable <= 1;
+  end
 
 end
 
@@ -319,7 +324,7 @@ always @(posedge clk) begin
         rdout_dpram_rd_addr <= max_rd_addr;
         // for testing,
         // artificially slow down the reader so that the secondary buffer fills up
-        // #10000
+        #10000
         if (!dpram_done) begin
           dpram_done <= 1;
         end
