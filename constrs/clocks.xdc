@@ -52,9 +52,7 @@ set_max_delay -from [get_pins {po_dout_1_reg[*]/C}] -to [get_clocks fmc_clk] 16.
 # set_false_path -from [get_pins {XDOM_0/CRSM_0/i_y_adr_reg[*]/C}] -to [get_pins {po_dout_1_reg[*]/D}]
 # and from a_1/cen_1 to po_dout_1_reg or FMC outputs. The registered FMC addr & cen only matter
 # for write operations
-set_false_path -from [get_pins {i_fmc_a_1_reg[*]/C}] -to [get_pins {po_dout_1_reg[*]/D}]
-set_false_path -from [get_pins {i_fmc_a_1_reg[*]_rep/C}] -to [get_pins {po_dout_1_reg[*]/D}]
-set_false_path -from [get_pins {i_fmc_a_1_reg[*]_rep__*/C}] -to [get_pins {po_dout_1_reg[*]/D}]
+set_false_path -from [get_pins {i_fmc_a_1_reg[*]*/C}] -to [get_pins {po_dout_1_reg[*]/D}]
 set_false_path -from [get_pins {i_fmc_cen_1_reg/C}] -to [get_pins {po_dout_1_reg[*]/D}]
 set_false_path -from [get_pins {i_fmc_a_1_reg[*]/C}] -to [get_clocks fmc_clk]
 set_false_path -from [get_pins {i_fmc_cen_1_reg/C}] -to [get_clocks fmc_clk]
