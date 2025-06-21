@@ -312,7 +312,7 @@ waveform_buffer
    .discr_in(discr_data_stream_2),
    // .tot(discr_tot || thresh_tot),
    .tot(thresh_tot_2),
-   .trig(lc_required ? local_coinc_2 : wvb_trig_2), // T. Anderson Sat 05/21/2022_15:08:42.48
+   .trig(wvb_trig_2),
    .trig_src(trig_src_2),
    .arm(wvb_arm),
 
@@ -334,6 +334,7 @@ waveform_buffer
    .bsum_len_sel(prev_sum_len_sel),
    .bsum_valid(bsum_valid),
    .local_coinc(local_coinc_2), // T. Anderson Sat 05/21/2022_14:44:06.33
+   .lc_required(lc_required),
 
    .overflow_fifo_ack(overflow_fifo_ack),
    .overflow_fifo_req(overflow_fifo_req),

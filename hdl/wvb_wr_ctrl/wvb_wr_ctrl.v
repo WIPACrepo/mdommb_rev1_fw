@@ -44,7 +44,8 @@ module wvb_wr_ctrl #(parameter P_ADR_WIDTH = 12,
   input[P_BSUM_WIDTH-1:0] bsum,
   input[P_BSUM_LEN_SEL_WIDTH-1:0] bsum_len_sel,
   input bsum_valid,
-  input local_coinc // T. Anderson Sat 05/21/2022_14:39:29.68
+  input local_coinc, // T. Anderson Sat 05/21/2022_14:39:29.68
+  input lc_required
 );
 `include "trigger_src_inc.v"
 `include "mDOM_wvb_hdr_bundle_2_inc.v"
@@ -77,9 +78,10 @@ reg i_icm_sync_rdy = 0;
 reg[P_BSUM_WIDTH-1:0] i_bsum = 0;
 reg[P_BSUM_LEN_SEL_WIDTH-1:0] i_bsum_len_sel = 0;
 reg i_bsum_valid = 0;
-reg i_local_coinc = 0; // T. Anderson Sat 05/21/2022_14:37:47.72 
+reg i_local_coinc = 0; // T. Anderson Sat 05/21/2022_14:37:47.72
 reg i_continued_wfm = 0;
-   
+reg i_lc_required = 0;
+
 // FSM states
 localparam
   S_IDLE = 0,
@@ -110,15 +112,17 @@ always @(posedge clk) begin
     i_post_cnt_max <= i_post_conf - 1;
     i_test_cnt_max <= i_test_conf - 1;
     i_const_cnt_max <= i_const_conf - 1;
+
+    i_lc_required <= lc_required;
   end
 end
 
 wire writing_event;
-// We want to latch the local coincidence flag if it fires at any time while writing the event. 
+// We want to latch the local coincidence flag if it fires at any time while writing the event.
 always @(posedge clk)
   if(writing_event && local_coinc) i_local_coinc <= 1'b1;
-  else if(fsm==S_IDLE) i_local_coinc <= 1'b0; 
-   
+  else if(fsm==S_IDLE) i_local_coinc <= 1'b0;
+
 // stop addr will always update along with wvb_wr_addr
 always @(*) i_stop_addr = wvb_wr_addr;
 
@@ -216,11 +220,26 @@ always @(posedge clk) begin
 end
 assign split_evt = (n_writes_check) && (wvb_wren) && (!final_write) && (!overflow_pe);
 
-assign hdr_wren = wvb_wren && (final_write || overflow_pe || split_evt);
+// accept the event if one of the following conditions is satisfied
+// 1. local coincidence is not required
+// 2. local coincidence is required and this event satisfies the local coincidence condition
+// 3. this event is part of a long waveform that was split into multiple packets
+// Long, split waveforms will always be written regardless of the local coincidence configuration.
+// This conservatively ensures that all waveforms that satisfy the LC condition will be recorded:
+// in the case of split waveforms, we might not know if the LC condition is satisfied at the time
+// when we have to write the event metadata into the header FIFO.
+// Then, if we write part of a long, split event, we might as well write all of it,
+// which is why we also write all continued waveform events.
+wire accept_event = (i_lc_required ? i_local_coinc : 1'b1) || i_continued_wfm;
+
+assign hdr_wren = wvb_wren && ((final_write && accept_event) || overflow_pe || split_evt);
+
+wire discard_event = final_write && !hdr_wren;
+
 always @(*) eoe = hdr_wren;
 
 
-// latch header values when fsm is in the idle state 
+// latch header values when fsm is in the idle state
 // or after writing into the header fifo (e.g. after splitting a long event)
 reg hdr_wren_prev = 0;
 always @(posedge clk) begin
@@ -280,9 +299,17 @@ always @(posedge clk) begin
     fsm <= S_IDLE;
     sot_cnt <= 0;
   end else begin
-    // always advance write address following a write
+    // always change write address following a write
     if (wvb_wren) begin
-      wvb_wr_addr <= wvb_wr_addr + 1;
+      if (discard_event) begin
+        // if we're rejecting an event because it failed
+        // to satisfy the local coincidence condition,
+        // rewind the wr addr to the beginning of that event
+        wvb_wr_addr <= i_start_addr;
+      end else begin
+        // otherwise, advance the wr addr by 1
+        wvb_wr_addr <= wvb_wr_addr + 1;
+      end
     end
 
     case (fsm)

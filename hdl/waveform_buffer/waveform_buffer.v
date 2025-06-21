@@ -59,7 +59,7 @@ module waveform_buffer
   input[P_BSUM_LEN_SEL_WIDTH-1:0] bsum_len_sel,
   input bsum_valid,
   input local_coinc, // T. Anderson Sat 05/21/2022_14:41:38.84
-
+  input lc_required,
 
   // overflow logging interface
   input overflow_fifo_ack,
@@ -175,7 +175,8 @@ wvb_wr_ctrl
    .bsum(bsum),
    .bsum_len_sel(bsum_len_sel),
    .bsum_valid(bsum_valid),
-   .local_coinc(local_coinc) // T. Anderson Sat 05/21/2022_14:41:47.21
+   .local_coinc(local_coinc), // T. Anderson Sat 05/21/2022_14:41:47.21
+   .lc_required(lc_required)
   );
 
 // read address controller

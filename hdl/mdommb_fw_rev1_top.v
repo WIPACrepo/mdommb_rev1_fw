@@ -371,7 +371,7 @@ module top (
 `include "mDOM_scdb_hdr_bundle_inc.v"
 `include "mDOM_bsum_bundle_inc.v"
 
-localparam[15:0] FW_VNUM = 16'h2b;
+localparam[15:0] FW_VNUM = 16'h2c;
 
 // 1 for icm clock, 0 for Q_OSC
 localparam CLK_SRC = 1;
