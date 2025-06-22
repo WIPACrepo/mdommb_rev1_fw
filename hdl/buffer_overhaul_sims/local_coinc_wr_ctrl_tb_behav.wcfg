@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2859416666fs"></ZoomStartTime>
-      <ZoomEndTime time="3028116667fs"></ZoomEndTime>
-      <Cursor1Time time="3000000000fs"></Cursor1Time>
+      <ZoomStartTime time="3076916667fs"></ZoomStartTime>
+      <ZoomEndTime time="3107216668fs"></ZoomEndTime>
+      <Cursor1Time time="3145000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="264"></NameColumnWidth>
-      <ValueColumnWidth column_width="114"></ValueColumnWidth>
+      <ValueColumnWidth column_width="109"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="20" />
+   <WVObjectSize size="21" />
    <wvobject fp_name="/local_coinc_wr_ctrl_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -36,6 +36,11 @@
    <wvobject fp_name="/local_coinc_wr_ctrl_tb/local_coinc" type="array">
       <obj_property name="ElementShortName">local_coinc[23:0]</obj_property>
       <obj_property name="ObjectShortName">local_coinc[23:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/local_coinc_wr_ctrl_tb/lc/i_cw" type="array">
+      <obj_property name="ElementShortName">i_cw[23:0]</obj_property>
+      <obj_property name="ObjectShortName">i_cw[23:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/local_coinc_wr_ctrl_tb/lc_required" type="logic">
