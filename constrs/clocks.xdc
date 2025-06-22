@@ -33,14 +33,12 @@ set_max_delay -from [get_clocks fmc_clk] -to [get_pins {po_dout_1_reg[*]/D}] 16.
 # do not time most paths from lclk registers to FMC outputs
 # exception is po_dout_1_reg, which is the one that really matters
 #set_false_path -from [get_cells -hier -filter {NAME =~ * && IS_SEQUENTIAL && NAME !~ po_dout_1_reg*}] -to [get_clocks fmc_clk]
-# just don't time any paths to the fmc_clk. The above constraint works, but selects a huge number of objects and is probably unnecessary
-set_false_path -from [get_clocks -of_objects [get_pins LCLK_ADCCLK_WIZ_0/inst/mmcm_adv_inst/CLKOUT0]] -to [get_clocks fmc_clk]
+# just constrain all paths from lclk to FMC clk to be < 2 clock cycles max delay
+# the above constraint works, but it selects a ton of paths. probably better to just constrain all the paths between the clocks
+set_max_delay -from [get_clocks -of_objects [get_pins LCLK_ADCCLK_WIZ_0/inst/mmcm_adv_inst/CLKOUT0]] -to [get_clocks fmc_clk] 16.667 -datapath_only
 set_false_path -from [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks fmc_clk]
 set_false_path -from [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks fpga_clk]
 set_false_path -from [get_clocks fpga_clk] -to [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]]
-
-# constrain delay from po_dout_1 to fmc outputs
-set_max_delay -from [get_pins {po_dout_1_reg[*]/C}] -to [get_clocks fmc_clk] 16.667 -datapath_only
 
 # from FMC to i_y_rd_addr in xdom
 # these are paths where the FMC sets the address and the data is
@@ -58,8 +56,8 @@ set_false_path -from [get_pins {i_fmc_a_1_reg[*]/C}] -to [get_clocks fmc_clk]
 set_false_path -from [get_pins {i_fmc_cen_1_reg/C}] -to [get_clocks fmc_clk]
 
 # ignore paths that go directly from FMC clock to xdom registers.
-# Write commands will always occur when oen == 1 and therefore use the registered 
-# fmc address, data, chip en, etc.  
+# Write commands will always occur when oen == 1 and therefore use the registered
+# fmc address, data, chip en, etc.
 # (see fmc_addr_mux in top level module)
 # IS_SEQUENTIAL selects the valid endpoints in xDOM
 set_false_path -from [get_clocks fmc_clk] -to [get_cells -hier -filter {NAME =~ XDOM_0/* && IS_SEQUENTIAL}]
@@ -67,11 +65,11 @@ set_false_path -from [get_clocks fmc_clk] -to [get_cells -hier -filter {NAME =~ 
 
 
 
-# set max delay from logic clock to DDR3 ui clock. DDR3 addrs, optypes must arrive before the synchronized pg_req. 
+# set max delay from logic clock to DDR3 ui clock. DDR3 addrs, optypes must arrive before the synchronized pg_req.
 # Use 12.308 ns delay, which is the period of the ddr3_ui_clk. This should ensure that all signals arrive in time
 set_max_delay -from [get_clocks -of_objects [get_pins LCLK_ADCCLK_WIZ_0/inst/mmcm_adv_inst/CLKOUT0]] -to [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] 12.308 -datapath_only
 # max delay from DDR3 ui clock to logic clock can be two logic clock cycles
-# this primarily affects sending the memory controller temperature reading to xDOM, but it also constrains handshake signals 
+# this primarily affects sending the memory controller temperature reading to xDOM, but it also constrains handshake signals
 set_max_delay -from [get_clocks -of_objects [get_pins DDR3_TRANSFER_0/MIG_7_SERIES/u_mig_7series_0_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks -of_objects [get_pins LCLK_ADCCLK_WIZ_0/inst/mmcm_adv_inst/CLKOUT0]] 16.667 -datapath_only
 
 # DDR input constraints are described in the following Xilinx forum thread

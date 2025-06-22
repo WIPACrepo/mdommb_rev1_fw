@@ -53,6 +53,11 @@ module local_coincidence #(parameter N_CHANNELS=24)
      end
 
    // Calculate the coincidence condition
-   assign local_coinc = coinc_level >= n_lc_thr ? i_cw : {N_CHANNELS{1'b0}};
+   reg[N_CHANNELS-1:0] lc_out = 0;
+   always @(posedge clk) begin
+    lc_out <= coinc_level >= n_lc_thr ? i_cw : {N_CHANNELS{1'b0}};
+   end
+
+   assign local_coinc = lc_out;
 
 endmodule
