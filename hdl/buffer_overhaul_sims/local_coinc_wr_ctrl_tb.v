@@ -69,7 +69,7 @@ local_coincidence lc(
   .clk(clk),
   .rst(rst),
   // LC window must be < pre_conf + post_conf
-  .lc_window_width(14),
+  .lc_window_width(13),
   .n_lc_thr(2),
   .trig(trig)
 );
@@ -176,7 +176,7 @@ always @(posedge clk) begin
     trig[0] <= 1'b1;
   end
 
-  if (ltc == 213) begin
+  if (ltc == 212) begin
     trig[1] <= 1'b1;
   end
 
