@@ -32,7 +32,7 @@
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSAVendor" Val="xilinx"/>
     <Option Name="DSANumComputeUnits" Val="60"/>
-    <Option Name="WTXSimLaunchSim" Val="904"/>
+    <Option Name="WTXSimLaunchSim" Val="968"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -758,6 +758,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/hdl/buffer_overhaul_sims/local_coinc_wr_ctrl_tb.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="top"/>
@@ -898,12 +905,18 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/hdl/buffer_overhaul_sims/local_coinc_wr_ctrl_tb_behav.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="overflow_recovery_top_level_tb"/>
+        <Option Name="TopModule" Val="overflow_recovery_tb"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
+        <Option Name="SimMode" Val="post-implementation"/>
         <Option Name="SrcSet" Val="sources_1"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/hdl/buffer_overhaul_sims/four_word_wr_ctrl_behav.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/hdl/secondary_buffer/sim/secondary_buffer_tb_behav.wcfg"/>
@@ -913,6 +926,7 @@
         <Option Name="XSimWcfgFile" Val="$PPRDIR/hdl/buffer_overhaul_sims/multi_scdb_24_channel_integration_tb_behav.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/hdl/buffer_overhaul_sims/multi_scdb_24_channel_integration_tb_behav.wcfg"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/top_level_tb_behav.wcfg"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/hdl/buffer_overhaul_sims/local_coinc_wr_ctrl_tb_behav.wcfg"/>
       </Config>
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">

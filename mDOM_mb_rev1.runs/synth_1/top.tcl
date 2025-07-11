@@ -17,6 +17,7 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param chipscope.maxJobs 5
 create_project -in_memory -part xc7s100fgga676-2
 
 set_param project.singleFileAddWarning.threshold 0
@@ -142,6 +143,7 @@ read_verilog -library xil_defaultlib {
   C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/overflow_fifo_ctrl/overflow_fifo_ctrl.v
   C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/overflow_recovery_tb.v
   C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/overflow_recovery_top_level_tb.v
+  C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/hdl/buffer_overhaul_sims/local_coinc_wr_ctrl_tb.v
 }
 read_ip -quiet C:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/MDOM_CHANNEL_HDR_FIFO/MDOM_CHANNEL_HDR_FIFO.xci
 set_property used_in_implementation false [get_files -all c:/Users/i3devmachine/mdom/updates/mdommb_rev1_fw/mDOM_mb_rev1.srcs/sources_1/ip/MDOM_CHANNEL_HDR_FIFO/MDOM_CHANNEL_HDR_FIFO.xdc]
