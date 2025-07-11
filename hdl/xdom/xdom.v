@@ -183,6 +183,7 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
   // overflow fifo
   input[15:0] overflow_fifo_data_count,
   output reg overflow_fifo_pop = 0,
+  output reg overflow_fifo_clear = 0,
   input[48:0] overflow_start_ltc_out,
   input[48:0] overflow_end_ltc_out,
   input[4:0] overflow_channel_index_out,
@@ -1007,6 +1008,7 @@ always @(posedge clk)
     slo_nconvst_os <= 0;
 
     overflow_fifo_pop <= 0;
+    overflow_fifo_clear <= 0;
 
     if(y_wr)
       case(y_adr)
@@ -1149,7 +1151,10 @@ always @(posedge clk)
 	      12'hb92: begin n_lc_thr <= y_wr_data;                                                  end
 	      12'hb91: begin lc_required <= y_wr_data[0];                                            end
 	      12'hb90: begin xdom_thermal_shutdown_temp <= y_wr_data[11:0];                          end
-        12'hb88: begin overflow_fifo_pop <= y_wr_data[0];                                      end
+        12'hb88: begin 
+          overflow_fifo_pop <= y_wr_data[0];
+          overflow_fifo_clear <= y_wr_data[1];
+        end
 	      default: begin                                                                         end
       endcase
 end // always @ (posedge clk)

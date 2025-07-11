@@ -846,6 +846,7 @@ endgenerate
 //     overflow recovery fifo
 //     12'hb89: [15:0] overflow FIFO data count
 //     12'hb88: [0] overflow FIFO pop
+//     12'hb88: [1] overflow FIFO clear
 //     12'hb87: [15:0] overflow_start_ltc[48:33]
 //     12'hb86: [15:0] overflow_start_ltc[32:17]
 //     12'hb85: [15:0] overflow_start_ltc[16:1]
@@ -913,6 +914,7 @@ endgenerate
 //
 wire[15:0] overflow_fifo_data_count;
 wire overflow_fifo_pop;
+wire overflow_fifo_clear;
 wire[P_LTC_WIDTH-1:0] overflow_start_ltc_out;
 wire[P_LTC_WIDTH-1:0] overflow_end_ltc_out;
 wire[4:0] overflow_channel_index_out;
@@ -1333,6 +1335,7 @@ xdom #(.N_CHANNELS(N_CHANNELS)) XDOM_0
 
   .overflow_fifo_data_count(overflow_fifo_data_count_1),
   .overflow_fifo_pop(overflow_fifo_pop),
+  .overflow_fifo_clear(overflow_fifo_clear),
   .overflow_start_ltc_out(overflow_start_ltc_out_1),
   .overflow_end_ltc_out(overflow_end_ltc_out_1),
   .overflow_channel_index_out(overflow_channel_index_out_1),
@@ -1871,6 +1874,7 @@ OVERFLOW_FIFO_CTRL
 (
   .clk(lclk),
   .rst(lclk_rst),
+  .clear(overflow_fifo_clear),
   .req(overflow_fifo_req),
   .overflow_start_ltc(overflow_start_ltc),
   .overflow_end_ltc(overflow_end_ltc),

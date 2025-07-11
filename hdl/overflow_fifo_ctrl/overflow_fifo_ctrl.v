@@ -14,6 +14,8 @@ module overflow_fifo_ctrl #(parameter N_CHANNELS = 24,
   input clk,
   input rst,
 
+  input clear,
+
   // waveform acquisition module interface
   input[N_CHANNELS-1:0] req,
   input[N_CHANNELS*P_LTC_WIDTH-1:0] overflow_start_ltc,
@@ -29,6 +31,11 @@ module overflow_fifo_ctrl #(parameter N_CHANNELS = 24,
   output[P_LTC_WIDTH-1:0] overflow_end_ltc_out,
   output[4:0] channel_index_out
 );
+
+wire i_clear;
+one_shot clear_os(.clk(clk), .rst_n(!rst), .trig(clear),
+                  .n0(0), .n1(10),
+                  .a0(1'b0), .a1(1'b1), .busy(), .y(i_clear));
 
 // register mux inputs
 reg[4:0] channel_index = 0;
@@ -113,7 +120,7 @@ localparam
 reg[2:0] fsm = S_IDLE;
 
 always @(posedge clk) begin
-  if (rst) begin
+  if (rst || i_clear) begin
     fifo_wren <= 0;
     fifo_din <= 0;
     i_ack <= 0;
@@ -191,7 +198,7 @@ wire fifo_empty;
 wire[102:0] fifo_dout;
 OVERFLOW_FIFO overflow_fifo_storage (
   .clk(clk),
-  .srst(rst),
+  .srst(rst || i_clear),
   .full(fifo_full),
   .din(fifo_din),
   .wr_en(fifo_wren),
