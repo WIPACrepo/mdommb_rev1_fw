@@ -1,11 +1,11 @@
 //
 // Top level mDOM sim exercising the automated overflow recovery logging
 //
-// 
+//
 // Note that ddr3_cal_complete is not asserted until ~130 microseconds,
 // before this, the primary waveform buffers will overflow
 //
-// After data starts moving into the hit buffer, the channel buffers will clear 
+// After data starts moving into the hit buffer, the channel buffers will clear
 // and the overflow recoveries will occur. We then read the overflow data out of x dom
 //
 // Run this for 600 usec to see the full process of all 24 channels entering overflow, recovering,
@@ -801,19 +801,23 @@ module overflow_recovery_top_level_tb;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
         @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
-        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
-        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
-        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
-        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
-        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
-        @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
-        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+        // @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h1; #1;
+        // @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
+
+        // clear the fifo
+        @(posedge clk) FMC_WEn=0; FMC_CEn=0; FMC_A=16'hb88; fmc_din=16'h2; #1;
         @(posedge clk) FMC_WEn=1; FMC_CEn=1; fmc_din=0; FMC_A=0; #1;
      end
    `endif
@@ -844,7 +848,7 @@ endgenerate
 wire pg_transfer_req = UUT_0.hbuf_pg_req;
 wire pg_transfer_ack = UUT_0.hbuf_pg_ack;
 always @(posedge lclk) begin
-  // only start acknowledging handshakes after 
+  // only start acknowledging handshakes after
   // all buffers have overflowed
   if (ltc > 7019) begin
     if (pg_transfer_req && !pg_transfer_ack) begin

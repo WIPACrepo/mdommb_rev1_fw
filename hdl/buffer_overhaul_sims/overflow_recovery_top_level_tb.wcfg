@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1521747100000fs"></ZoomStartTime>
-      <ZoomEndTime time="1522110700001fs"></ZoomEndTime>
-      <Cursor1Time time="1522050100000fs"></Cursor1Time>
+      <ZoomStartTime time="600819583333fs"></ZoomStartTime>
+      <ZoomEndTime time="601699083334fs"></ZoomEndTime>
+      <Cursor1Time time="601000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="264"></NameColumnWidth>
-      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+      <ValueColumnWidth column_width="79"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="35" />
+   <WVObjectSize size="36" />
    <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/lclk" type="logic">
       <obj_property name="ElementShortName">lclk</obj_property>
       <obj_property name="ObjectShortName">lclk</obj_property>
@@ -174,11 +174,14 @@
    <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/wvb_overflow" type="array">
       <obj_property name="ElementShortName">wvb_overflow[23:0]</obj_property>
       <obj_property name="ObjectShortName">wvb_overflow[23:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/XDOM_0/overflow_fifo_pop" type="logic">
       <obj_property name="ElementShortName">overflow_fifo_pop</obj_property>
       <obj_property name="ObjectShortName">overflow_fifo_pop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/OVERFLOW_FIFO_CTRL/clear" type="logic">
+      <obj_property name="ElementShortName">clear</obj_property>
+      <obj_property name="ObjectShortName">clear</obj_property>
    </wvobject>
    <wvobject fp_name="/overflow_recovery_top_level_tb/UUT_0/XDOM_0/overflow_fifo_data_count" type="array">
       <obj_property name="ElementShortName">overflow_fifo_data_count[15:0]</obj_property>
