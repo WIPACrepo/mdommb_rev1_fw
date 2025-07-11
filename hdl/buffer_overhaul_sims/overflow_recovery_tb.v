@@ -104,6 +104,7 @@ WVB
    .bsum_len_sel(3'b1),
    .bsum_valid(1'b1),
    .local_coinc(1'b0),
+   .lc_required(1'b0),
 
    .overflow_fifo_ack(overflow_fifo_ack),
    .overflow_fifo_req(overflow_fifo_req),
@@ -189,11 +190,14 @@ wire[P_LTC_WIDTH - 1:0] overflow_start_ltc_out;
 wire[P_LTC_WIDTH - 1:0] overflow_end_ltc_out;
 wire[4:0] channel_index_out;
 
+reg overflow_fifo_clr = 0;
+
 overflow_fifo_ctrl #(.P_LTC_WIDTH(P_LTC_WIDTH))
 OVFLW_FIFO_CTRL
 (
   .clk(clk),
   .rst(rst),
+  .clear(overflow_fifo_clr),
   .req({23'b0, overflow_fifo_req}),
   .overflow_start_ltc(overflow_start_ltc_24),
   .overflow_end_ltc(overflow_end_ltc_24),
@@ -209,8 +213,14 @@ OVFLW_FIFO_CTRL
 
 always @(posedge clk) begin
   overflow_fifo_rdreq <= 0;
+  overflow_fifo_clr <= 0;
   if (ltc == 2117221) begin
     overflow_fifo_rdreq <= 1;
+  end
+
+  // clear the FIFO
+  if (ltc == 2117231) begin
+    overflow_fifo_clr <= 1;
   end
 end
 endmodule

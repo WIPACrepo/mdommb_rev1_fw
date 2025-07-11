@@ -32,10 +32,10 @@ module overflow_fifo_ctrl #(parameter N_CHANNELS = 24,
   output[4:0] channel_index_out
 );
 
-wire i_clear;
-one_shot clear_os(.clk(clk), .rst_n(!rst), .trig(clear),
-                  .n0(0), .n1(10),
-                  .a0(1'b0), .a1(1'b1), .busy(), .y(i_clear));
+reg i_clear = 0;
+always @(posedge clk) begin
+  i_clear <= clear;
+end
 
 // register mux inputs
 reg[4:0] channel_index = 0;
@@ -120,7 +120,7 @@ localparam
 reg[2:0] fsm = S_IDLE;
 
 always @(posedge clk) begin
-  if (rst || i_clear) begin
+  if (rst) begin
     fifo_wren <= 0;
     fifo_din <= 0;
     i_ack <= 0;

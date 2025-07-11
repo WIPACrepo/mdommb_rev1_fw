@@ -122,8 +122,8 @@ module xdom #(parameter N_CHANNELS = 24, parameter P_WIDTH_MDOM_BSUM_BUNDLE = 45
   input hbuf_has_queued_page,
 
   // discr scalers
-  (* max_fanout = 5 *) output reg [31:0] scaler_period = 0,
-  (* max_fanout = 5 *) output reg [31:0] scaler_inhibit_len = 0,
+  output reg [31:0] scaler_period = 0,
+  output reg [31:0] scaler_inhibit_len = 0,
   input [N_CHANNELS*32-1:0] 		disc_scaler_out,
   // thresh scaler
   input [N_CHANNELS*32-1:0] 		thresh_scaler_out,
@@ -1151,7 +1151,7 @@ always @(posedge clk)
 	      12'hb92: begin n_lc_thr <= y_wr_data;                                                  end
 	      12'hb91: begin lc_required <= y_wr_data[0];                                            end
 	      12'hb90: begin xdom_thermal_shutdown_temp <= y_wr_data[11:0];                          end
-        12'hb88: begin 
+        12'hb88: begin
           overflow_fifo_pop <= y_wr_data[0];
           overflow_fifo_clear <= y_wr_data[1];
         end

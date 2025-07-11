@@ -16,7 +16,7 @@ module local_time_counter #(parameter P_LTC_WIDTH = 49)
    input             clk, // clock
    input             rst, // active high reset
    // Local time
-   (* max_fanout = 5 *) output reg [P_LTC_WIDTH-1:0] ltc=0, // the clock counter
+   output reg [P_LTC_WIDTH-1:0] ltc=0, // the clock counter
    // Time word synchonization
    input [P_LTC_WIDTH-1:0]      ltc_wr_data,
    input             ltc_wr_req,

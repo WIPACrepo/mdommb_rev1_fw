@@ -1460,9 +1460,9 @@ wire [N_CHANNELS-1:0] local_coinc; // T. Anderson Sat 05/21/2022_14:48:16.12
 wire [N_CHANNELS-1:0] wvb_trig_out; // T. Anderson Sat 05/21/2022_14:48:16.12
    
 // register the xdom trigger/wvb configuration
-(* max_fanout = 5 *) reg[L_WIDTH_MDOM_TRIG_BUNDLE-1:0] xdom_trig_bundle_reg;
-(* max_fanout = 5 *) reg[L_WIDTH_MDOM_WVB_CONF_BUNDLE-1:0] xdom_wvb_conf_bundle_reg;
-(* max_fanout = 5 *) reg[L_WIDTH_MDOM_BSUM_BUNDLE-1:0] xdom_bsum_bundle_reg;
+reg[L_WIDTH_MDOM_TRIG_BUNDLE-1:0] xdom_trig_bundle_reg;
+reg[L_WIDTH_MDOM_WVB_CONF_BUNDLE-1:0] xdom_wvb_conf_bundle_reg;
+reg[L_WIDTH_MDOM_BSUM_BUNDLE-1:0] xdom_bsum_bundle_reg;
 always @(posedge lclk) begin
   xdom_trig_bundle_reg <= xdom_trig_bundle;
   xdom_wvb_conf_bundle_reg <= xdom_wvb_conf_bundle;
@@ -1567,8 +1567,8 @@ local_coincidence #(.N_CHANNELS(N_CHANNELS)) LOCAL_COINCIDENCE_0
 
    
 // scalers
-(* max_fanout = 5 *) reg[31:0] scaler_period = 0;
-(* max_fanout = 5 *) reg[31:0] scaler_inhibit_len = 0;
+reg[31:0] scaler_period = 0;
+reg[31:0] scaler_inhibit_len = 0;
 always @(posedge lclk) begin
   scaler_period <= scaler_period_xdom;
   scaler_inhibit_len <= scaler_inhibit_len_xdom;
