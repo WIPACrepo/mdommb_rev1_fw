@@ -145,7 +145,8 @@ module local_coincidence_tb;
   for (chan = 0; chan < 24; chan = chan + 1) begin
     always @(posedge clk) begin
       trig[chan] <= 1;
-      if ((cnt - chan) % 8 == 0) trig[chan] <= 0;
+      // if ((cnt - (chan % 5)) % 8 == 0) trig[chan] <= 0;
+      if ((cnt - (chan % 8)) % 8 == 0) trig[chan] <= 0;
     end
   end
   endgenerate
