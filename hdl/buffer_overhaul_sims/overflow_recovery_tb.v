@@ -214,9 +214,9 @@ OVFLW_FIFO_CTRL
 always @(posedge clk) begin
   overflow_fifo_rdreq <= 0;
   overflow_fifo_clr <= 0;
-  if (ltc == 2117221) begin
-    overflow_fifo_rdreq <= 1;
-  end
+  // if (ltc == 2117221) begin
+  //   overflow_fifo_rdreq <= 1;
+  // end
 
   // clear the FIFO
   if (ltc == 2117231) begin
