@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Test cases
 //////////////////////////////////////////////////////////////////////////////////
-`define TEST_CASE_1
+`define TEST_CASE_2
 
 module local_coincidence_tb;
 
@@ -32,7 +32,7 @@ module local_coincidence_tb;
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
    reg [15:0]		lc_window_width;	// To UUT_0 of local_coincidence.v
    reg [15:0]		n_lc_thr;		// To UUT_0 of local_coincidence.v
-   reg [N_CHANNELS-1:0]	trig;			// To UUT_0 of local_coincidence.v
+   reg [N_CHANNELS-1:0]	trig = 0;			// To UUT_0 of local_coincidence.v
    // End of automatics
 
    //////////////////////////////////////////////////////////////////////
@@ -71,61 +71,86 @@ module local_coincidence_tb;
    //////////////////////////////////////////////////////////////////////
    // Test case
    //////////////////////////////////////////////////////////////////////
-`ifdef TEST_CASE_1
-   integer i;
-   initial
-     begin
-        i = 0;
-        lc_window_width = 9;
-        n_lc_thr = 4;
-        trig = 24'b0;
+// `ifdef TEST_CASE_1
+//    integer i;
+//    initial
+//      begin
+//         i = 0;
+//         lc_window_width = 9;
+//         n_lc_thr = 4;
+//         trig = 24'b0;
 
-        // Reset
-        #(10 * CLK_PERIOD);
-        rst = 1'b0;
-        #(20* CLK_PERIOD);
+//         // Reset
+//         #(10 * CLK_PERIOD);
+//         rst = 1'b0;
+//         #(20* CLK_PERIOD);
 
-        // Logging
-        $display("");
-        $display("------------------------------------------------------");
-        $display("Test Case: TEST_CASE_1");
+//         // Logging
+//         $display("");
+//         $display("------------------------------------------------------");
+//         $display("Test Case: TEST_CASE_1");
 
-        $display("Shifting a 1 through every bit position\n");
-        for(i=0; i<N_CHANNELS; i=i+1)
-          begin
-             if(i==0)
-               begin @(posedge clk) #1; trig = 1; end
-             else
-               begin @(posedge clk) #1; trig = {trig[N_CHANNELS-2:0],1'b1}; end
-          end
+//         $display("Shifting a 1 through every bit position\n");
+//         for(i=0; i<N_CHANNELS; i=i+1)
+//           begin
+//              if(i==0)
+//                begin @(posedge clk) #1; trig = 1; end
+//              else
+//                begin @(posedge clk) #1; trig = {trig[N_CHANNELS-2:0],1'b1}; end
+//           end
 
-        for(i=0; i<100; i=i+1)
-          begin
-             @(posedge clk) #1;
-          end
+//         for(i=0; i<100; i=i+1)
+//           begin
+//              @(posedge clk) #1;
+//           end
 
-        @(posedge clk) #1; trig = 0;
+//         @(posedge clk) #1; trig = 0;
 
-        #(10 * CLK_PERIOD);
-        @(posedge clk) trig[0] <= 1;
-        #(5 * CLK_PERIOD);
-        @(posedge clk) trig[0] <= 0;
-        #(2 * CLK_PERIOD);
-        @(posedge clk) trig[0] <= 1;
-        #(7 * CLK_PERIOD);
-        @(posedge clk) begin
-           trig[1] <= 1;
-           trig[2] <= 1;
-           trig[3] <= 1;
-        end
-     end
+//         #(10 * CLK_PERIOD);
+//         @(posedge clk) trig[0] <= 1;
+//         #(5 * CLK_PERIOD);
+//         @(posedge clk) trig[0] <= 0;
+//         #(2 * CLK_PERIOD);
+//         @(posedge clk) trig[0] <= 1;
+//         #(7 * CLK_PERIOD);
+//         @(posedge clk) begin
+//            trig[1] <= 1;
+//            trig[2] <= 1;
+//            trig[3] <= 1;
+//         end
+//      end
 
-   `endif
+//    `endif
 
-   //////////////////////////////////////////////////////////////////////
-   // Tasks (e.g., writing data, etc.)
-   //////////////////////////////////////////////////////////////////////
+  // test case 2; LC unit test
+  // each channel has its trigger condition satisfied for 7 out of every 8 samples
+`ifdef TEST_CASE_2
+  initial begin
+      lc_window_width = 4;
+      n_lc_thr = 24;
+      trig = 24'b0;
+      // Reset
+      #(10 * CLK_PERIOD);
+      rst = 1'b0;
+      #(20* CLK_PERIOD);
+  end
+  reg[31:0] cnt = 0;
 
+  always @(posedge clk) begin
+    cnt <= cnt + 1;
+  end
+
+  generate
+  genvar chan;
+  for (chan = 0; chan < 24; chan = chan + 1) begin
+    always @(posedge clk) begin
+      trig[chan] <= 1;
+      if ((cnt - chan) % 8 == 0) trig[chan] <= 0;
+    end
+  end
+  endgenerate
+
+`endif
 
 
 endmodule
