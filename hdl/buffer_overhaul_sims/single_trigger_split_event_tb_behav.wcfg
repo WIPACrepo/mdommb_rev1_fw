@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="single_trigger_split_event_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="single_trigger_split_event_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="81229366667fs"></ZoomStartTime>
+      <ZoomEndTime time="81503166668fs"></ZoomEndTime>
+      <Cursor1Time time="80925000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="325"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="21" />
+   <wvobject fp_name="/single_trigger_split_event_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/ltc" type="array">
+      <obj_property name="ElementShortName">ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/adc_in" type="array">
+      <obj_property name="ElementShortName">adc_in[11:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_in[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/discr_in" type="array">
+      <obj_property name="ElementShortName">discr_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">discr_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/trig" type="logic">
+      <obj_property name="ElementShortName">trig</obj_property>
+      <obj_property name="ObjectShortName">trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/overflow_out" type="logic">
+      <obj_property name="ElementShortName">overflow_out</obj_property>
+      <obj_property name="ObjectShortName">overflow_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/split_evt" type="logic">
+      <obj_property name="ElementShortName">split_evt</obj_property>
+      <obj_property name="ObjectShortName">split_evt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/wvb_wren" type="logic">
+      <obj_property name="ElementShortName">wvb_wren</obj_property>
+      <obj_property name="ObjectShortName">wvb_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/split_evt_prev" type="logic">
+      <obj_property name="ElementShortName">split_evt_prev</obj_property>
+      <obj_property name="ObjectShortName">split_evt_prev</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/\genblk1.HDR_FAN_IN /evt_ltc" type="array">
+      <obj_property name="ElementShortName">evt_ltc[48:0]</obj_property>
+      <obj_property name="ObjectShortName">evt_ltc[48:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/hdr_wren" type="logic">
+      <obj_property name="ElementShortName">hdr_wren</obj_property>
+      <obj_property name="ObjectShortName">hdr_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/wvb_rddone" type="logic">
+      <obj_property name="ElementShortName">wvb_rddone</obj_property>
+      <obj_property name="ObjectShortName">wvb_rddone</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/wvb_wused" type="array">
+      <obj_property name="ElementShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_wused[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/wvb_n_wvf_in_buf" type="array">
+      <obj_property name="ElementShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+      <obj_property name="ObjectShortName">wvb_n_wvf_in_buf[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/overflow_in" type="logic">
+      <obj_property name="ElementShortName">overflow_in</obj_property>
+      <obj_property name="ObjectShortName">overflow_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/arm" type="logic">
+      <obj_property name="ElementShortName">arm</obj_property>
+      <obj_property name="ObjectShortName">arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/armed" type="logic">
+      <obj_property name="ElementShortName">armed</obj_property>
+      <obj_property name="ObjectShortName">armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/fsm" type="array">
+      <obj_property name="ElementShortName">fsm[2:0]</obj_property>
+      <obj_property name="ObjectShortName">fsm[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/ptb_rdy" type="logic">
+      <obj_property name="ElementShortName">ptb_rdy</obj_property>
+      <obj_property name="ObjectShortName">ptb_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_trigger_split_event_tb/WVB/WR_CTRL/trig" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">trig</obj_property>
+      <obj_property name="ObjectShortName">trig</obj_property>
+      <obj_property name="label">wr_ctrl_trig</obj_property>
+   </wvobject>
+</wave_config>

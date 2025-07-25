@@ -136,6 +136,7 @@ wire overflow_pe = overflow_in && !overflow_state;
 assign overflow_out = overflow_state;
 
 // handle trigger arm logic
+wire split_evt;
 always @(posedge clk) begin
   if (i_rst) begin
     armed <= 0;
@@ -146,7 +147,7 @@ always @(posedge clk) begin
       armed <= 1;
     end
 
-    else if (hdr_wren) begin
+    else if (hdr_wren && !split_evt) begin
       armed <= 0;
     end
   end
@@ -207,7 +208,6 @@ end
 reg [P_ADR_WIDTH-1:0] n_writes = 0;
 reg split_evt_prev = 0;
 reg n_writes_check = 0;
-wire split_evt;
 always @(posedge clk) begin
   split_evt_prev <= split_evt;
   n_writes_check <= n_writes == MAX_WRITES_PER_PAYLOAD - 1;
