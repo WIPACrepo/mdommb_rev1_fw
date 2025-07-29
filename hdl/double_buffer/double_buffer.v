@@ -95,6 +95,7 @@ reg[2:0] wr_fsm = S_IDLE;
 always @(posedge clk) begin
   if (rst) begin
     wr_buffer_index <= 0;
+    wr_fsm <= S_IDLE;
   end else begin
     case (wr_fsm)
       S_IDLE: begin
@@ -124,6 +125,7 @@ reg[2:0] rd_fsm = S_IDLE;
 always @(posedge clk) begin
   if (rst) begin
     rd_buffer_index <= 0;
+    rd_fsm <= S_IDLE;
   end else begin
     case (rd_fsm)
       S_IDLE: begin
