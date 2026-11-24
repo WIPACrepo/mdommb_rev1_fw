@@ -247,7 +247,6 @@ always @(posedge clk) begin
 
   if ((fsm == S_IDLE) || hdr_wren_prev) begin
     i_evt_ltc <= ltc;
-    i_trig_src <= trig_src;
     i_start_addr <= wvb_wr_addr;
     i_cnst_run <= cnst_run;
     i_icm_sync_rdy <= icm_sync_rdy;
@@ -255,6 +254,14 @@ always @(posedge clk) begin
     i_bsum_len_sel <= bsum_len_sel;
     i_bsum_valid <= bsum_valid;
     i_continued_wfm <= split_evt_prev;
+  end
+
+  // latch the trigger source only when a new event can start, so that all
+  // payloads of a split waveform report the source of the initial trigger.
+  // trig_src reads 0 (TRIG_SRC_SW) whenever no trigger is active, so re-latching
+  // it after a split mislabeled continuations that began after the trigger ended
+  if (fsm == S_IDLE) begin
+    i_trig_src <= trig_src;
   end
 end
 
