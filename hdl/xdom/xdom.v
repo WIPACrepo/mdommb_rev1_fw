@@ -1180,12 +1180,31 @@ assign fpga_cal_trig_trig = fpga_cal_trig_single || (periodic_cal_trig && fpga_c
 // DDR3 transfer dpram
 wire[15:0] ddr3_dpram_xdom_out;
 
+// DPRAM port inputs on the xdom side (mdommb_rev1_fw issue #4).  While
+// FMC_OEn is low, y_adr follows the FMC address and chip enable pins
+// combinationally (fmc_addr_mux and fmc_cen_mux in the top level), so it
+// changes at any time relative to clk.  The DPRAMs are always enabled, and
+// violating the block RAM address setup or hold time can corrupt the stored
+// data even when WE is low (DS189, block RAM switching characteristics,
+// note 7).  The DPRAMs therefore take their xdom-side address, and PG_DPRAM
+// its write enable and data, from registers.  A write lands one clk later and
+// a read takes one clk longer, which the FMC read timing allows (see the FMC
+// section of constrs/clocks.xdc).
+reg[10:0] dpram_adr = 11'b0;
+reg pg_dpram_we = 1'b0;
+reg[15:0] pg_dpram_din = 16'b0;
+always @(posedge clk) begin
+  dpram_adr <= y_adr[10:0];
+  pg_dpram_we <= y_wr && (y_adr[11]==0) && (dpram_sel == 0);
+  pg_dpram_din <= y_wr_data;
+end
+
 XDOM_DDR3_PG PG_DPRAM
 (
   .clka(clk),
-  .wea(y_wr && (y_adr[11]==0) && (dpram_sel == 0)),
-  .addra(y_adr[10:0]),
-  .dina(y_wr_data),
+  .wea(pg_dpram_we),
+  .addra(dpram_adr),
+  .dina(pg_dpram_din),
   .douta(ddr3_dpram_xdom_out),
   .clkb(ddr3_ui_clk),
   .web(ddr3_dpram_wren),
@@ -1202,7 +1221,7 @@ DIRECT_RDOUT_DPRAM RDOUT_DPRAM
   .addra(rdout_dpram_wr_addr),
   .dina(rdout_dpram_data),
   .clkb(clk),
-  .addrb(y_adr[10:0]),
+  .addrb(dpram_adr),
   .doutb(direct_rdout_dpram_data)
 );
 

@@ -4,7 +4,30 @@ create_clock -name fpga_clk -period 50.000 [get_ports {FPGA_CLOCK_P}]
 create_clock -name qosc_clk -period 50.000 [get_ports {QOSC_CLK_P1V8}]
 
 # FMC IO constraints
-# assume FMC runs at 20 MHz
+#
+# The STM32H7 drives the FMC asynchronously and sends no clock to the FPGA
+# (STM32Workspace xdom-hal/src/fpga/fmc.c: Mode A, fmc_ker_ck = 100 MHz,
+# DATAST = 7, ADDSET = 3 from MCU 0x58 and 1 before, BUSTURN = 0).  fmc_clk is
+# only a virtual reference for the FMC ports.  Its 50 ns period limits the pin
+# to pin paths (address -> read mux -> FMC_D, FMC_OEn -> FMC_D enable) to
+# 48 ns, and the -datapath_only limits below cover the register segments.
+#
+# A read must drive FMC_D by DATAST * 10 - t_su (11) - board (1) = 58 ns after
+# FMC_OEn falls, and the address is valid ADDSET * 10 ns before FMC_OEn falls.
+# With the limits below, FMC_D is valid at the latest:
+#   DPRAM words (address < 0x800): the address reaches xdom's dpram_adr
+#     register within 8.333 ns and is captured by the next lclk edge, the DPRAM
+#     samples it one lclk later and its output register one more, and FMC_D
+#     follows within 16.667 ns: 8.333 + 3 * 8.333 + 16.667 = 50 ns after the
+#     address, i.e. 40 ns (ADDSET = 1) or 20 ns (ADDSET = 3) after FMC_OEn.
+#   Control registers: po_dout_1 loads on the third lclk edge after FMC_OEn
+#     reaches SYNC_FMC_OEN_0 (8.333 ns), and FMC_D follows within 16.667 ns:
+#     8.333 + 3 * 8.333 + 16.667 = 50 ns after FMC_OEn.  po_dout_1's input
+#     settles within 16.667 ns of the address, before its earliest load edge.
+# The DPRAMs take their xdom-side address from dpram_adr, never from the FMC
+# pins directly: a block RAM address must meet setup and hold even on reads,
+# or the stored data can be corrupted (DS189 note 7; mdommb_rev1_fw issue #4).
+# If the MCU FMC timing changes, recheck these budgets.
 create_clock -name fmc_clk -period 50
 set_input_delay -clock fmc_clk 1.0 -max [get_ports FMC_A*]
 set_input_delay -clock fmc_clk -1.0 -min [get_ports FMC_A*]
@@ -60,7 +83,10 @@ set_false_path -from [get_pins {i_fmc_cen_1_reg/C}] -to [get_clocks fmc_clk]
 # fmc address, data, chip en, etc.
 # (see fmc_addr_mux in top level module)
 # IS_SEQUENTIAL selects the valid endpoints in xDOM
-set_false_path -from [get_clocks fmc_clk] -to [get_cells -hier -filter {NAME =~ XDOM_0/* && IS_SEQUENTIAL}]
+# The exception is XDOM_0/dpram_adr, which samples the FMC address pins for
+# DPRAM reads and keeps the 8.333 ns limit above (see the read budget at the
+# top of this section).
+set_false_path -from [get_clocks fmc_clk] -to [get_cells -hier -filter {NAME =~ XDOM_0/* && IS_SEQUENTIAL && NAME !~ XDOM_0/dpram_adr_reg*}]
 
 
 
